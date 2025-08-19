@@ -18,33 +18,33 @@ type LoginFormData = yup.InferType<typeof schema>
 
 const Login = () => {
 
-    const {
-        register,
-        handleSubmit,
-        formState: {errors} 
-    } = useForm({
-        resolver: yupResolver(schema)
-    })
+    // const {
+    //     register,
+    //     handleSubmit,
+    //     formState: {errors} 
+    // } = useForm({
+    //     resolver: yupResolver(schema)
+    // })
 
 
-    const onSubmit = async(data: LoginFormData) => {
+    // const onSubmit = async(data: LoginFormData) => {
 
-        await api.post('/api/users/login',data,{
-            headers:{
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(async( res)=> {
+    //     await api.post('/api/users/login',data,{
+    //         headers:{
+    //             'Content-Type': 'application/json'
+    //         }
+    //     })
+    //     .then(async( res)=> {
 
-            toast.success('Login successfull')
-             localStorage.setItem('token', res.data.access_token)
-             localStorage.setItem('user',JSON.stringify(res.data.data))
+    //         toast.success('Login successfull')
+    //          localStorage.setItem('token', res.data.access_token)
+    //          localStorage.setItem('user',JSON.stringify(res.data.data))
 
             
-        }).catch((err) =>{
-            toast.error(err.response?.data?.message || 'Invalid Credentials')
-        })
-    }
+    //     }).catch((err) =>{
+    //         toast.error(err.response?.data?.message || 'Invalid Credentials')
+    //     })
+    // }
   return (
     <div>
         <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-500 via-purple-500 to-pink-500 p-6">
@@ -58,7 +58,9 @@ const Login = () => {
         </p>
 
         {/* Form */}
-        <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+        <form className="space-y-5" 
+        // onSubmit={handleSubmit(onSubmit)}
+        >
           {/* Email */}
           <div>
             <label
@@ -68,13 +70,13 @@ const Login = () => {
               Email Address
             </label>
             <input
-            {...register('email')}
+            // {...register('email')}
               type="email"
               id="email"
               placeholder="you@example.com"
               className="w-full rounded-xl border border-gray-300 p-3 focus:border-indigo-500 focus:ring focus:ring-indigo-300 focus:outline-none"
             />
-            {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>}
+            {/* {errors.email && <p className="mt-1 text-sm text-red-500">{errors.email.message}</p>} */}
           </div>
 
           {/* Password */}
@@ -86,13 +88,13 @@ const Login = () => {
               Password
             </label>
             <input
-                {...register('password')}
+                // {...register('password')}
               type="password"
               id="password"
               placeholder="••••••••"
               className="w-full rounded-xl border border-gray-300 p-3 focus:border-indigo-500 focus:ring focus:ring-indigo-300 focus:outline-none"
             />
-            {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>}
+            {/* {errors.password && <p className="mt-1 text-sm text-red-500">{errors.password.message}</p>} */}
           </div>
 
           {/* Remember + Forgot */}

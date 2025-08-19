@@ -47,12 +47,23 @@ const initialState: DestinationState = {
 
 export const listDestinations = createAsyncThunk('/destinations', async() => {
 
-    const res = await api.get('/viewAllDestination')
+    const res = await api.get('/destination/viewAllDestination')
     console.log('Destination list', res.data.data)
 
     return res.data.data
 })
 
+//fetch tour based on destination
+
+export const getTourByDestination = createAsyncThunk('destination/getTourByDestination', async(id: string) => {
+
+  const res = await api.get(`/destination/${id}/tours`)
+  console.log("API called:", `/destination/${id}/tours`)
+
+  console.log("tours by destination", res.data.data)
+
+  return res.data.data
+})
 
 
 
@@ -76,6 +87,19 @@ const destinationSlice = createSlice({
             .addCase(listDestinations.rejected, (state,action) => {
                 state.loading = false
                 state.error = action.error.message || 'Failed to list Destinations'
+            })
+
+            //get tours by destination
+            .addCase(getTourByDestination.pending, state => {
+              state.loading = true
+            })
+            .addCase(getTourByDestination.fulfilled, ( state, action) => {
+              state.loading = false
+              state.toursByDestination = action.payload
+            })
+            .addCase(getTourByDestination.rejected, (state, action) => {
+              state.loading = false
+              state.error = action.error.message || 'Failed to load Tour of corresponding destination'
             })
     }
 })
