@@ -4,6 +4,7 @@ import DestinationReducer from "@/redux/slices/destinationSlice"
 export const store = configureStore({
     reducer:{
         destination : DestinationReducer,
+       
     }
 })
 
