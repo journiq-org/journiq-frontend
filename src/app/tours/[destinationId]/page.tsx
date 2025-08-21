@@ -1,5 +1,6 @@
 'use client'
 
+import Header from '@/components/Header'
 import { getTourByDestination } from '@/redux/slices/destinationSlice'
 import { AppDispatch } from '@/redux/store'
 import { useParams, useRouter } from 'next/navigation'
@@ -31,7 +32,8 @@ console.log("🚀 ToursByDestination mounted");
 
   return (
     <div>
-        <h1 className='text-2xl text-bold mb-3 text-center'>Tours</h1>
+      <Header/>
+        <h1 className='text-2xl pt-8 text-bold mb-3 text-center'>Tours</h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4" onClick={() => router.push('/login')}>
       {toursByDestination.map((tour: any) => (
         <div key={tour._id} className="bg-white shadow-lg rounded-2xl p-4">

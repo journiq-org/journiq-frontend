@@ -1,7 +1,9 @@
 'use client'
 
+import Header from "@/components/Header";
 import { listDestinations } from "@/redux/slices/destinationSlice";
 import { AppDispatch } from "@/redux/store";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,8 +19,55 @@ export default function Home() {
       dispatch(listDestinations())
     },[dispatch])
   return (
-   
+    <div >
+      <Header/>
+
+
+    {/* hero section */}
+    {/* <div>
+      <div className="relative max-w-7xl mx-auto px-4 pt-20 flex flex-col items-center text-center">
+        <h6 className="text-xl md:text-2xl text-[#0c0c0c]"> Dont't just see the world.</h6>
+        <h1 className="text-5xl md:text-7xl lg:text-9xl font-bold mt-4 text-[#0c0c0c] leading-tight">Live it with Journiq.</h1>
+      </div>
+      <div className="relative mt-12 w-full max-w-6xl rounded-2xl shadow-lg overflow-hidden mx-auto bottom-25 ">
+        <Image
+        src={'/images/destination3.jpg'}
+        alt="destination"
+        width={1600}
+        height={800}
+        className="w-full h-[400px] md:h-[500px] object-cover"
+        />
+      </div>
+
+    </div> */}
+
     <div>
+  <div className="relative max-w-7xl mx-auto px-4 pt-20 flex flex-col items-center text-center">
+    <h6 className="text-xl md:text-2xl text-[#0c0c0c]">Don't just see the world.</h6>
+    <h1 className="text-5xl md:text-7xl lg:text-9xl font-bold mt-4 text-[#0c0c0c] leading-tight">
+      Live it with Journiq.
+    </h1>
+  </div>
+
+  {/* Image with gradient overlay */}
+  <div className="relative mt-12 w-full max-w-6xl rounded-2xl shadow-lg overflow-hidden mx-auto">
+    <Image
+      src={'/images/destination3.jpg'}
+      alt="destination"
+      width={1600}
+      height={800}
+      className="w-full h-[400px] md:h-[500px] object-cover"
+    />
+
+    {/* Gradient overlay at the top */}
+    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent"></div>
+  </div>
+</div>
+
+
+
+
+
       <div className="p-6">
       <h2 className="text-2xl font-bold mb-4">Popular Destinations</h2>
 
