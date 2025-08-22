@@ -8,12 +8,14 @@ import {
   TextField,
   Typography,
   Avatar,
+  Paper,
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
+import Navbar from "@/components/Navbar";
 
 // Validation Schema
 const schema = yup.object().shape({
@@ -29,26 +31,33 @@ const schema = yup.object().shape({
   role: yup.string().required("Role is required"),
 });
 
+type RegisterFormData = yup.InferType<typeof schema>;
+
 const RegisterPage = () => {
   const [image, setImage] = useState<File | null>(null);
   const [preview, setPreview] = useState("");
 
-const { handleSubmit, control, watch, setValue, reset, formState: { errors } } = useForm({
-  resolver: yupResolver(schema),
-  defaultValues: {
-    name: "",
-    email: "",
-    password: "",
-    phone: "",
-    location: "",
-    bio: "",
-    role: "",
-  },
-});
+  const {
+    handleSubmit,
+    control,
+    watch,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<RegisterFormData>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      phone: "",
+      location: "",
+      bio: "",
+      role: "",
+    },
+  });
 
-// Watch the role value
-const selectedRole = watch("role");
-
+  const selectedRole = watch("role");
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -63,15 +72,15 @@ const selectedRole = watch("role");
     setPreview("");
   };
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: RegisterFormData) => {
     try {
       const formData = new FormData();
-      Object.entries(data).forEach(([key, value]) => {
-        formData.append(key, value as string);
-      });
+      Object.entries(data).forEach(([key, value]) =>
+        formData.append(key, value as string)
+      );
       if (image) formData.append("profilePic", image);
 
-      await api.post("/users/register", formData, {
+      await api.post("/api/users/register", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -84,198 +93,113 @@ const selectedRole = watch("role");
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box
-        sx={{
-          background: "#f9f9f9",
-          p: 4,
-          borderRadius: 3,
-          boxShadow: 3,
-          mt: 5,
-        }}
-      >
-        <Typography
-          variant="h5"
-          fontWeight="bold"
-          textAlign="center"
-          gutterBottom
-        >
-          Register
-        </Typography>
+    <>
+      {/* Navbar on top */}
+      <Navbar />
 
-        <form onSubmit={handleSubmit(onSubmit)}>
-          {/* Avatar + Role */}
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              mb: 3,
-            }}
+      <Box className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 p-4 pt-20">
+        <Paper
+          elevation={8}
+          className="w-full max-w-lg p-8 rounded-3xl bg-white/95 backdrop-blur-md shadow-xl"
+        >
+          <Typography
+            variant="h4"
+            className="font-extrabold text-indigo-700 text-center mb-2"
           >
-            <Avatar
-              src={preview}
-              sx={{ width: 100, height: 100, mb: 2, cursor: "pointer" }}
-              onClick={() => document.getElementById("avatarInput")?.click()}
-            />
-
-            {preview && (
-              <Button
-                variant="outlined"
-                color="error"
-                size="small"
-                sx={{ mb: 2 }}
-                onClick={removeImage}
-              >
-                Remove Image
-              </Button>
-            )}
-
-            <input
-              type="file"
-              id="avatarInput"
-              hidden
-              accept="image/*"
-              onChange={handleImageChange}
-            />
-
-        <Box sx={{ display: "flex", gap: 2 }}>
-        <Button
-            variant="contained"
-            color={selectedRole === "traveller" ? "primary" : "inherit"}
-            onClick={() => setValue("role", "traveller")}
-        >
-            Traveller
-        </Button>
-        <Button
-            variant="contained"
-            color={selectedRole === "guide" ? "primary" : "inherit"}
-            onClick={() => setValue("role", "guide")}
-        >
-            Guide
-        </Button>
-        </Box>
-
-
-            {errors.role && (
-              <Typography color="error" variant="caption" sx={{ mt: 0.5 }}>
-                {errors.role.message}
-              </Typography>
-            )}
-          </Box>
-
-          {/* Name */}
-          <Box sx={{ mb: 2 }}>
-            <Controller
-              name="name"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Name"
-                  fullWidth
-                  error={!!errors.name}
-                  helperText={errors.name?.message}
-                />
-              )}
-            />
-          </Box>
-
-          {/* Email */}
-          <Box sx={{ mb: 2 }}>
-            <Controller
-              name="email"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Email"
-                  fullWidth
-                  error={!!errors.email}
-                  helperText={errors.email?.message}
-                />
-              )}
-            />
-          </Box>
-
-          {/* Password */}
-          <Box sx={{ mb: 2 }}>
-            <Controller
-              name="password"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Password"
-                  type="password"
-                  fullWidth
-                  error={!!errors.password}
-                  helperText={errors.password?.message}
-                />
-              )}
-            />
-          </Box>
-
-          {/* Phone */}
-          <Box sx={{ mb: 2 }}>
-            <Controller
-              name="phone"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Phone"
-                  fullWidth
-                  error={!!errors.phone}
-                  helperText={errors.phone?.message}
-                />
-              )}
-            />
-          </Box>
-
-          {/* Location */}
-          <Box sx={{ mb: 2 }}>
-            <Controller
-              name="location"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Location"
-                  fullWidth
-                  error={!!errors.location}
-                  helperText={errors.location?.message}
-                />
-              )}
-            />
-          </Box>
-
-          {/* Bio */}
-          <Box sx={{ mb: 2 }}>
-            <Controller
-              name="bio"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  {...field}
-                  label="Bio"
-                  fullWidth
-                  multiline
-                  rows={3}
-                  error={!!errors.bio}
-                  helperText={errors.bio?.message}
-                />
-              )}
-            />
-          </Box>
-
-          {/* Submit */}
-          <Button type="submit" variant="contained" fullWidth>
             Register
-          </Button>
-        </form>
+          </Typography>
+          <Typography className="text-gray-600 text-center mb-6">
+            Create your account 👋
+          </Typography>
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            {/* Avatar + Role */}
+            <Box className="flex flex-col items-center mb-4">
+              <Avatar
+                src={preview}
+                sx={{ width: 100, height: 100, mb: 2, cursor: "pointer" }}
+                onClick={() => document.getElementById("avatarInput")?.click()}
+              />
+              {preview && (
+                <Button
+                  variant="outlined"
+                  color="error"
+                  size="small"
+                  sx={{ mb: 2 }}
+                  onClick={removeImage}
+                >
+                  Remove Image
+                </Button>
+              )}
+              <input
+                type="file"
+                id="avatarInput"
+                hidden
+                accept="image/*"
+                onChange={handleImageChange}
+              />
+
+              <Box className="flex gap-2">
+                <Button
+                  variant="contained"
+                  color={selectedRole === "traveller" ? "primary" : "inherit"}
+                  onClick={() => setValue("role", "traveller")}
+                >
+                  Traveller
+                </Button>
+                <Button
+                  variant="contained"
+                  color={selectedRole === "guide" ? "primary" : "inherit"}
+                  onClick={() => setValue("role", "guide")}
+                >
+                  Guide
+                </Button>
+              </Box>
+              {errors.role && (
+                <Typography color="error" variant="caption" sx={{ mt: 0.5 }}>
+                  {errors.role.message}
+                </Typography>
+              )}
+            </Box>
+
+            {/* Form Fields */}
+            {(
+              ["name", "email", "password", "phone", "location", "bio"] as (
+                | keyof RegisterFormData
+              )[]
+            ).map((field) => (
+              <Controller
+                key={field}
+                name={field}
+                control={control}
+                render={({ field: f }) => (
+                  <TextField
+                    {...f}
+                    type={field === "password" ? "password" : "text"}
+                    label={field.charAt(0).toUpperCase() + field.slice(1)}
+                    fullWidth
+                    multiline={field === "bio"}
+                    rows={field === "bio" ? 3 : 1}
+                    error={!!errors[field]}
+                    helperText={errors[field]?.message}
+                  />
+                )}
+              />
+            ))}
+
+            <Button
+              type="submit"
+              variant="contained"
+              fullWidth
+              size="large"
+              className="mt-4 bg-indigo-600 hover:bg-indigo-700"
+            >
+              Register
+            </Button>
+          </form>
+        </Paper>
       </Box>
-    </Container>
+    </>
   );
 };
 
