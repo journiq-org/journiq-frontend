@@ -9,7 +9,7 @@ const Header = () => {
   const router = useRouter()
 
   return (
-    <header className="w-full bg-[#E2E0DF] shadow-md px-15 py-4 flex justify-between items-center relative">
+    <header className="w-full bg-[#E2E0DF]  px-15 py-4 flex justify-between items-center relative">
 
       {/* Menu Button */}
       <div className="relative">

@@ -14,6 +14,7 @@ console.log("🚀 ToursByDestination mounted");
 
     const params = useParams()
     console.log("Params from useParams:", params);
+    
     const rawId = params?.destinationId // the destination id name is not from backend.. it is the name of folder that we have given in frontend
     const id = Array.isArray(rawId) ? rawId[0] : rawId ?? ''
 
@@ -34,11 +35,11 @@ console.log("🚀 ToursByDestination mounted");
     <div>
       <Header/>
         <h1 className='text-2xl pt-8 text-bold mb-3 text-center'>Tours</h1>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4" onClick={() => router.push('/login')}>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-4" >
       {toursByDestination.map((tour: any) => (
-        <div key={tour._id} className="bg-white shadow-lg rounded-2xl p-4">
+        <div key={tour._id} className="bg-white shadow-lg rounded-2xl p-4" onClick={() => router.push(`/tours/details/${tour._id}`)}>
           <img
-            src={tour.images[0] || "/placeholder.jpg"}
+            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${tour.images[0]}` }
             alt={tour.title}
             className="text-black w-full h-40 object-cover rounded-xl mb-3"
           />

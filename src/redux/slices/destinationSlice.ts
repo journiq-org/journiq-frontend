@@ -47,7 +47,7 @@ const initialState: DestinationState = {
 
 export const listDestinations = createAsyncThunk('/destinations', async() => {
 
-    const res = await api.get('/destination/viewAllDestination')
+    const res = await api.get('/api/destination/viewAllDestination')
     console.log('Destination list', res.data.data)
 
     return res.data.data
@@ -57,7 +57,7 @@ export const listDestinations = createAsyncThunk('/destinations', async() => {
 
 export const getTourByDestination = createAsyncThunk('destination/getTourByDestination', async(id: string) => {
 
-  const res = await api.get(`/destination/${id}/tours`)
+  const res = await api.get(`/api/destination/${id}/tours`)
   console.log("API called:", `/destination/${id}/tours`)
 
   console.log("tours by destination", res.data.data)
@@ -65,6 +65,7 @@ export const getTourByDestination = createAsyncThunk('destination/getTourByDesti
   return res.data.data
 })
 
+//get single tour
 
 
 //slice

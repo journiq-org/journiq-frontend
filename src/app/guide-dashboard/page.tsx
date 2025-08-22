@@ -1,74 +1,173 @@
-"use client";
+// "use client";
+// import React, { useState } from "react";
+// import { Menu, X, Home, PlusSquare, Edit3, Settings } from "lucide-react";
+
+// export default function GuideDashboard() {
+//   const [sidebarOpen, setSidebarOpen] = useState(true);
+
+//   return (
+//     <div className="min-h-screen flex bg-[#E2E0DF] text-[#0C0C0C]">
+//       {/* Sidebar */}
+//       <div
+//         className={`${
+//           sidebarOpen ? "w-64" : "w-20"
+//         } bg-[#5E361D] text-[#EFEDE9] flex flex-col transition-all duration-300`}
+//       >
+//         {/* Sidebar Header */}
+//         <div className="flex items-center justify-between p-4 border-b border-[#4E4D45]">
+//           <h2
+//             className={`font-bold text-lg transition-all duration-300 ${
+//               sidebarOpen ? "opacity-100" : "opacity-0 hidden"
+//             }`}
+//           >
+//             Guide Panel
+//           </h2>
+//           <button
+//             className="text-[#FF9100]"
+//             onClick={() => setSidebarOpen(!sidebarOpen)}
+//           >
+//             {sidebarOpen ? <X size={20} /> : <Menu size={20} />}
+//           </button>
+//         </div>
+
+//         {/* Sidebar Links */}
+//         <nav className="flex-1 p-4 space-y-4">
+//           <a
+//             href="#"
+//             className="flex items-center gap-3 hover:bg-[#4E4D45] p-2 rounded-md transition"
+//           >
+//             <Home size={20} />
+//             {sidebarOpen && <span>Dashboard</span>}
+//           </a>
+//           <a
+//             href="#"
+//             className="flex items-center gap-3 hover:bg-[#4E4D45] p-2 rounded-md transition"
+//           >
+//             <PlusSquare size={20} />
+//             {sidebarOpen && <span>Create Tour</span>}
+//           </a>
+//           <a
+//             href="#"
+//             className="flex items-center gap-3 hover:bg-[#4E4D45] p-2 rounded-md transition"
+//           >
+//             <Edit3 size={20} />
+//             {sidebarOpen && <span>My Tours</span>}
+//           </a>
+//           <a
+//             href="#"
+//             className="flex items-center gap-3 hover:bg-[#4E4D45] p-2 rounded-md transition"
+//           >
+//             <Settings size={20} />
+//             {sidebarOpen && <span>Settings</span>}
+//           </a>
+//         </nav>
+//       </div>
+
+//       {/* Main Content */}
+//       <div className="flex-1 flex flex-col">
+//         {/* Header */}
+//         <header className="w-full bg-[#EFEDE9] shadow-md p-4 flex justify-between items-center">
+//           <h1 className="text-2xl font-bold text-[#0C0C0C]">Guide Dashboard</h1>
+//           <button className="bg-[#FF9100] text-white px-4 py-2 rounded-lg shadow hover:bg-[#E07F00]">
+//             + New Tour
+//           </button>
+//         </header>
+
+//         {/* Content Area */}
+//         <main className="flex-1 p-6 bg-[#E0DDD7]">
+//           <h2 className="text-xl font-semibold mb-4">Welcome, Guide!</h2>
+//           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+//             <div className="bg-[#EFEDE9] rounded-xl p-6 shadow hover:shadow-lg transition">
+//               <h3 className="text-lg font-bold mb-2 text-[#0C0C0C]">
+//                 My Tours
+//               </h3>
+//               <p className="text-sm text-[#4E4D45]">
+//                 Manage and edit your existing tours.
+//               </p>
+//             </div>
+//             <div className="bg-[#EFEDE9] rounded-xl p-6 shadow hover:shadow-lg transition">
+//               <h3 className="text-lg font-bold mb-2 text-[#0C0C0C]">
+//                 Bookings
+//               </h3>
+//               <p className="text-sm text-[#4E4D45]">
+//                 View all bookings made for your tours.
+//               </p>
+//             </div>
+//             <div className="bg-[#EFEDE9] rounded-xl p-6 shadow hover:shadow-lg transition">
+//               <h3 className="text-lg font-bold mb-2 text-[#0C0C0C]">
+//                 Notifications
+//               </h3>
+//               <p className="text-sm text-[#4E4D45]">
+//                 Stay updated with recent activities.
+//               </p>
+//             </div>
+//           </div>
+//         </main>
+//       </div>
+//     </div>
+//   );
+// }
+
+"use client"; 
 import React from "react";
-import { MapPin, Star } from "lucide-react";
+import { Bell, User, LogOut } from "lucide-react";
 
-const destinations = [
-  {
-    id: 1,
-    name: "Paris",
-    location: "France",
-    image:
-      "https://images.unsplash.com/photo-1502602898657-3e91760cbb34?w=800&q=80",
-    rating: 4.8,
-  },
-  {
-    id: 2,
-    name: "Tokyo",
-    location: "Japan",
-    image:
-      "https://images.unsplash.com/photo-1549692520-acc6669e2f0c?w=800&q=80",
-    rating: 4.7,
-  },
-  {
-    id: 3,
-    name: "New York",
-    location: "USA",
-    image:
-      "https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=800&q=80",
-    rating: 4.6,
-  },
-];
-
-export default function DestinationListPage() {
+export default function Page() {
   return (
-    <div className="max-w-7xl mx-auto px-6 py-12">
-      <h1 className="text-4xl font-bold mb-8 text-center">
-        Explore Destinations
-      </h1>
+    <div className="min-h-screen bg-[#E2E0DF] text-[#0C0C0C] flex flex-col">
+      {/* Header */}
+      <header className="w-full bg-[#EFEDE9] shadow-md px-6 py-4 flex justify-between items-center">
+        <h1 className="text-2xl font-bold text-[#5E361D]">Guide Dashboard</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {destinations.map((dest) => (
-          <div
-            key={dest.id}
-            className="rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition"
-          >
-            {/* Image */}
-            <div className="relative">
-              <img
-                src={dest.image}
-                alt={dest.name}
-                className="w-full h-56 object-cover"
-              />
-              <div className="absolute top-3 right-3 bg-white px-2 py-1 rounded-lg shadow text-sm font-semibold flex items-center gap-1">
-                <Star className="w-4 h-4 text-yellow-500" />
-                {dest.rating}
-              </div>
-            </div>
+        <nav className="hidden md:flex gap-8 font-medium">
+          <a href="#" className="hover:text-[#FF9100] transition">Dashboard</a>
+          <a href="#" className="hover:text-[#FF9100] transition">My Tours</a>
+          <a href="#" className="hover:text-[#FF9100] transition">Bookings</a>
+          <a href="#" className="hover:text-[#FF9100] transition">Settings</a>
+        </nav>
 
-            {/* Content */}
-            <div className="p-4">
-              <h2 className="text-2xl font-semibold">{dest.name}</h2>
-              <p className="flex items-center gap-1 text-gray-600 mt-1">
-                <MapPin className="w-4 h-4" />
-                {dest.location}
-              </p>
-              <button className="mt-4 w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-xl transition">
-                View Details
-              </button>
-            </div>
+        <div className="flex items-center gap-6">
+          <button className="relative">
+            <Bell className="w-6 h-6" />
+            <span className="absolute -top-2 -right-2 bg-[#FF9100] text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">3</span>
+          </button>
+          <button className="flex items-center gap-2 hover:text-[#FF9100]">
+            <User className="w-6 h-6" />
+            <span className="hidden md:block">Profile</span>
+          </button>
+          <button className="flex items-center gap-2 hover:text-[#FF9100]">
+            <LogOut className="w-6 h-6" />
+            <span className="hidden md:block">Logout</span>
+          </button>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="flex-1 p-6 bg-[#E0DDD7]">
+        <h2 className="text-xl font-semibold mb-6">Welcome, Guide!</h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="bg-[#EFEDE9] rounded-xl p-6 shadow hover:shadow-lg transition">
+            <h3 className="text-lg font-bold mb-2">My Tours</h3>
+            <p className="text-sm text-[#4E4D45]">Manage and edit your tours.</p>
           </div>
-        ))}
-      </div>
+
+          <div className="bg-[#EFEDE9] rounded-xl p-6 shadow hover:shadow-lg transition">
+            <h3 className="text-lg font-bold mb-2">Bookings</h3>
+            <p className="text-sm text-[#4E4D45]">View bookings for your tours.</p>
+          </div>
+
+          <div className="bg-[#EFEDE9] rounded-xl p-6 shadow hover:shadow-lg transition">
+            <h3 className="text-lg font-bold mb-2">Notifications</h3>
+            <p className="text-sm text-[#4E4D45]">Stay updated with recent activities.</p>
+          </div>
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-[#5E361D] text-[#EFEDE9] py-4 text-center text-sm">
+        © 2025 Journiq Guide Dashboard. All rights reserved.
+      </footer>
     </div>
   );
 }

@@ -52,7 +52,7 @@ export default function Home() {
   {/* Image with gradient overlay */}
   <div className="relative mt-12 w-full max-w-6xl rounded-2xl shadow-lg overflow-hidden mx-auto">
     <Image
-      src={'/images/destination3.jpg'}
+      src={`/images/destination3.jpg`}
       alt="destination"
       width={1600}
       height={800}
@@ -89,10 +89,11 @@ export default function Home() {
               {/* Image */}
               {dest.images?.length > 0 && (
                 <img
-                  src={dest.images[0]}
+                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${dest.images[0]}`}
                   alt={dest.name}
                   className="w-full h-48 object-cover"
                 />
+                
               )}
 
               {/* Info */}
