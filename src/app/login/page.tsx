@@ -40,10 +40,10 @@ const Login = () => {
   return (
     <>
       <Navbar />
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 p-4 pt-20">
-        <div className="w-full max-w-md rounded-3xl bg-white/95 p-8 shadow-xl backdrop-blur-md">
-          <h1 className="text-4xl font-extrabold text-indigo-700 text-center">Login</h1>
-          <p className="text-gray-600 text-center mb-6">Welcome back 👋 Please sign in</p>
+      <div className="flex min-h-screen items-center justify-center bg-[#E2E0DF] p-4 pt-24">
+        <div className="w-full max-w-md rounded-3xl bg-[#d1cfc8]/95 p-8 shadow-lg backdrop-blur-md">
+          <h1 className="text-4xl font-extrabold text-[#0c0c0c] text-center mb-2">Login</h1>
+          <p className="text-[#4E4D45] text-center mb-6">Welcome back 👋 Please sign in</p>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div>
@@ -51,11 +51,11 @@ const Login = () => {
                 {...register("email")}
                 type="email"
                 placeholder="Email"
-                className={`w-full rounded-xl border p-3 text-gray-800 placeholder-gray-400 ${
-                  errors.email ? "border-red-500" : "border-gray-300"
+                className={`w-full rounded-xl border p-3 text-[#0c0c0c] placeholder-[#4E4D45] bg-white ${
+                  errors.email ? "border-red-500" : "border-[#4E4D45]"
                 }`}
               />
-              {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>}
             </div>
 
             <div>
@@ -63,28 +63,30 @@ const Login = () => {
                 {...register("password")}
                 type="password"
                 placeholder="Password"
-                className={`w-full rounded-xl border p-3 text-gray-800 placeholder-gray-400 ${
-                  errors.password ? "border-red-500" : "border-gray-300"
+                className={`w-full rounded-xl border p-3 text-[#0c0c0c] placeholder-[#4E4D45] bg-white ${
+                  errors.password ? "border-red-500" : "border-[#4E4D45]"
                 }`}
               />
-              {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password.message}</p>}
             </div>
 
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full rounded-xl bg-indigo-600 py-3 text-white font-semibold hover:bg-indigo-700 disabled:opacity-70"
+              className="w-full rounded-full bg-[#0c0c0c] py-3 text-white font-semibold hover:bg-[#4E4D45] transition disabled:opacity-70"
             >
               {isSubmitting ? "Logging in..." : "Login"}
             </button>
           </form>
 
-         <p className="mt-6 text-center text-sm text-gray-600">
-  Don’t have an account?{" "}
-  <Link href="/register">
-    <span className="text-indigo-600 hover:underline">Register</span>
-  </Link>
-</p>
+          <p className="mt-6 text-center text-sm text-[#4E4D45]">
+            Don’t have an account?{" "}
+            <Link href="/register">
+              <span className="bg-[#d1cfc8] px-2 py-1 rounded-full text-[#0c0c0c] hover:bg-[#4E4D45] hover:text-white transition cursor-pointer">
+                Register
+              </span>
+            </Link>
+          </p>
         </div>
       </div>
     </>

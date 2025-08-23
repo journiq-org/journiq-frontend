@@ -4,11 +4,10 @@ import React, { useState } from "react";
 import {
   Box,
   Button,
-  Container,
-  TextField,
-  Typography,
   Avatar,
+  Typography,
   Paper,
+  TextField,
 } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -17,7 +16,6 @@ import api from "@/lib/api";
 import toast from "react-hot-toast";
 import Navbar from "@/components/Navbar";
 
-// Validation Schema
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
@@ -94,21 +92,14 @@ const RegisterPage = () => {
 
   return (
     <>
-      {/* Navbar on top */}
       <Navbar />
 
-      <Box className="flex min-h-screen items-center justify-center bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 p-4 pt-20">
-        <Paper
-          elevation={8}
-          className="w-full max-w-lg p-8 rounded-3xl bg-white/95 backdrop-blur-md shadow-xl"
-        >
-          <Typography
-            variant="h4"
-            className="font-extrabold text-indigo-700 text-center mb-2"
-          >
+      <Box className="flex min-h-screen items-center justify-center bg-[#E2E0DF] p-4 pt-24">
+        <Paper className="w-full max-w-lg p-8 rounded-3xl bg-[#d1cfc8]/95 shadow-lg backdrop-blur-md">
+          <Typography className="text-4xl font-extrabold text-[#0c0c0c] text-center mb-2">
             Register
           </Typography>
-          <Typography className="text-gray-600 text-center mb-6">
+          <Typography className="text-[#4E4D45] text-center mb-6">
             Create your account 👋
           </Typography>
 
@@ -141,20 +132,36 @@ const RegisterPage = () => {
 
               <Box className="flex gap-2">
                 <Button
-                  variant="contained"
-                  color={selectedRole === "traveller" ? "primary" : "inherit"}
+                  variant={selectedRole === "traveller" ? "contained" : "outlined"}
+                  sx={{
+                    backgroundColor:
+                      selectedRole === "traveller" ? "#0c0c0c" : "white",
+                    color: selectedRole === "traveller" ? "white" : "#0c0c0c",
+                    "&:hover": {
+                      backgroundColor: selectedRole === "traveller" ? "#4E4D45" : "#d1cfc8",
+                    },
+                  }}
                   onClick={() => setValue("role", "traveller")}
                 >
                   Traveller
                 </Button>
+
                 <Button
-                  variant="contained"
-                  color={selectedRole === "guide" ? "primary" : "inherit"}
+                  variant={selectedRole === "guide" ? "contained" : "outlined"}
+                  sx={{
+                    backgroundColor:
+                      selectedRole === "guide" ? "#0c0c0c" : "white",
+                    color: selectedRole === "guide" ? "white" : "#0c0c0c",
+                    "&:hover": {
+                      backgroundColor: selectedRole === "guide" ? "#4E4D45" : "#d1cfc8",
+                    },
+                  }}
                   onClick={() => setValue("role", "guide")}
                 >
                   Guide
                 </Button>
               </Box>
+
               {errors.role && (
                 <Typography color="error" variant="caption" sx={{ mt: 0.5 }}>
                   {errors.role.message}
@@ -163,36 +170,55 @@ const RegisterPage = () => {
             </Box>
 
             {/* Form Fields */}
-            {(
-              ["name", "email", "password", "phone", "location", "bio"] as (
-                | keyof RegisterFormData
-              )[]
-            ).map((field) => (
-              <Controller
-                key={field}
-                name={field}
-                control={control}
-                render={({ field: f }) => (
-                  <TextField
-                    {...f}
-                    type={field === "password" ? "password" : "text"}
-                    label={field.charAt(0).toUpperCase() + field.slice(1)}
-                    fullWidth
-                    multiline={field === "bio"}
-                    rows={field === "bio" ? 3 : 1}
-                    error={!!errors[field]}
-                    helperText={errors[field]?.message}
-                  />
-                )}
-              />
-            ))}
+            {(["name", "email", "password", "phone", "location", "bio"] as (keyof RegisterFormData)[]).map(
+              (field) => (
+                <Controller
+                  key={field}
+                  name={field}
+                  control={control}
+                  render={({ field: f }) => (
+                    <TextField
+                      {...f}
+                      type={field === "password" ? "password" : "text"}
+                      label={field.charAt(0).toUpperCase() + field.slice(1)}
+                      fullWidth
+                      multiline={field === "bio"}
+                      rows={field === "bio" ? 3 : 1}
+                      error={!!errors[field]}
+                      helperText={errors[field]?.message}
+                      sx={{
+                        backgroundColor: "white",
+                        "& .MuiInputBase-input": { color: "#0c0c0c" },
+                        "& .MuiInputLabel-root": { color: "#4E4D45" },
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": {
+                            borderColor: "#4E4D45",
+                          },
+                          "&:hover fieldset": {
+                            borderColor: "#0c0c0c",
+                          },
+                          "&.Mui-focused fieldset": {
+                            borderColor: "#0c0c0c",
+                          },
+                        },
+                      }}
+                    />
+                  )}
+                />
+              )
+            )}
 
             <Button
               type="submit"
-              variant="contained"
               fullWidth
-              size="large"
-              className="mt-4 bg-indigo-600 hover:bg-indigo-700"
+              sx={{
+                mt: 2,
+                backgroundColor: "#0c0c0c",
+                color: "white",
+                py: 1.5,
+                borderRadius: "9999px",
+                "&:hover": { backgroundColor: "#4E4D45" },
+              }}
             >
               Register
             </Button>
