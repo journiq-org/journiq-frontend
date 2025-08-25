@@ -67,7 +67,7 @@ export const guideViewTours = createAsyncThunk('/tours', async() => {
 
   const res = await api.get('/viewAll', {
     headers:{
-      'Authorization': `Bearer ${token}`
+      // 'Authorization': `Bearer ${token}`
     }
   })
 })
