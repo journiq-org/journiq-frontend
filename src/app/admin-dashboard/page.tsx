@@ -36,7 +36,7 @@ const AdminDashboard = () => {
 
   const confirmLogout = async () => {
     try {
-      await fetch("/Auth/clear-cookies", { method: "POST" }); // 🔹 clears cookies
+      await fetch("/api/auth/clear-cookie", { method: "POST" }); // 🔹 clears cookies
       toast.success("Logged out ✅");
       router.push("/login");
     } catch {

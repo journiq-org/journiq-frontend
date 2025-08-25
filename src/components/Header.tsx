@@ -33,7 +33,7 @@ const Header = () => {
 
       {/* Logo / Brand */}
       <div className="text-2xl font-bold text-[#0c0c0c] flex justify-center align-center">
-        <Image src={'/logo.png'} alt="journiq-logo" width={35} height={35}/>
+        <Image src={'/images/logo.png'} alt="journiq-logo" width={35} height={35}/>
         Journiq
       </div>
 

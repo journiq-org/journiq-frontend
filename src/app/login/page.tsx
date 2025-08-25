@@ -21,21 +21,53 @@ const Login = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = async (data: LoginFormData) => {
-    try {
-      const res = await api.post("/api/users/login", data, { withCredentials: true });
-      if (res.status === 200) {
-        toast.success("Login successful 🎉");
-        const role = res.data.data.role?.toLowerCase();
-        if (role === "admin") window.location.href = "/admin-dashboard";
-        else if (role === "guide") window.location.href = "/guide-dashboard";
-        else if (role === "traveller") window.location.href = "/traveller-dashboard";
-        else window.location.href = "/register";
-      }
-    } catch (err: any) {
-      toast.error(err.response?.data?.message || "Invalid credentials");
-    }
-  };
+  // const onSubmit = async (data: LoginFormData) => {
+  //   try {
+  //     const res = await api.post("/api/users/login", data, { withCredentials: true });
+  //     if (res.status === 200) {
+  //       toast.success("Login successful 🎉");
+  //       const role = res.data.data.role?.toLowerCase();
+  //       if (role === "admin") window.location.href = "/admin-dashboard";
+  //       else if (role === "guide") window.location.href = "/guide-dashboard";
+  //       else if (role === "traveller") window.location.href = "/traveller-dashboard";
+  //       else window.location.href = "/register";
+  //     }
+  //   } catch (err: any) {
+  //     toast.error(err.response?.data?.message || "Invalid credentials");
+  //   }
+  // };
+
+const onSubmit = async (data: LoginFormData) => {
+  try {
+    const res = await api.post("/api/users/login", data, { withCredentials: true })
+
+    toast.success("Login successful 🎉")
+
+    const role = res.data.data.role?.toLowerCase()
+    const token = res.data.access_token
+    console.log(token,'token//////////')
+
+    console.log(role, "user role", token, "user token.........")
+
+    // Wait for set-cookie request
+    const cookieRes = await fetch("/api/auth/set-cookie", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ token, role }),
+    })
+
+    const cookieData = await cookieRes.json()
+
+    if (role === "admin") window.location.href = "/admin-dashboard"
+    else if (role === "guide") window.location.href = "/guide-dashboard"
+    else if (role === "traveller") window.location.href = "/traveller-dashboard"
+    else window.location.href = "/register"
+  } catch (err) {
+    console.error("Error:", err)
+  }
+}
+
+
 
   return (
     <>

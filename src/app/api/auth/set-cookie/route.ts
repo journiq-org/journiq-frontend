@@ -3,6 +3,7 @@ import { NextResponse } from 'next/server';
 export async function POST(req: Request) {
   try {
     const { token, role } = await req.json();
+    console.log(role, 'user role', token, 'user token from set cookie fn.........')
 
     if (!token || !role) {
       return NextResponse.json({ message: 'Missing token or role' }, { status: 400 });
@@ -16,7 +17,7 @@ export async function POST(req: Request) {
       value: token,
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: "strict" as const,
       path: '/',
       maxAge: 60 * 60 * 24, // 1 day
     });
@@ -27,7 +28,7 @@ export async function POST(req: Request) {
       value: role,
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
+      sameSite: "strict" as const,
       path: '/',
       maxAge: 60 * 60 * 24, // 1 day
     });
