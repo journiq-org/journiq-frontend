@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { User, Bell } from "lucide-react"; 
+import { User, Bell } from "lucide-react";
 
 const TravellerNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -11,10 +11,7 @@ const TravellerNavbar = () => {
 
   const handleLogout = async () => {
     try {
-      const res = await fetch("/api/logout", {
-        method: "POST",
-      });
-
+      const res = await fetch("/api/logout", { method: "POST" });
       if (res.ok) {
         router.push("/login");
       } else {
@@ -52,7 +49,9 @@ const TravellerNavbar = () => {
               My Bookings
             </button>
             <button
-              onClick={() => router.push("/taveller-dashboard/profile/view-profile")}
+              onClick={() =>
+                router.push("/traveller-dashboard/profile/view-profile")
+              }
               className="text-left hover:text-amber-700"
             >
               Profile
@@ -69,7 +68,7 @@ const TravellerNavbar = () => {
 
       {/* Logo / Brand */}
       <div className="text-2xl font-bold text-[#0c0c0c] flex items-center gap-2">
-        <Image src={"/images/logo.png"} alt="journiq-logo" width={35} height={35} />
+        <Image src="/images/logo.png" alt="journiq-logo" width={35} height={35} />
         Journiq
       </div>
 
