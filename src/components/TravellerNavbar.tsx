@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { User, Bell } from "lucide-react"; // ✅ Added Bell icon
+import { User, Bell } from "lucide-react"; 
 
 const TravellerNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -31,7 +31,7 @@ const TravellerNavbar = () => {
       <div className="relative">
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="bg-[#d1cfc8] px-7 py-3 rounded-4xl hover:bg-[#4E4D45] text-[#0c0c0c] hover:text-white"
+          className="bg-[#d1cfc8] px-7 py-3 rounded-3xl hover:bg-[#4E4D45] text-[#0c0c0c] hover:text-white"
         >
           Menu
         </button>

@@ -4,10 +4,10 @@ import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { fetchUserProfile } from "@/redux/slices/userSlice";
-import { Edit2 } from "lucide-react"; // <-- added icon
+import { Edit2 } from "lucide-react";
 
 const getImageUrl = (path?: string) => {
-  if (!path) return "/default-avatar.png"; // fallback
+  if (!path) return "/default-avatar.png";
   return path.startsWith("http")
     ? path
     : `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}`;

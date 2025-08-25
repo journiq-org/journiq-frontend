@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { Button } from "@mui/material";
-import TravellerNavbar from "@/components/TravellerNavbar"; // adjust path
+import TravellerNavbar from "@/components/TravellerNavbar"; 
 
 const TravellerDashboard = () => {
   const router = useRouter();

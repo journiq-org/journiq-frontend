@@ -95,10 +95,8 @@ const RegisterPage = () => {
       <Navbar />
 
       <Box className="flex min-h-screen items-center justify-center bg-[#E2E0DF] p-4 pt-24">
-        <Paper className="w-full max-w-lg p-8 rounded-3xl bg-[#d1cfc8]/95 shadow-lg backdrop-blur-md">
-          <Typography className="text-4xl font-extrabold text-[#0c0c0c] text-center mb-2">
-            Register
-          </Typography>
+        <div className="w-full max-w-md rounded-2xl bg-[#d1cfc8]/95 p-8 shadow-lg backdrop-blur-md">
+          <h1 className="text-4xl font-extrabold text-[#0c0c0c] text-center mb-2">Register</h1>
           <Typography className="text-[#4E4D45] text-center mb-6">
             Create your account 👋
           </Typography>
@@ -223,7 +221,7 @@ const RegisterPage = () => {
               Register
             </Button>
           </form>
-        </Paper>
+        </div>
       </Box>
     </>
   );

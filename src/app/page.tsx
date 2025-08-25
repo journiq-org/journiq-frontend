@@ -61,8 +61,8 @@ export default function Home() {
 
     {/* Gradient overlay at the top */}
     <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent"></div>
+    </div>
   </div>
-</div>
 
 
 
