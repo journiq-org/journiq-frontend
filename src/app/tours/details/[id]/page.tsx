@@ -1,346 +1,52 @@
-
-// 'use client'
-
-// import Header from '@/components/Header'
-// import { publicViewTourDetails } from '@/redux/slices/tourSlice'
-// import { AppDispatch } from '@/redux/store'
-// import { useParams, useRouter } from 'next/navigation'
-// import React, { useEffect } from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
-
-// const TourDetails = () => {
-//   const router = useRouter()
-//   const params = useParams()
-//   console.log("Params from useParams:", params)
-
-//   const dispatch = useDispatch<AppDispatch>()
-//   const { selectedTour, isLoading,error} = useSelector((state: any) => state.tour)
-
-//   const rawId = params?.id // assuming folder name is [tourId]
-//   const id = Array.isArray(rawId) ? rawId[0] : rawId ?? ''
-
-
-//   useEffect(() => {
-//     dispatch(publicViewTourDetails(id))
-//   })
-
-//   if(!selectedTour) return <p className="text-gray-500 text-center mt-10">Loading tour details...</p>
-
-//   return (
-//     <div>
-//       <Header />
-
-//       <div className="max-w-7xl mx-auto p-6 space-y-8">
-//         {/* Image carousel / main image */}
-//         <div className="relative w-full h-96 rounded-lg overflow-hidden shadow-lg">
-//           {selectedTour.images.length > 0 ? (
-//             <img
-//               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${selectedTour.images[0]}`}
-//               alt={selectedTour.title}
-//               className="w-full h-full object-cover"
-//             />
-//           ) : (
-//             <div className="w-full h-full flex items-center justify-center bg-gray-200 text-gray-500">
-//               No Image
-//             </div>
-//           )}
-//         </div>
-
-//         {/* Title & Category */}
-//         <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center">
-//           <h1 className="text-4xl font-bold">{selectedTour.title}</h1>
-//           <span className="mt-2 md:mt-0 text-sm bg-blue-100 text-blue-800 px-3 py-1 rounded-full">
-//             {selectedTour.category}
-//           </span>
-//         </div>
-
-//         {/* Rating, Price, Duration */}
-//         <div className="flex flex-col md:flex-row gap-6 text-lg font-semibold">
-//           <div>Price: ₹{selectedTour.price}</div>
-//           <div>Duration: {selectedTour.duration} days</div>
-//           <div>Rating: {selectedTour.rating} / 5</div>
-//         </div>
-
-//         {/* Description */}
-//         <div>
-//           <h2 className="text-2xl font-semibold mb-2">About this tour</h2>
-//           <p className="text-gray-700">{selectedTour.description}</p>
-//         </div>
-
-//         {/* Itinerary */}
-//         <div>
-//           <h2 className="text-2xl font-semibold mb-2">Itinerary</h2>
-//           <ol className="list-decimal list-inside space-y-1">
-//             {selectedTour.itinerary.map((item: string, idx: number) => (
-//               <li key={idx} className="text-gray-700">{item}</li>
-//             ))}
-//           </ol>
-//         </div>
-
-//         {/* Highlights */}
-//         {selectedTour.highlights.length > 0 && (
-//           <div>
-//             <h2 className="text-2xl font-semibold mb-2">Highlights</h2>
-//             <ul className="list-disc list-inside space-y-1 text-gray-700">
-//               {selectedTour.highlights.map((item: string, idx: number) => (
-//                 <li key={idx}>{item}</li>
-//               ))}
-//             </ul>
-//           </div>
-//         )}
-
-//         {/* Availability */}
-//         <div>
-//           <h2 className="text-2xl font-semibold mb-2">Availability</h2>
-//           <ul className="list-inside space-y-1 text-gray-700">
-//             {selectedTour.availability.map((slot: { date: string | Date; slots: number }, idx: number) => (
-//               <li key={idx}>
-//                 {new Date(slot.date).toLocaleDateString()} — {slot.slots} slots available
-//               </li>
-//             ))}
-//           </ul>
-//         </div>
-
-//         {/* Included & Excluded */}
-//         <div className="grid md:grid-cols-2 gap-6">
-//           {selectedTour.included.length > 0 && (
-//             <div>
-//               <h2 className="text-2xl font-semibold mb-2">Included</h2>
-//               <ul className="list-disc list-inside space-y-1 text-green-700">
-//                 {selectedTour.included.map((item: string, idx: number) => <li key={idx}>{item}</li>)}
-//               </ul>
-//             </div>
-//           )}
-//           {selectedTour.excluded.length > 0 && (
-//             <div>
-//               <h2 className="text-2xl font-semibold mb-2">Excluded</h2>
-//               <ul className="list-disc list-inside space-y-1 text-red-700">
-//                 {selectedTour.excluded.map((item: string, idx: number) => <li key={idx}>{item}</li>)}
-//               </ul>
-//             </div>
-//           )}
-//         </div>
-
-//         {/* Meeting Point */}
-//         <div>
-//           <h2 className="text-2xl font-semibold mb-2">Meeting Point</h2>
-//           <p className="text-gray-700">{selectedTour.meetingPoint}</p>
-//         </div>
-
-//         {/* Guide Info */}
-//         <div className="flex items-center gap-4">
-//           {selectedTour.guide?.profilePic && (
-//             <img
-//               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${selectedTour.guide.profilePic}`}
-//               alt={selectedTour.guide.name}
-//               className="w-16 h-16 rounded-full object-cover"
-//             />
-//           )}
-//           <div>
-//             <p className="font-semibold">{selectedTour.guide?.name}</p>
-//             <p className="text-gray-500 text-sm">Guide</p>
-//           </div>
-//         </div>
-
-//         {/* Book Now Button */}
-//         <div className="text-center">
-//           <button className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
-//             Book Now
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default TourDetails
-
-
-
-
-// 'use client'
-
-// import Header from '@/components/Header'
-// import { publicViewTourDetails } from '@/redux/slices/tourSlice'
-// import { AppDispatch } from '@/redux/store'
-// import { useParams, useRouter } from 'next/navigation'
-// import React, { useEffect } from 'react'
-// import { useDispatch, useSelector } from 'react-redux'
-
-// const TourDetails = () => {
-//   const router = useRouter()
-//   const params = useParams()
-
-//   const dispatch = useDispatch<AppDispatch>()
-//   const { selectedTour, isLoading,error } = useSelector((state: any) => state.tour)
-
-//   const rawId = params?.id
-//   const id = Array.isArray(rawId) ? rawId[0] : rawId ?? ''
-
-//   useEffect(() => {
-//     dispatch(publicViewTourDetails(id)) // placeholder
-//   }, [dispatch, id])
-
-//   if(!selectedTour) return <p className="text-gray-500 text-center mt-10">Loading tour details...</p>
-
-//   return (
-//     <div className="bg-[#E2E0DF] min-h-screen">
-//       <Header />
-
-//       <div className="max-w-7xl mx-auto p-6 space-y-12">
-//         {/* Image carousel */}
-//         <div className="relative w-full h-[500px] md:h-[600px] rounded-3xl overflow-hidden shadow-xl border border-gray-300">
-//           {selectedTour.images.length > 0 ? (
-//             <img
-//               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${selectedTour.images[0]}`}
-//               alt={selectedTour.title}
-//               className="w-full h-full object-cover transition-transform duration-500 hover:scale-105"
-//             />
-//           ) : (
-//             <div className="w-full h-full flex items-center justify-center bg-gray-300 text-gray-500 text-xl font-medium">
-//               No Image
-//             </div>
-//           )}
-//         </div>
-
-//         {/* Title & Category */}
-//         <div className="flex flex-col md:flex-row md:justify-between items-start md:items-center gap-4">
-//           <h1 className="text-5xl md:text-6xl font-extrabold text-gray-900">{selectedTour.title}</h1>
-//           <span className="mt-2 md:mt-0 text-sm bg-blue-100 text-blue-800 px-4 py-2 rounded-full font-semibold shadow-md">
-//             {selectedTour.category}
-//           </span>
-//         </div>
-
-//         {/* Rating, Price, Duration */}
-//         <div className="flex flex-col md:flex-row gap-8 text-lg md:text-xl font-semibold text-gray-800">
-//           <div className="bg-white p-3 rounded-xl shadow-md">Price: ₹{selectedTour.price}</div>
-//           <div className="bg-white p-3 rounded-xl shadow-md">Duration: {selectedTour.duration} days</div>
-//           <div className="bg-white p-3 rounded-xl shadow-md">Rating: {selectedTour.rating} / 5</div>
-//         </div>
-
-//         {/* Description */}
-//         <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
-//           <h2 className="text-3xl font-semibold mb-4">About this tour</h2>
-//           <p className="text-gray-700 text-lg leading-relaxed">{selectedTour.description}</p>
-//         </div>
-
-//         {/* Itinerary */}
-//         <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
-//           <h2 className="text-3xl font-semibold mb-4">Itinerary</h2>
-//           <ol className="list-decimal list-inside space-y-2 text-gray-700">
-//             {selectedTour.itinerary.map((item: string, idx: number) => (
-//               <li key={idx} className="text-lg">{item}</li>
-//             ))}
-//           </ol>
-//         </div>
-
-//         {/* Highlights */}
-//         {selectedTour.highlights.length > 0 && (
-//           <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
-//             <h2 className="text-3xl font-semibold mb-4">Highlights</h2>
-//             <ul className="list-disc list-inside space-y-2 text-gray-700">
-//               {selectedTour.highlights.map((item: string, idx: number) => (
-//                 <li key={idx} className="text-lg">{item}</li>
-//               ))}
-//             </ul>
-//           </div>
-//         )}
-
-//         {/* Availability */}
-//         <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
-//           <h2 className="text-3xl font-semibold mb-4">Availability</h2>
-//           <ul className="space-y-2 text-gray-700">
-//             {selectedTour.availability.map((slot: { date: string | Date; slots: number }, idx: number) => (
-//               <li key={idx} className="text-lg">
-//                 {new Date(slot.date).toLocaleDateString()} — {slot.slots} slots available
-//               </li>
-//             ))}
-//           </ul>
-//         </div>
-
-//         {/* Included & Excluded */}
-//         <div className="grid md:grid-cols-2 gap-6">
-//           {selectedTour.included.length > 0 && (
-//             <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
-//               <h2 className="text-3xl font-semibold mb-4 text-green-700">Included</h2>
-//               <ul className="list-disc list-inside space-y-2 text-gray-700">
-//                 {selectedTour.included.map((item: string, idx: number) => <li key={idx} className="text-lg">{item}</li>)}
-//               </ul>
-//             </div>
-//           )}
-//           {selectedTour.excluded.length > 0 && (
-//             <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
-//               <h2 className="text-3xl font-semibold mb-4 text-red-600">Excluded</h2>
-//               <ul className="list-disc list-inside space-y-2 text-gray-700">
-//                 {selectedTour.excluded.map((item: string, idx: number) => <li key={idx} className="text-lg">{item}</li>)}
-//               </ul>
-//             </div>
-//           )}
-//         </div>
-
-//         {/* Meeting Point */}
-//         <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200">
-//           <h2 className="text-3xl font-semibold mb-4">Meeting Point</h2>
-//           <p className="text-gray-700 text-lg">{selectedTour.meetingPoint}</p>
-//         </div>
-
-//         {/* Guide Info */}
-//         <div className="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 flex items-center gap-6">
-//           {selectedTour.guide?.profilePic && (
-//             <img
-//               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${selectedTour.guide.profilePic}`}
-//               alt={selectedTour.guide.name}
-//               className="w-20 h-20 rounded-full object-cover border-2 border-gray-300"
-//             />
-//           )}
-//           <div>
-//             <p className="text-xl font-semibold">{selectedTour.guide?.name}</p>
-//             <p className="text-gray-500 text-sm">Guide</p>
-//           </div>
-//         </div>
-
-//         {/* Book Now Button */}
-//         <div className="text-center">
-//           <button
-//             className="px-8 py-4 bg-blue-600 text-white text-lg font-semibold rounded-xl shadow-lg hover:bg-blue-700 transition transform hover:scale-105"
-//           >
-//             Book Now
-//           </button>
-//         </div>
-//       </div>
-//     </div>
-//   )
-// }
-
-// export default TourDetails
-
-
-
-
 'use client'
 
+import React, { useEffect } from 'react'
 import Header from '@/components/Header'
 import { publicViewTourDetails } from '@/redux/slices/tourSlice'
 import { AppDispatch } from '@/redux/store'
 import { useParams, useRouter } from 'next/navigation'
-import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { getCookie } from 'cookies-next'
 
 const TourDetails = () => {
   const router = useRouter()
   const params = useParams()
 
   const dispatch = useDispatch<AppDispatch>()
-  const { selectedTour, isLoading,error } = useSelector((state: any) => state.tour)
+  const { selectedTour, isLoading, error } = useSelector((state: any) => state.tour)
 
   const rawId = params?.id
   const id = Array.isArray(rawId) ? rawId[0] : rawId ?? ''
 
   useEffect(() => {
-    dispatch(publicViewTourDetails(id)) 
+    dispatch(publicViewTourDetails(id))
   }, [dispatch, id])
 
-  if(!selectedTour) return <p className="text-gray-500 text-center mt-10">Loading tour details...</p>
+  const handleBooking = async () => {
+  try {
+    const res = await fetch('/api/auth/get-cookie', {
+      method: 'GET',
+      credentials: 'include',
+    });
+
+    if (!res.ok) throw new Error('Failed to fetch cookies');
+
+    const data = await res.json();
+    const { token, role } = data;
+
+    if (token && role) {
+      router.push(`/booking?tourId=${id}`);
+    } else {
+      router.push('/login');
+    }
+  } catch (error) {
+    console.error('Error fetching cookies:', error);
+    router.push('/login');
+  }
+};
+
+
+  if (!selectedTour) return <p className="text-gray-500 text-center mt-10">Loading tour details...</p>
 
   return (
     <div className="bg-[#E2E0DF] min-h-screen">
@@ -461,6 +167,7 @@ const TourDetails = () => {
         {/* Book Now Button */}
         <div className="text-center">
           <button
+            onClick={handleBooking}
             className="px-10 py-4 bg-blue-600 text-white text-lg font-semibold rounded-2xl shadow-2xl hover:bg-blue-700 transition transform hover:scale-105"
           >
             Book Now

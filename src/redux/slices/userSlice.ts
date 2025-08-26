@@ -16,33 +16,49 @@ const initialState: UserState = {
   successMessage: null,
 };
 
-// 🔹 Fetch profile
+// Fetch profile using token from get-cookies endpoint
 export const fetchUserProfile = createAsyncThunk<User>(
   "user/fetchUserProfile",
   async (_, { rejectWithValue }) => {
     try {
+      const cookieRes = await fetch("/api/auth/get-cookie");
+      const { token } = await cookieRes.json();
+
+      if (!token) throw new Error("No token found");
+
       const res = await api.get("/api/users/view-profile", {
+        headers: { Authorization: `Bearer ${token}` },
         withCredentials: true,
       });
+
       return res.data.data as User;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data || "Failed to load profile");
+      return rejectWithValue(err.response?.data?.message || err.message || "Failed to load profile");
     }
   }
 );
 
-// 🔹 Edit profile
+// Edit profile
 export const editUserProfile = createAsyncThunk<User, FormData>(
   "user/editUserProfile",
   async (formData, { rejectWithValue }) => {
     try {
+      const cookieRes = await fetch("/api/get-cookies");
+      const { token } = await cookieRes.json();
+
+      if (!token) throw new Error("No token found");
+
       const res = await api.patch("/api/users/edit-profile", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
         withCredentials: true,
-        headers: { "Content-Type": "multipart/form-data" },
       });
+
       return res.data.data as User;
     } catch (err: any) {
-      return rejectWithValue(err.response?.data || "Failed to update profile");
+      return rejectWithValue(err.response?.data?.message || err.message || "Failed to update profile");
     }
   }
 );
@@ -53,11 +69,12 @@ const userSlice = createSlice({
   reducers: {
     logout: (state) => {
       state.profile = null;
+      state.error = null;
+      state.successMessage = null;
     },
   },
   extraReducers: (builder) => {
     builder
-      // fetch
       .addCase(fetchUserProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -68,10 +85,8 @@ const userSlice = createSlice({
       })
       .addCase(fetchUserProfile.rejected, (state, action) => {
         state.loading = false;
-        state.error = (action.payload as string) || "Failed to load profile";
+        state.error = typeof action.payload === "string" ? action.payload : "Failed to load profile";
       })
-
-      // edit
       .addCase(editUserProfile.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -84,7 +99,7 @@ const userSlice = createSlice({
       })
       .addCase(editUserProfile.rejected, (state, action) => {
         state.loading = false;
-        state.error = (action.payload as string) || "Failed to update profile";
+        state.error = typeof action.payload === "string" ? action.payload : "Failed to update profile";
       });
   },
 });

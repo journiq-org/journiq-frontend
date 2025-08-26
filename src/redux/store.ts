@@ -1,20 +1,16 @@
 import { configureStore } from "@reduxjs/toolkit";
 import DestinationReducer from "@/redux/slices/destinationSlice"
 import TourReducer from "@/redux/slices/tourSlice"
-<<<<<<< Updated upstream
-import userReducer from "@/redux/slices/userSlice"; 
-=======
+import userReducer from "./slices/userSlice";
+import bookingReducer from "./slices/bookingSlice";
 
 
->>>>>>> Stashed changes
 export const store = configureStore({
     reducer:{
         destination : DestinationReducer,
         tour: TourReducer,
-<<<<<<< Updated upstream
         user: userReducer, 
-=======
->>>>>>> Stashed changes
+        booking: bookingReducer,
        
     }
 })

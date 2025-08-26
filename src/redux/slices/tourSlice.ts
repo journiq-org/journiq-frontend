@@ -1,5 +1,5 @@
 import api from "@/lib/api";
-import { TourType } from "@/types/tour";
+import { Tour } from "@/types/tour";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
@@ -17,10 +17,10 @@ interface FiltersState {
 }
 
 interface TourState {
-  tours: TourType[];
-  publicTours: TourType[];
-  guideTours: TourType[];
-  selectedTour: TourType | null;
+  tours: Tour[];
+  publicTours: Tour[];
+  guideTours: Tour[];
+  selectedTour: Tour | null;
   filters: FiltersState;
   isLoading: boolean;
   error: string | null;

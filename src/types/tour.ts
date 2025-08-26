@@ -3,7 +3,7 @@ export interface Availability {
   slots: number;
 }
 
-export interface TourType {
+export interface Tour {
   _id: string;
   title: string;
   description: string;
