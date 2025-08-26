@@ -93,6 +93,15 @@ export const guideViewSingleTour = createAsyncThunk('guide/viewSingleTour', asyn
   return res.data.data
 })
 
+//update booking
+export const guideUpdateTour = createAsyncThunk('guide/updatetour', async(id , formData) => {
+  const res = await api.patch(`/api/tour/update/${id}`, formData,{
+    withCredentials:true
+  })
+
+  return res.data.data
+})
+
 
 //slice
 const tourSlice = createSlice({
@@ -122,7 +131,7 @@ const tourSlice = createSlice({
             })
             .addCase(guideViewTours.fulfilled, ( state, action) => {
               state.isLoading = false,
-              state.tours = action.payload
+              state.guideTours = action.payload
             })
             .addCase(guideViewTours.rejected, (state, action) => {
               state.isLoading = false,
@@ -140,6 +149,27 @@ const tourSlice = createSlice({
             .addCase(guideViewSingleTour.rejected, (state, action) => {
               state.isLoading = false
               state.error = action.error.message || ' Failed to load tour details'
+            })
+
+            //guide update product
+            .addCase(guideUpdateTour.pending, state =>{
+              state.isLoading = true
+            })
+            .addCase(guideUpdateTour.fulfilled, (state, action) => {
+              state.isLoading = false
+              const updatedTour = action.payload;
+
+              // Update the currently viewed tour
+              state.selectedTour = updatedTour;
+
+              // Update the tour in the guide's list
+              state.guideTours = state.guideTours.map(t =>
+                  t._id === updatedTour._id ? updatedTour : t
+              );
+            })
+            .addCase(guideUpdateTour.rejected, (state, action) => {
+              state.isLoading = false
+              state.error = action.error.message || 'Failed to update tour'
             })
     }
 })

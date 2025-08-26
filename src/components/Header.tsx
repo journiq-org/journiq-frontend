@@ -41,7 +41,7 @@ const Header = () => {
 
         <button
          onClick={() => router.push('/login')}
-         className="bg-[#0c0c0c] px-7 py-3 rounded-4xl text-sm hover:bg-[#5c4033]">
+         className="bg-[#0c0c0c] px-7 py-3 rounded-4xl text-white text-sm hover:bg-[#5c4033]">
           Login
         </button>
     </header>

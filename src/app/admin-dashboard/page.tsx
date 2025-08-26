@@ -34,21 +34,21 @@ const AdminDashboard = () => {
   ];
 
 
-  const confirmLogout = async () => {
-    try {
-      await fetch("/api/auth/clear-cookie", { method: "POST" }); // 🔹 clears cookies
+  
+  const handleLogout = async() => {
+    try{
+      //cookie remove
+      await fetch('/api/auth/clear-cookie',{
+        method: 'POST'
+      })
       toast.success("Logged out ✅");
-      router.push("/login");
-    } catch {
-      toast.error("Error logging out");
+    }catch(err){
+       console.warn('Failed to clear cookies', err)
     }
-  };
 
-
-  const handleLogout = () => {
-    // Clear session logic
-    router.push("/login");
-  };
+    //redirect to home
+    router.replace('/')
+  }
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -228,7 +228,7 @@ const AdminDashboard = () => {
                 Cancel
               </button>
               <button
-                onClick={confirmLogout}
+                onClick={handleLogout}
                 className="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700"
               >
                 Logout

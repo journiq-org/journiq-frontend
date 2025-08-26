@@ -100,12 +100,12 @@ import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { guideViewTours } from "@/redux/slices/tourSlice";
 import { AppDispatch } from "@/redux/store";
-import { TourType } from "@/types/tour";
+import { Tour } from "@/types/tour";
 
 const GuideToursPage = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const { tours, isloading, error } = useSelector((state: any) => state.tour);
+  const { guideTours, isloading, error } = useSelector((state: any) => state.tour);
 
   useEffect(() => {
     dispatch(guideViewTours());
@@ -119,7 +119,7 @@ const GuideToursPage = () => {
       {error && <p className="text-red-600">{error}</p>}
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {tours.map((tour: TourType) => (
+        {guideTours.map((tour: Tour) => (
           <div
             key={tour._id}
             className="rounded-2xl shadow-lg hover:shadow-xl transition-all overflow-hidden bg-[#EFEDE9] cursor-pointer"

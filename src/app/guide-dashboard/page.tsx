@@ -115,7 +115,24 @@ import { useRouter } from "next/navigation";
 
 export default function Page() {
 
+
   const router = useRouter()
+
+  const handleLogout = async() => {
+    try{
+      //cookie remove
+      await fetch('/api/auth/clear-cookie',{
+        method: 'POST'
+      })
+    }catch(err){
+       console.warn('Failed to clear cookies', err)
+    }
+
+    //redirect to home
+    router.replace('/')
+  }
+
+
   return (
     <div className="min-h-screen bg-[#E2E0DF] text-[#0C0C0C] flex flex-col">
       {/* Header */}
@@ -140,7 +157,7 @@ export default function Page() {
           </button>
           <button className="flex items-center gap-2 hover:text-[#FF9100]">
             <LogOut className="w-6 h-6" />
-            <span className="hidden md:block" onClick={() => router.push('/')}>Logout</span>
+            <span className="hidden md:block" onClick={handleLogout}>Logout</span>
           </button>
         </div>
       </header>
