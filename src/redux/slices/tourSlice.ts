@@ -65,13 +65,33 @@ export const publicViewTourDetails = createAsyncThunk('tour/details', async(id :
 //view tours of a guide
 export const guideViewTours = createAsyncThunk('/tours', async() => {
 
-  const res = await api.get('/viewAll', {
-    headers:{
-      // 'Authorization': `Bearer ${token}`
-    }
+  // const cookieRes = await fetch('/api/auth/get-cookie',{
+  //    credentials: "include", 
+  // })
+  // const {token , role} = await cookieRes.json()
+
+
+  const res = await api.get('api/tour/viewAll', {
+    // headers:{
+    //   'Authorization': `Bearer ${token}`
+    // }
+    withCredentials: true,
   })
+
+  console.log(res.data.data, "view all tour of guide")
+  return res.data.data
 })
 
+//guide view single tour
+
+export const guideViewSingleTour = createAsyncThunk('guide/viewSingleTour', async(id:string) => {
+  const res = await api.get(`/api/tour/viewTour/${id}`,{
+    withCredentials: true,
+  })
+
+  console.log('guideViewTour', res.data.data)
+  return res.data.data
+})
 
 
 //slice
@@ -93,6 +113,33 @@ const tourSlice = createSlice({
             .addCase(publicViewTourDetails.rejected, (state, action) => {
                 state.isLoading = false,
                 state.error = action.error.message || 'Failed to load tour details'
+            })
+
+
+            //guide view all tours
+            .addCase(guideViewTours.pending, state => {
+              state.isLoading = true
+            })
+            .addCase(guideViewTours.fulfilled, ( state, action) => {
+              state.isLoading = false,
+              state.tours = action.payload
+            })
+            .addCase(guideViewTours.rejected, (state, action) => {
+              state.isLoading = false,
+              state.error = action.error.message || 'Failed to load tours'
+            })
+
+            //guide view single tour
+            .addCase(guideViewSingleTour.pending, state => {
+              state.isLoading = true
+            })
+            .addCase(guideViewSingleTour.fulfilled, (state, action) => {
+              state.isLoading = false 
+              state.selectedTour = action.payload
+            })
+            .addCase(guideViewSingleTour.rejected, (state, action) => {
+              state.isLoading = false
+              state.error = action.error.message || ' Failed to load tour details'
             })
     }
 })

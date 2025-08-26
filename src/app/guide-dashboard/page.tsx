@@ -124,7 +124,7 @@ export default function Page() {
 
         <nav className="hidden md:flex gap-8 font-medium">
           <a href="#" className="hover:text-[#FF9100] transition">Dashboard</a>
-          <a href="/guide/tours" className="hover:text-[#FF9100] transition">My Tours</a>
+          <a href="/guide/tours" className="hover:text-[#FF9100] transition cursor-pointer">My Tours</a>
           <a href="#" className="hover:text-[#FF9100] transition">Bookings</a>
           <a href="#" className="hover:text-[#FF9100] transition">Settings</a>
         </nav>
@@ -149,8 +149,11 @@ export default function Page() {
       <main className="flex-1 p-6 bg-[#E0DDD7]">
         <h2 className="text-xl font-semibold mb-6">Welcome, Guide!</h2>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-[#EFEDE9] rounded-xl p-6 shadow hover:shadow-lg transition">
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div
+            onClick={() => router.push("/guide/tours")}
+            className="bg-[#EFEDE9] rounded-2xl p-6 shadow hover:shadow-lg transition cursor-pointer"
+          >
             <h3 className="text-lg font-bold mb-2">My Tours</h3>
             <p className="text-sm text-[#4E4D45]">Manage and edit your tours.</p>
           </div>
