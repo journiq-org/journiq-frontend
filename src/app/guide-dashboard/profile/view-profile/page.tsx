@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { fetchUserProfile } from "@/redux/slices/userSlice";
 import { Edit2 } from "lucide-react";
+import GuideTourDetailsPage from "@/app/guide/viewTourDetails/[tourId]/page";
+import GuideNavbar from "@/components/GuideNavbar";
 
 const getImageUrl = (path?: string) =>
   path?.startsWith("http") ? path : `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}` || "/default-avatar.png";
@@ -32,6 +34,8 @@ const ProfilePage = () => {
   if (error) return <p className="text-red-500 text-center mt-10">{error}</p>;
 
   return (
+<>
+    <GuideNavbar/>
     <div className="flex flex-col items-center justify-center min-h-[70vh] text-center text-black p-6">
       <img
         src={getImageUrl(profile?.profilePic)}
@@ -52,6 +56,7 @@ const ProfilePage = () => {
         Edit Profile
       </button>
     </div>
+    </>
   );
 };
 

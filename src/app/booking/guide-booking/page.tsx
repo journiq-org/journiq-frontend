@@ -1,89 +1,222 @@
-'use client';
+// "use client";
+// import React, { useEffect } from "react";
+// import { useAppDispatch, useAppSelector } from "@/redux/hook";
+// import {
+//   fetchGuideBookings,
+//   respondToBooking,
+// } from "@/redux/slices/guideBookingSlice";
+// import {
+//   Box,
+//   Typography,
+//   Card,
+//   CardContent,
+//   CardActions,
+//   Button,
+//   CircularProgress,
+// } from "@mui/material";
+// import GuideNavbar from "@/components/GuideNavbar";
 
-import React, { useEffect, useState } from 'react';
-import { useAppDispatch, useAppSelector } from '@/redux/hook';
-import { fetchGuideBookings, updateBookingStatus } from '@/redux/slices/guideBookingSlice';
+// const GuideBookingsPage = () => {
+//   const dispatch = useAppDispatch();
+//   const { bookings, loading, error } = useAppSelector(
+//     (state) => state.guideBookings
+//   );
+
+//   useEffect(() => {
+//     dispatch(fetchGuideBookings());
+//   }, [dispatch]);
+
+//   const handleRespond = (bookingId: string, status: string) => {
+//     dispatch(respondToBooking({ bookingId, status }));
+//   };
+
+//   return (
+//     <>
+//     <GuideNavbar/>
+//     <Box p={4}>
+//       <Typography variant="h4" gutterBottom>
+//         Guide Bookings
+//       </Typography>
+
+//       {loading && (
+//         <Box display="flex" justifyContent="center" mt={5}>
+//           <CircularProgress />
+//         </Box>
+//       )}
+
+//       {error && (
+//         <Typography color="error" align="center" mt={3}>
+//           {error}
+//         </Typography>
+//       )}
+
+//       {!loading && bookings.length === 0 && (
+//         <Typography align="center" mt={3}>
+//           No bookings found.
+//         </Typography>
+//       )}
+
+//       <Box display="flex" flexDirection="column" gap={3} mt={3}>
+//         {bookings.map((booking) => (
+//           <Card key={booking._id} sx={{ borderRadius: 3, boxShadow: 3 }}>
+//             <CardContent>
+//               <Typography variant="h6">{booking.tour.title}</Typography>
+//               <Typography color="text.secondary">
+//                 Traveller: {booking.user.name} ({booking.user.email})
+//               </Typography>
+//               <Typography>Status: {booking.status}</Typography>
+//               <Typography variant="caption" color="text.secondary">
+//                 Created: {new Date(booking.createdAt).toLocaleString()}
+//               </Typography>
+//             </CardContent>
+
+//             <CardActions>
+//               {booking.status === "pending" && (
+//                 <>
+//                   <Button
+//                     variant="contained"
+//                     color="success"
+//                     onClick={() => handleRespond(booking._id, "accepted")}
+//                   >
+//                     Accept
+//                   </Button>
+//                   <Button
+//                     variant="contained"
+//                     color="error"
+//                     onClick={() => handleRespond(booking._id, "rejected")}
+//                   >
+//                     Reject
+//                   </Button>
+//                 </>
+//               )}
+//             </CardActions>
+//           </Card>
+//         ))}
+//       </Box>
+//     </Box>
+//     </>
+//   );
+// };
+
+// export default GuideBookingsPage;
+
+
+"use client";
+import React, { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/redux/hook";
+import {
+  fetchGuideBookings,
+  respondToBooking,
+} from "@/redux/slices/guideBookingSlice";
 import {
   Box,
   Typography,
   Card,
   CardContent,
   CardActions,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
+  Button,
   CircularProgress,
-} from '@mui/material';
+} from "@mui/material";
+import GuideNavbar from "@/components/GuideNavbar";
 
 const GuideBookingsPage = () => {
   const dispatch = useAppDispatch();
-  const { bookings, loading } = useAppSelector((state) => state.guideBookings);
-  const [statusMap, setStatusMap] = useState<{ [key: string]: string }>({});
+  const router = useRouter();
+  const { bookings, loading, error } = useAppSelector(
+    (state) => state.guideBookings
+  );
 
-  // Fetch guide bookings on mount
   useEffect(() => {
     dispatch(fetchGuideBookings());
   }, [dispatch]);
 
-  // Handle status update for a booking
-  const handleStatusUpdate = (bookingId: string, status: string) => {
-    setStatusMap({ ...statusMap, [bookingId]: status });
-    dispatch(updateBookingStatus({ bookingId, status }));
+  const handleRespond = (bookingId: string, status: string) => {
+    dispatch(respondToBooking({ bookingId, status }));
   };
 
-  if (loading)
-    return (
-      <Box textAlign="center" mt={5}>
-        <CircularProgress />
-      </Box>
-    );
-
-  if (!bookings.length)
-    return (
-      <Box textAlign="center" mt={5}>
-        <Typography>No bookings assigned to you</Typography>
-      </Box>
-    );
+  const handleEditStatus = (bookingId: string) => {
+    router.push(`/booking/edit-status/${bookingId}`); // 👈 navigate to edit page
+  };
 
   return (
-    <Box p={3}>
-      <Typography variant="h4" mb={3}>
-        My Bookings
-      </Typography>
-      <Box display="flex" flexWrap="wrap" gap={3}>
-        {bookings.map((booking) => (
-          <Card key={booking._id} sx={{ flex: '1 1 45%', minWidth: 300 }}>
-            <CardContent>
-              <Typography variant="h6">{booking.tour?.title || 'No Title'}</Typography>
-              <Typography>
-                Traveller: {booking.user?.name} ({booking.user?.email})
-              </Typography>
-              <Typography>
-                Booking Date: {new Date(booking.date).toLocaleDateString()}
-              </Typography>
-              <Typography>People: {booking.numOfPeople}</Typography>
-              <Typography>Total Price: ${booking.totalPrice.toFixed(2)}</Typography>
-              <Typography>Status: {booking.status}</Typography>
-            </CardContent>
-            <CardActions>
-              <FormControl fullWidth>
-                <InputLabel>Status</InputLabel>
-                <Select
-                  value={statusMap[booking._id] || booking.status}
-                  onChange={(e) => handleStatusUpdate(booking._id, e.target.value)}
-                >
-                  <MenuItem value="confirmed">Confirmed</MenuItem>
-                  <MenuItem value="completed">Completed</MenuItem>
-                  <MenuItem value="cancelled">Cancelled</MenuItem>
-                  <MenuItem value="pending">Pending</MenuItem>
-                </Select>
-              </FormControl>
-            </CardActions>
-          </Card>
-        ))}
+    <>
+      <GuideNavbar />
+      <Box p={4}>
+        <Typography variant="h4" gutterBottom>
+          Guide Bookings
+        </Typography>
+
+        {loading && (
+          <Box display="flex" justifyContent="center" mt={5}>
+            <CircularProgress />
+          </Box>
+        )}
+
+        {error && (
+          <Typography color="error" align="center" mt={3}>
+            {error}
+          </Typography>
+        )}
+
+        {!loading && bookings.length === 0 && (
+          <Typography align="center" mt={3}>
+            No bookings found.
+          </Typography>
+        )}
+
+        <Box display="flex" flexDirection="column" gap={3} mt={3}>
+          {bookings.map((booking) => (
+            <Card key={booking._id} sx={{ borderRadius: 3, boxShadow: 3 }}>
+              <CardContent
+                onClick={() => handleEditStatus(booking._id)} // 👈 navigate when card clicked
+                style={{ cursor: "pointer" }}
+              >
+                <Typography variant="h6">{booking.tour.title}</Typography>
+                <Typography color="text.secondary">
+                  Traveller: {booking.user.name} ({booking.user.email})
+                </Typography>
+                <Typography>Status: {booking.status}</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Created: {new Date(booking.createdAt).toLocaleString()}
+                </Typography>
+              </CardContent>
+
+              <CardActions>
+                {booking.status === "pending" && (
+                  <>
+                    <Button
+                      variant="contained"
+                      color="success"
+                      onClick={() => handleRespond(booking._id, "accepted")}
+                    >
+                      Accept
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="error"
+                      onClick={() => handleRespond(booking._id, "rejected")}
+                    >
+                      Reject
+                    </Button>
+                  </>
+                )}
+
+                {booking.status === "accepted" && (
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => handleEditStatus(booking._id)}
+                  >
+                    Edit Status
+                  </Button>
+                )}
+              </CardActions>
+            </Card>
+          ))}
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

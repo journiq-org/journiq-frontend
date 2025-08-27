@@ -112,6 +112,8 @@
 import React from "react";
 import { Bell, User, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
+import GuideNavbar from "@/components/GuideNavbar";
+import toast from "react-hot-toast";
 
 export default function Page() {
 
@@ -124,6 +126,7 @@ export default function Page() {
       await fetch('/api/auth/clear-cookie',{
         method: 'POST'
       })
+      toast.success("Logged out ✅");
     }catch(err){
        console.warn('Failed to clear cookies', err)
     }
@@ -134,34 +137,10 @@ export default function Page() {
 
 
   return (
+    <>
     <div className="min-h-screen bg-[#E2E0DF] text-[#0C0C0C] flex flex-col">
       {/* Header */}
-      <header className="w-full bg-[#EFEDE9] shadow-md px-6 py-4 flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-[#5E361D]">Guide Dashboard</h1>
-
-        <nav className="hidden md:flex gap-8 font-medium">
-          <a href="#" className="hover:text-[#FF9100] transition">Dashboard</a>
-          <a href="/guide/tours" className="hover:text-[#FF9100] transition cursor-pointer">My Tours</a>
-          <a href="/booking/guide-booking" className="hover:text-[#FF9100] transition">Bookings</a>
-          <a href="#" className="hover:text-[#FF9100] transition">Settings</a>
-        </nav>
-
-        <div className="flex items-center gap-6">
-          <button className="relative">
-            <Bell className="w-6 h-6" />
-            <span className="absolute -top-2 -right-2 bg-[#FF9100] text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">3</span>
-          </button>
-          <button className="flex items-center gap-2 hover:text-[#FF9100]">
-            <User className="w-6 h-6" />
-            <span className="hidden md:block" onClick={() => router.push('/guide-dashboard/profile/view-profile')}>Profile</span>
-          </button>
-          <button className="flex items-center gap-2 hover:text-[#FF9100]">
-            <LogOut className="w-6 h-6" />
-            <span className="hidden md:block" onClick={handleLogout}>Logout</span>
-          </button>
-        </div>
-      </header>
-
+      <GuideNavbar/>
       {/* Main Content */}
       <main className="flex-1 p-6 bg-[#E0DDD7]">
         <h2 className="text-xl font-semibold mb-6">Welcome, Guide!</h2>
@@ -192,5 +171,6 @@ export default function Page() {
         © 2025 Journiq Guide Dashboard. All rights reserved.
       </footer>
     </div>
+    </>
   );
 }

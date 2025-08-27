@@ -47,7 +47,7 @@ const AdminDashboard = () => {
     }
 
     //redirect to home
-    router.replace('/')
+    router.replace('/login')
   }
 
   return (

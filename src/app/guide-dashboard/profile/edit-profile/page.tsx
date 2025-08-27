@@ -6,6 +6,7 @@ import { fetchUserProfile, editUserProfile } from "@/redux/slices/userSlice";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Check, X, Upload } from "lucide-react";
+import GuideNavbar from "@/components/GuideNavbar";
 
 const getImageUrl = (path?: string) =>
   !path ? "/default-avatar.png" : path.startsWith("http") ? path : `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}`;
@@ -75,6 +76,8 @@ const EditProfile = () => {
   };
 
   return (
+    <>
+    <GuideNavbar/>
     <div className="flex justify-center items-center min-h-[80vh] bg-gray-100 px-4">
       <div className="bg-white shadow-2xl rounded-3xl p-10 w-full max-w-lg border border-gray-200">
         <h2 className="text-3xl font-extrabold text-gray-900 mb-8 text-center">Edit Profile</h2>
@@ -182,6 +185,7 @@ const EditProfile = () => {
         </form>
       </div>
     </div>
+    </>
   );
 };
 
