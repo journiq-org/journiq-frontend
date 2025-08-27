@@ -56,7 +56,7 @@ const initialState: TourState= {
 
 //public view tour details
 export const publicViewTourDetails = createAsyncThunk('tour/details', async(id :string) => {
-    const res = await api.get(`/api/tour/publicViewTourDetails/${id}`)
+    const res = await api.get(`/api/tour/zz/${id}`)
     console.log("public view tour details", res.data.data)
 
     return res.data.data
@@ -94,7 +94,7 @@ export const guideViewSingleTour = createAsyncThunk('guide/viewSingleTour', asyn
 })
 
 //update booking
-export const guideUpdateTour = createAsyncThunk('guide/updatetour', async(id , formData) => {
+export const guideUpdateTour = createAsyncThunk('guide/updatetour', async({id, formData}: {id:string, formData: FormData}) => {
   const res = await api.patch(`/api/tour/update/${id}`, formData,{
     withCredentials:true
   })

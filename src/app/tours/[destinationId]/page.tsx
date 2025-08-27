@@ -7,7 +7,7 @@ import { useParams, useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 
-const ToursByDestination = () => {
+const PublicViewToursByDestination = () => {
 console.log("🚀 ToursByDestination mounted");
 
     const router = useRouter()
@@ -56,4 +56,4 @@ console.log("🚀 ToursByDestination mounted");
   )
 }
 
-export default ToursByDestination
+export default PublicViewToursByDestination

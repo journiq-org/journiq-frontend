@@ -18,14 +18,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { guideViewSingleTour } from "@/redux/slices/tourSlice";
+import { guideUpdateTour, guideViewSingleTour } from "@/redux/slices/tourSlice";
 import { useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup';
-import { watch } from "fs";
+import toast from "react-hot-toast";
 
 
 // stirng fields for textarea (which posses values in array)
@@ -66,8 +66,11 @@ type TourFormValue = yup.InferType<typeof schema>
 
 export default function UpdateTourPage() {
 
-    const { id } = useParams<{ id: string }>();
+    const [loaded, setLoaded] = React.useState(false);
+     const [existingImages, setExistingImages] = React.useState<string[]>([]);  
 
+    const { id } = useParams<{ id: string }>();
+    const router = useRouter()
     const dispatch = useDispatch<AppDispatch>()
     const {selectedTour} = useSelector((state:any) => state.tour)
 
@@ -98,84 +101,84 @@ export default function UpdateTourPage() {
                     included: "",
                     excluded: "",
                     meetingPoint: "",
-                    category: "Adventure",
+                    category: "",
                 },
         })
-        const categoryValue = watch("category"); // watch current category
-
+        const categoryValue = watch("category") || selectedTour?.category || 'Others' // watch current category
+        
         // FieldArray for availability
         const { fields, append, remove } = useFieldArray({
-            control,
-            name: "availability",
+          control,
+          name: "availability",
         });
-
-    useEffect(() => {
-        if(selectedTour){
+        
+        useEffect(() => {
+          if(selectedTour && !loaded){
             reset({
-                ...selectedTour,
-                itinerary: selectedTour.itinerary.join('\n'), //convert array into textarea string
-                highlights: selectedTour.highlights.join("\n"),
-                included: selectedTour.included.join("\n"),
-                excluded: selectedTour.excluded.join("\n"),
-                availability: selectedTour.availability?.map((a :{ date: string | Date; slots: number }) => ({
-                    ...a,
-                    date: new Date(a.date).toISOString().split("T")[0], // format to YYYY-MM-DD
-                })) || [],
-                category: selectedTour.category || "Adventure",
-                        })
-        }
-    },[selectedTour,reset])
+                  ...selectedTour,
+                  itinerary: selectedTour.itinerary.join('\n'), //convert array into textarea string
+                  highlights: selectedTour.highlights.join("\n"),
+                  included: selectedTour.included.join("\n"),
+                  excluded: selectedTour.excluded.join("\n"),
+                  availability: selectedTour.availability?.map((a :{ date: string | Date; slots: number }) => ({
+                      ...a,
+                      date: new Date(a.date).toISOString().split("T")[0], // format to YYYY-MM-DD
+                  })) || [],
+                  category: selectedTour.category || "Others",
+                })
+                setExistingImages(selectedTour.images || []); //  keep images in local state
+                setLoaded(true) 
+            }
+      },[selectedTour,reset, loaded])
 
   
     const onSubmit = async(data: TourFormValue) => {
 
         const formData = new FormData()
-         formData.append("title", data.title);
-        formData.append("description", data.description);
-        formData.append("duration", data.duration.toString());
-        formData.append("price", data.price.toString());
-        formData.append("meetingPoint", data.meetingPoint);
-        formData.append("category", data.category);
+            formData.append("title", data.title);
+            formData.append("description", data.description);
+            formData.append("duration", data.duration.toString());
+            formData.append("price", data.price.toString());
+            formData.append("meetingPoint", data.meetingPoint);
+            formData.append("category", data.category);
+            formData.append("destination", selectedTour.destination._id);
 
-      // textarea fields -> split back into arrays
-    data.itinerary
-      .split("\n")
-      .map((i) => i.trim())
-      .filter(Boolean)
-      .forEach((i) => formData.append("itinerary[]", i));
 
-    data.highlights
-      .split("\n")
-      .map((h) => h.trim())
-      .filter(Boolean)
-      .forEach((h) => formData.append("highlights[]", h));
 
-    data.included
-      .split("\n")
-      .map((inc) => inc.trim())
-      .filter(Boolean)
-      .forEach((inc) => formData.append("included[]", inc));
+            data.itinerary.split("\n").filter(Boolean).forEach(i => formData.append("itinerary[]", i));
+            data.highlights.split("\n").filter(Boolean).forEach(h => formData.append("highlights[]", h));
+            data.included.split("\n").filter(Boolean).forEach(i => formData.append("included[]", i));
+            data.excluded.split("\n").filter(Boolean).forEach(e => formData.append("excluded[]", e));
 
-    data.excluded
-      .split("\n")
-      .map((exc) => exc.trim())
-      .filter(Boolean)
-      .forEach((exc) => formData.append("excluded[]", exc));
+           data.availability?.forEach((a, idx) => {
+            const formattedDate = new Date(a.date).toISOString().split("T")[0]; // "YYYY-MM-DD"
+            formData.append(`availability[${idx}][date]`, formattedDate);
+            formData.append(`availability[${idx}][slots]`, a.slots.toString());
+            });
 
-    // availability
-    if (data.availability) {
-      data.availability.forEach((a, idx) => {
-        formData.append(`availability[${idx}][date]`, a.date.toISOString());
-        formData.append(`availability[${idx}][slots]`, a.slots.toString());
-      });
-    }
 
-    // images
-    if (data.images && data.images.length > 0) {
-      Array.from(data.images).forEach((file) => {
-        formData.append("images", file);
-      });
-    }
+            //  Keep existing images
+            existingImages.forEach((img) => formData.append("existingImages[]", img));
+
+          if (data.images && data.images.length > 0) {
+            Array.from(data.images).forEach((file) => formData.append("images", file));
+          }
+
+
+      console.log("FormData to send:");
+        for (let pair of formData.entries()) {
+            console.log(pair[0], pair[1]);
+        }
+
+        await dispatch(guideUpdateTour({id, formData})).unwrap()
+        .then((res) =>{
+            toast.success('Book Updated successfully')
+            router.push(`/guide/viewTourDetails/${id}`)
+        })
+        .catch((err) => {
+            toast.error('Error updating book')
+            console.error(err,'update tour error')
+        })
 
     }
 
@@ -290,13 +293,56 @@ export default function UpdateTourPage() {
             </div>
 
             {/* Images */}
+
             <div>
               <label className="text-sm font-medium">Images</label>
+              <div className="flex gap-2 mb-2 flex-wrap">
+                {existingImages?.map((img, idx) => (
+                  <div key={idx} className="relative w-20 h-20">
+                    <img
+                      src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${img}`}
+                      alt="tour"
+                      className="w-20 h-20 object-cover rounded"
+                    />
+                    {/* Remove Button */}
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setExistingImages(existingImages.filter((_, i) => i !== idx))
+                      }
+                      className="absolute top-0 right-0 bg-red-500 text-white text-xs rounded-full px-1"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              {/* Upload multiple new images */}
+              <Input
+                type="file"
+                multiple
+                accept="image/*"
+                {...register("images")}
+              />
+              {errors.images && (
+                <p className="text-red-500 text-sm">{errors.images.message as string}</p>
+              )}
+            </div>
+
+
+            {/* <div>
+              <label className="text-sm font-medium">Images</label>
+               <div className="flex gap-2 mb-2">
+              {selectedTour?.images?.map((img: string, idx: number) => (
+                  <img key={idx} src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${img}`} alt="tour" className="w-20 h-20 object-cover rounded" />
+                ))}
+              </div>
               <Input type="file" multiple accept="image/*" {...register("images")}/>
                {errors.images && (
                 <p className="text-red-500 text-sm">{errors.images.message as string}</p>
               )}
-            </div>
+            </div> */}
 
             {/* Included */}
             <div>

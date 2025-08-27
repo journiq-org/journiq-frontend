@@ -57,7 +57,7 @@ export const listDestinations = createAsyncThunk('/destinations', async() => {
 
 export const getTourByDestination = createAsyncThunk('destination/getTourByDestination', async(id: string) => {
 
-  const res = await api.get(`/api/destination/${id}/tours`)
+  const res = await api.get(`/api/tour/publicView/${id}`)
   console.log("API called:", `/destination/${id}/tours`)
 
   console.log("tours by destination", res.data.data)
