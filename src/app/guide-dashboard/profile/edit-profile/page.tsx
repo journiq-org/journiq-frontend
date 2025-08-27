@@ -6,7 +6,6 @@ import { fetchUserProfile, editUserProfile } from "@/redux/slices/userSlice";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { Check, X, Upload } from "lucide-react";
-import TravellerNavbar from "@/components/TravellerNavbar";
 
 const getImageUrl = (path?: string) =>
   !path ? "/default-avatar.png" : path.startsWith("http") ? path : `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}`;
@@ -69,16 +68,14 @@ const EditProfile = () => {
 
       await dispatch(editUserProfile(formData)).unwrap();
       toast.success("Profile updated successfully!");
-      router.push("/traveller-dashboard/profile/view-profile");
+      router.push("/guide-dashboard/profile/view-profile");
     } catch (err: any) {
       toast.error(err?.message || "Failed to update profile");
     }
   };
 
   return (
-    <>
-    <TravellerNavbar/>
-     <div className="flex justify-center items-center min-h-[80vh] bg-[#E2E0DF] px-4">
+    <div className="flex justify-center items-center min-h-[80vh] bg-gray-100 px-4">
       <div className="bg-white shadow-2xl rounded-3xl p-10 w-full max-w-lg border border-gray-200">
         <h2 className="text-3xl font-extrabold text-gray-900 mb-8 text-center">Edit Profile</h2>
 
@@ -185,7 +182,6 @@ const EditProfile = () => {
         </form>
       </div>
     </div>
-    </>
   );
 };
 

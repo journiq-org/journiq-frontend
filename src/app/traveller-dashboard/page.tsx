@@ -20,21 +20,10 @@ export default function TravellerDashboard() {
     dispatch(listDestinations());
   }, [dispatch]);
 
-  const handleLogout = async() => {
-    try{
-      //cookie remove
-      await fetch('/api/auth/clear-cookie',{
-        method: 'POST'
-      })
-    }catch(err){
-       console.warn('Failed to clear cookies', err)
-    }
-
-    //redirect to home
-    router.replace('/')
-  }
+  
 
   return (
+    // <div>Hi</div>
     <div>
       {/* Navbar on top */}
       <TravellerNavbar />

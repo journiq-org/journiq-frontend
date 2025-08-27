@@ -43,7 +43,7 @@ export const editUserProfile = createAsyncThunk<User, FormData>(
   "user/editUserProfile",
   async (formData, { rejectWithValue }) => {
     try {
-      const cookieRes = await fetch("/api/get-cookies");
+      const cookieRes = await fetch("/api/auth/get-cookie");
       const { token } = await cookieRes.json();
 
       if (!token) throw new Error("No token found");

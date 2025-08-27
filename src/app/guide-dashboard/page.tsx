@@ -142,7 +142,7 @@ export default function Page() {
         <nav className="hidden md:flex gap-8 font-medium">
           <a href="#" className="hover:text-[#FF9100] transition">Dashboard</a>
           <a href="/guide/tours" className="hover:text-[#FF9100] transition cursor-pointer">My Tours</a>
-          <a href="#" className="hover:text-[#FF9100] transition">Bookings</a>
+          <a href="/booking/guide-booking" className="hover:text-[#FF9100] transition">Bookings</a>
           <a href="#" className="hover:text-[#FF9100] transition">Settings</a>
         </nav>
 
@@ -153,7 +153,7 @@ export default function Page() {
           </button>
           <button className="flex items-center gap-2 hover:text-[#FF9100]">
             <User className="w-6 h-6" />
-            <span className="hidden md:block">Profile</span>
+            <span className="hidden md:block" onClick={() => router.push('/guide-dashboard/profile/view-profile')}>Profile</span>
           </button>
           <button className="flex items-center gap-2 hover:text-[#FF9100]">
             <LogOut className="w-6 h-6" />

@@ -39,11 +39,13 @@ const Header = () => {
 
       {/* login button */}
 
-        <button
-         onClick={() => router.push('/login')}
-         className="bg-[#0c0c0c] px-7 py-3 rounded-4xl text-white text-sm hover:bg-[#5c4033]">
-          Login
-        </button>
+      <button
+      onClick={() => router.push('/login')}
+      className="bg-[#0c0c0c] text-white px-7 py-3 rounded-4xl text-sm hover:bg-[#5c4033] transition"
+      >
+        Login
+      </button>
+
     </header>
   );
 };

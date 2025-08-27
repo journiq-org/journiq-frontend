@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 import Navbar from "@/components/Navbar";
 import api from "@/lib/api";
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 const schema = yup.object().shape({
   email: yup.string().required("Email is required").email("Invalid email"),
@@ -17,6 +18,8 @@ const schema = yup.object().shape({
 type LoginFormData = yup.InferType<typeof schema>;
 
 const Login = () => {
+  const router = useRouter();
+
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginFormData>({
     resolver: yupResolver(schema),
   });
@@ -45,9 +48,6 @@ const onSubmit = async (data: LoginFormData) => {
 
     const role = res.data.data.role?.toLowerCase()
     const token = res.data.access_token
-    console.log(token,'token//////////')
-
-    console.log(role, "user role", token, "user token.........")
 
     // Wait for set-cookie request
     const cookieRes = await fetch("/api/auth/set-cookie", {
@@ -58,9 +58,11 @@ const onSubmit = async (data: LoginFormData) => {
 
     const cookieData = await cookieRes.json()
 
+    console.log(role, "user role...........")
+
     if (role === "admin") window.location.href = "/admin-dashboard"
     else if (role === "guide") window.location.href = "/guide-dashboard"
-    else if (role === "traveller") window.location.href = "/traveller-dashboard"
+    else if (role === "traveller") router.push("/traveller-dashboard");
     else window.location.href = "/register"
   } catch (err) {
     console.error("Error:", err)

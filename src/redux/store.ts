@@ -3,6 +3,8 @@ import DestinationReducer from "@/redux/slices/destinationSlice"
 import TourReducer from "@/redux/slices/tourSlice"
 import userReducer from "./slices/userSlice";
 import bookingReducer from "./slices/bookingSlice";
+import guideBookingsReducer from "@/redux/slices/guideBookingSlice";
+import notificationsReducer from "@/redux/slices/notificationSlice"
 
 
 export const store = configureStore({
@@ -11,6 +13,10 @@ export const store = configureStore({
         tour: TourReducer,
         user: userReducer, 
         booking: bookingReducer,
+        guideBookings: guideBookingsReducer,
+        notifications: notificationsReducer,
+
+    
        
     }
 })
