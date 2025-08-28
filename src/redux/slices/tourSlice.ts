@@ -56,7 +56,7 @@ const initialState: TourState= {
 
 //public view tour details
 export const publicViewTourDetails = createAsyncThunk('tour/details', async(id :string) => {
-    const res = await api.get(`/api/tour/zz/${id}`)
+    const res = await api.get(`/api/tour/publicViewTourDetails/${id}`)
     console.log("public view tour details", res.data.data)
 
     return res.data.data
@@ -102,6 +102,19 @@ export const guideUpdateTour = createAsyncThunk('guide/updatetour', async({id, f
   return res.data.data
 })
 
+
+
+//create tour
+export const createTour = createAsyncThunk('guide/addTour', async(formData:FormData) =>{
+  const res = await api.post('/api/tour/createtour',formData,{
+    withCredentials: true,
+    headers:{
+      "Content-Type": "multipart/form-data"
+    }
+  })
+
+  return res.data.data
+})
 
 //slice
 const tourSlice = createSlice({
@@ -170,6 +183,24 @@ const tourSlice = createSlice({
             .addCase(guideUpdateTour.rejected, (state, action) => {
               state.isLoading = false
               state.error = action.error.message || 'Failed to update tour'
+            })
+
+            //create tour
+            .addCase(createTour.pending, state => {
+              state.isLoading = true
+            })
+            .addCase(createTour.fulfilled, (state,action) => {
+              state.isLoading = false
+              const newTour = action.payload;
+
+              // add new tour to guide tours list
+              state.guideTours.push(newTour);
+
+              state.successMessage = 'Tour Created Successfully'
+            })
+            .addCase(createTour.rejected, (state, action) => {
+              state.isLoading = false;
+              state.error = action.error.message || "Failed to create tour";
             })
     }
 })
