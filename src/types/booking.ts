@@ -1,4 +1,3 @@
-// types/booking.ts
 import { User } from "./user";
 import { Tour } from "./tour";
 
@@ -15,17 +14,28 @@ export interface BookingExperience {
   punctuality?: number;      // 1-5
   satisfactionSurvey?: number; // 1-5
 }
+export interface Review {
+  _id: string;
+  tour: string;
+  user: { _id: string; name: string; profilePic?: string };
+  experience: {
+    serviceQuality: number;
+    punctuality: number;
+    satisfactionSurvey: number;
+  };
+  comment: string;
+  createdAt: string;
+  isDeleted: boolean;
+}
 
 export interface Booking {
   _id: string;
-  tour: Tour | string;       // populated tour object or just tour ID
-  user: User | string;       // populated user object or just user ID
-  date: string;              // ISO date string
-  numOfPeople: number;
-  totalPrice: number;
-  status?: BookingStatus;
-  isDeleted?: boolean;
-  experience?: BookingExperience;
-  createdAt?: string;
-  updatedAt?: string;
+  user: { name: string; email: string };
+  tour: { _id: string; title: string; description: string };
+  status: string;
+  createdAt: string;
+  date?: string;
+  numOfPeople?: number;
+  totalPrice?: number;
+  review?: Review | null; // ✅ Add this
 }

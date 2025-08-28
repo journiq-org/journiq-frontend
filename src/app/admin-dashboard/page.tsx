@@ -17,6 +17,11 @@ import {
   Search,
 } from "lucide-react";
 import toast from "react-hot-toast";
+import MyBookingPage from "./booking/page";
+import AllToursPage from "./tour/page";
+import AdminReviewsPage from "./reviews/page";
+import AdminGuidesPage from "./guide/page";
+import AdminUsersPage from "./traveller/page";
 
 const AdminDashboard = () => {
   const [active, setActive] = useState("dashboard");
@@ -28,7 +33,7 @@ const AdminDashboard = () => {
     { name: "Users", icon: <Users size={20} />, key: "users" },
     { name: "Guides", icon: <UserCheck size={20} />, key: "guides" },
     { name: "Tours", icon: <MapPin size={20} />, key: "tours" },
-    { name: "Bookings", icon: <CalendarCheck size={20} />, key: "bookings" },
+    { name: "Bookings", icon: <CalendarCheck size={20} />, key: "bookings", path: "/booking/my-booking"  },
     { name: "Reviews", icon: <MessageSquare size={20} />, key: "reviews" },
     { name: "Settings", icon: <Settings size={20} />, key: "settings" },
   ];
@@ -133,70 +138,15 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          {active === "users" && (
-            <div>
-              <h2 className="text-2xl font-bold mb-6">User Management</h2>
-              <div className="bg-white rounded-xl shadow p-4">
-                <table className="w-full text-sm">
-                  <thead className="border-b">
-                    <tr className="text-left text-gray-600">
-                      <th className="p-3">Name</th>
-                      <th className="p-3">Email</th>
-                      <th className="p-3">Status</th>
-                      <th className="p-3">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr className="border-b hover:bg-gray-50">
-                      <td className="p-3">John Doe</td>
-                      <td className="p-3">john@example.com</td>
-                      <td className="p-3">Active</td>
-                      <td className="p-3 flex gap-2">
-                        <button className="text-red-600">Block</button>
-                        <button className="text-gray-600">Delete</button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
+          {active === "users" && <AdminUsersPage/>}
 
-          {active === "guides" && (
-            <div>
-              <h2 className="text-2xl font-bold mb-6">Guide Verification</h2>
-              <div className="bg-white rounded-xl shadow p-4">
-                <p>List of guides pending verification will appear here.</p>
-              </div>
-            </div>
-          )}
+          {active === "guides" && <AdminGuidesPage/>}
 
-          {active === "tours" && (
-            <div>
-              <h2 className="text-2xl font-bold mb-6">Tour Moderation</h2>
-              <div className="bg-white rounded-xl shadow p-4">
-                <p>Admin can block/unblock tours, view tours by guide, etc.</p>
-              </div>
-            </div>
-          )}
+          {active === "tours" && <AllToursPage/>}
 
-          {active === "bookings" && (
-            <div>
-              <h2 className="text-2xl font-bold mb-6">Booking Moderation</h2>
-              <div className="bg-white rounded-xl shadow p-4">
-                <p>Admin can review bookings and check details here.</p>
-              </div>
-            </div>
-          )}
+          {active === "bookings" && <MyBookingPage/>}
 
-          {active === "reviews" && (
-            <div>
-              <h2 className="text-2xl font-bold mb-6">Review Moderation</h2>
-              <div className="bg-white rounded-xl shadow p-4">
-                <p>Admin can delete inappropriate reviews.</p>
-              </div>
-            </div>
-          )}
+          {active === "reviews" && <AdminReviewsPage/>}
 
           {active === "settings" && (
             <div>

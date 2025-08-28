@@ -1,26 +1,27 @@
+
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import api from "@/lib/api";
 import { Booking } from "@/types/booking";
 import { Tour } from "@/types/tour";
 
+// 🔹 Local state type
 interface BookingState {
   bookings: Booking[];
-  booking: Booking | null;
   publicTours: Tour[];
+  availability: { available: boolean; slots: number; message?: string } | null;
   loading: boolean;
   error: string | null;
   successMessage: string | null;
-  availability: { available: boolean; slots: number; message?: string } | null;
 }
 
+// 🔹 Initial state
 const initialState: BookingState = {
   bookings: [],
-  booking: null,
   publicTours: [],
+  availability: null,
   loading: false,
   error: null,
   successMessage: null,
-  availability: null,
 };
 
 // 🔹 Check Availability
@@ -92,7 +93,7 @@ export const cancelBooking = createAsyncThunk<Booking, string>(
     try {
       const cookieRes = await fetch("/api/auth/get-cookie");
       const { token } = await cookieRes.json();
-      const res = await api.delete(`/api/booking/cancel/${bookingId}`, {
+      const res = await api.patch(`/api/booking/cancel/${bookingId}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : undefined,
         withCredentials: true,
       });

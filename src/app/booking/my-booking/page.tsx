@@ -1,38 +1,57 @@
-'use client'
+"use client";
 
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { fetchBookings, cancelBooking } from "@/redux/slices/bookingSlice";
+import { deleteReview } from "@/redux/slices/reviewSlice";
 import {
   Loader2,
   Calendar,
   Users,
-  IndianRupee,
+  DollarSign,
   CheckCircle,
   XCircle,
   Trash2,
+  MessageSquarePlus,
+  Edit3,
 } from "lucide-react";
 import TravellerNavbar from "@/components/TravellerNavbar";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 const MyBookingPage = () => {
   const dispatch = useAppDispatch();
-  const { bookings, loading, error } = useAppSelector((state) => state.booking);
+  const router = useRouter();
 
+  const { bookings, loading } = useAppSelector((state) => state.booking);
   const [openDialogId, setOpenDialogId] = useState<string | null>(null);
 
+  // Fetch bookings on mount
   useEffect(() => {
     dispatch(fetchBookings());
   }, [dispatch]);
 
+  // Cancel booking
   const handleCancel = async (bookingId: string) => {
     try {
       await dispatch(cancelBooking(bookingId)).unwrap();
       toast.success("Booking cancelled successfully");
       setOpenDialogId(null);
-      dispatch(fetchBookings()); // refresh list
+      dispatch(fetchBookings());
     } catch (err: any) {
       toast.error(err || "Failed to cancel booking");
+    }
+  };
+
+  // Delete review
+  const handleDeleteReview = async (reviewId: string) => {
+    try {
+      await dispatch(deleteReview(reviewId)).unwrap();
+      toast.success("Review deleted successfully");
+      // Refetch bookings to update UI
+      dispatch(fetchBookings());
+    } catch (err: any) {
+      toast.error(typeof err === "string" ? err : "Failed to delete review");
     }
   };
 
@@ -87,19 +106,22 @@ const MyBookingPage = () => {
                   {tourTitle}
                 </h2>
 
+                {/* Booking Info */}
                 <div className="space-y-3 text-[#4E4D45] mb-4">
                   <p className="flex items-center gap-2">
                     <Calendar className="w-5 h-5 text-blue-600" />
                     <span className="font-medium">
-                      {new Date(booking.date).toLocaleDateString()}
+                      {booking.date
+                        ? new Date(booking.date).toLocaleDateString()
+                        : "N/A"}
                     </span>
                   </p>
 
                   <p className="flex items-center gap-2">
                     <Users className="w-5 h-5 text-indigo-600" />
                     <span className="font-medium">
-                      {booking.numOfPeople}{" "}
-                      {booking.numOfPeople > 1 ? "people" : "person"}
+                      {booking.numOfPeople ?? 0}{" "}
+                      {(booking.numOfPeople ?? 0) > 1 ? "people" : "person"}
                     </span>
                   </p>
 
@@ -119,15 +141,15 @@ const MyBookingPage = () => {
                   </p>
 
                   <p className="flex items-center gap-2">
-                    <IndianRupee className="w-5 h-5 text-yellow-700" />
+                    <DollarSign className="w-5 h-5 text-yellow-700" />
                     <span className="font-medium text-[#0c0c0c]">
                       ₹{booking.totalPrice?.toLocaleString()}
                     </span>
                   </p>
                 </div>
 
-                {/* Cancel Button */}
-                {!isCancelled && (
+                {/* Cancel Booking */}
+                {!isCancelled && status !== "completed" && (
                   <button
                     onClick={() => setOpenDialogId(booking._id)}
                     className="flex items-center justify-center gap-2 bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg font-medium transition-all w-full"
@@ -137,7 +159,57 @@ const MyBookingPage = () => {
                   </button>
                 )}
 
-                {/* Confirmation Dialog */}
+                {/* Add Review */}
+                {status === "completed" && !booking.review && (
+                  <button
+                    onClick={() => {
+                      const tourId =
+                        typeof booking.tour === "object"
+                          ? booking.tour._id
+                          : booking.tour;
+                      router.push(
+                        `/traveller-dashboard/review/?tourId=${tourId}&bookingId=${booking._id}`
+                      );
+                    }}
+                    className="flex items-center justify-center gap-2 bg-yellow-600 hover:bg-yellow-700 text-white py-2 rounded-lg font-medium transition-all w-full mt-2"
+                  >
+                    <MessageSquarePlus className="w-4 h-4" />
+                    Add Review
+                  </button>
+                )}
+
+                {/* Update Review */}
+                {status === "completed" && booking.review && (
+                  <button
+                    onClick={() => {
+                      if (booking.review?._id) {
+                        router.push(
+                          `/traveller-dashboard/review/update/${booking.review._id}`
+                        );
+                      }
+                    }}
+                    className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-medium transition-all w-full mt-2"
+                  >
+                    <Edit3 className="w-4 h-4" />
+                    Update Review
+                  </button>
+                )}
+
+                {/* Delete Review */}
+                {status === "completed" && booking.review && (
+                  <button
+                    onClick={() => {
+                      if (!booking.review?._id) return;
+                      handleDeleteReview(booking.review._id);
+                    }}
+                    className="flex items-center justify-center gap-2 bg-red-700 hover:bg-red-800 text-white py-2 rounded-lg font-medium transition-all w-full mt-2"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                    Delete Review
+                  </button>
+                )}
+
+                {/* Cancel Confirmation Dialog */}
                 {openDialogId === booking._id && (
                   <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
                     <div className="bg-white rounded-xl p-6 max-w-sm w-full">

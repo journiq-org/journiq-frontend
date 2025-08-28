@@ -1,50 +1,76 @@
 'use client'
 
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import { publicViewTourDetails } from '@/redux/slices/tourSlice'
-import { AppDispatch } from '@/redux/store'
+import { fetchReviewsForTour } from '@/redux/slices/reviewSlice'
+import { AppDispatch, RootState } from '@/redux/store'
 import { useParams, useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux'
-import { getCookie } from 'cookies-next'
 
 const TourDetails = () => {
   const router = useRouter()
   const params = useParams()
 
   const dispatch = useDispatch<AppDispatch>()
-  const { selectedTour, isLoading, error } = useSelector((state: any) => state.tour)
+  const { selectedTour } = useSelector((state: RootState) => state.tour)
+  const { reviews } = useSelector((state: RootState) => state.reviews)
 
   const rawId = params?.id
   const id = Array.isArray(rawId) ? rawId[0] : rawId ?? ''
 
+  const [avgRating, setAvgRating] = useState<number>(0)
+
   useEffect(() => {
-    dispatch(publicViewTourDetails(id))
+    if (id) {
+      dispatch(publicViewTourDetails(id))
+      dispatch(fetchReviewsForTour(id))
+    }
   }, [dispatch, id])
 
-  const handleBooking = async () => {
-  try {
-    const res = await fetch('/api/auth/get-cookie', {
-      method: 'GET',
-      credentials: 'include',
-    });
+  useEffect(() => {
+    if (reviews && reviews.length > 0) {
+      const tourReviews = reviews.filter((r) =>
+        typeof r.tour === 'string' ? r.tour === id : r.tour._id === id
+      )
 
-    if (!res.ok) throw new Error('Failed to fetch cookies');
+      if (tourReviews.length > 0) {
+        const avg =
+          tourReviews.reduce((sum, r) => {
+            const exp = r.experience
+            return (
+              sum +
+              (exp.serviceQuality + exp.punctuality + exp.satisfactionSurvey) / 3
+            )
+          }, 0) / tourReviews.length
 
-    const data = await res.json();
-    const { token, role } = data;
-
-    if (token && role) {
-      router.push(`/booking?tourId=${id}`);
-    } else {
-      router.push('/login');
+        setAvgRating(parseFloat(avg.toFixed(1)))
+      }
     }
-  } catch (error) {
-    console.error('Error fetching cookies:', error);
-    router.push('/login');
-  }
-};
+  }, [reviews, id])
 
+  const handleBooking = async () => {
+    try {
+      const res = await fetch('/api/auth/get-cookie', {
+        method: 'GET',
+        credentials: 'include',
+      })
+
+      if (!res.ok) throw new Error('Failed to fetch cookies')
+
+      const data = await res.json()
+      const { token, role } = data
+
+      if (token && role) {
+        router.push(`/booking?tourId=${id}`)
+      } else {
+        router.push('/login')
+      }
+    } catch (error) {
+      console.error('Error fetching cookies:', error)
+      router.push('/login')
+    }
+  }
 
   if (!selectedTour) return <p className="text-gray-500 text-center mt-10">Loading tour details...</p>
 
@@ -80,7 +106,7 @@ const TourDetails = () => {
         <div className="flex flex-col md:flex-row gap-8 text-lg md:text-xl font-semibold text-gray-800">
           <div className="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-gray-200">Price: ₹{selectedTour.price}</div>
           <div className="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-gray-200">Duration: {selectedTour.duration} days</div>
-          <div className="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-gray-200">Rating: {selectedTour.rating} / 5</div>
+          <div className="bg-white p-4 md:p-6 rounded-xl shadow-lg border border-gray-200">Rating: ⭐ {avgRating || selectedTour.rating || 0} / 5</div>
         </div>
 
         {/* Description */}
@@ -151,17 +177,43 @@ const TourDetails = () => {
 
         {/* Guide Info */}
         <div className="bg-white p-6 md:p-8 rounded-3xl shadow-xl border border-gray-200 flex items-center gap-6">
-          {selectedTour.guide?.profilePic && (
+          {/* {selectedTour.guide?.profilePic && (
             <img
               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${selectedTour.guide.profilePic}`}
               alt={selectedTour.guide.name}
               className="w-24 h-24 rounded-full object-cover border-2 border-gray-300"
             />
-          )}
+          )} */}
           <div>
             <p className="text-2xl font-semibold">{selectedTour.guide?.name}</p>
             <p className="text-gray-500 text-sm">Guide</p>
           </div>
+        </div>
+
+        {/* ✅ Reviews Section */}
+        <div className="bg-white p-6 md:p-8 rounded-3xl shadow-xl border border-gray-200">
+          <h2 className="text-3xl font-semibold mb-4">Reviews</h2>
+          {reviews && reviews.length > 0 ? (
+            <div className="space-y-4">
+              {reviews
+                .filter((r) =>
+                  typeof r.tour === 'string' ? r.tour === id : r.tour._id === id
+                )
+                .map((review, idx) => (
+                  <div key={idx} className="border-b border-gray-200 pb-4 last:border-none">
+                    <p className="text-gray-800 font-medium">
+                      {review.user?.name || 'Anonymous'}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Service: {review.experience.serviceQuality} • Punctuality: {review.experience.punctuality} • Satisfaction: {review.experience.satisfactionSurvey}
+                    </p>
+                    <p className="mt-2 text-gray-700">{review.comment}</p>
+                  </div>
+                ))}
+            </div>
+          ) : (
+            <p className="text-gray-500">No reviews yet.</p>
+          )}
         </div>
 
         {/* Book Now Button */}

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect, useRef } from "react";
-import { User, Bell, BookOpen, LogOut } from "lucide-react";
+import { User, Bell, BookOpen, LogOut, MessageSquare } from "lucide-react";
 import {
   Dialog,
   DialogTitle,
@@ -34,20 +34,20 @@ const TravellerNavbar = () => {
   }, []);
 
   // Fetch unread notifications count from API
-  useEffect(() => {
-    const fetchUnreadNotifications = async () => {
-      try {
-        const res = await fetch("/api/notifications/unread-count", {
-          credentials: "include",
-        });
-        const data = await res.json();
-        if (res.ok) setUnreadCount(data.unreadCount || 0);
-      } catch (err) {
-        console.error("Failed to fetch unread notifications:", err);
-      }
-    };
-    fetchUnreadNotifications();
-  }, []);
+  // useEffect(() => {
+  //   const fetchUnreadNotifications = async () => {
+  //     try {
+  //       const res = await fetch("/api/notifications/unread-count", {
+  //         credentials: "include",
+  //       });
+  //       const data = await res.json();
+  //       if (res.ok) setUnreadCount(data.unreadCount || 0);
+  //     } catch (err) {
+  //       console.error("Failed to fetch unread notifications:", err);
+  //     }
+  //   };
+  //   fetchUnreadNotifications();
+  // }, []);
 
   const handleLogout = async () => {
     try {
@@ -91,71 +91,82 @@ const TravellerNavbar = () => {
         </div>
 
         {/* Right Section */}
-        <div className="flex items-center gap-4 relative">
-          {/* Bookings */}
-          <button
-            onClick={() => router.push("/booking/my-booking")}
-            className="p-2 rounded-full hover:bg-[#d1cfc8] transition"
-            aria-label="My Bookings"
-          >
-            <BookOpen size={26} className="text-[#0c0c0c]" />
-          </button>
+        {/* Right Section */}
+<div className="flex items-center gap-4 relative">
+  {/* Bookings */}
+  <button
+    onClick={() => router.push("/booking/my-booking")}
+    className="p-2 rounded-full hover:bg-[#d1cfc8] transition"
+    aria-label="My Bookings"
+  >
+    <BookOpen size={26} className="text-[#0c0c0c]" />
+  </button>
 
-          {/* Notifications */}
-          <div className="relative">
-            <button className="relative">
-              <Bell className="w-6 h-6" />
-              <span className="absolute -top-2 -right-2 bg-[#FF9100] text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-                4
-              </span>
-            </button>
-            {unreadCount > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-                {unreadCount}
-              </span>
-            )}
-          </div>
+  {/* Reviews */}
+  <button
+    onClick={() => router.push("/traveller-dashboard/review/my-reviews")}
+    className="p-2 rounded-full hover:bg-[#d1cfc8] transition"
+    aria-label="My Reviews"
+  >
+    <MessageSquare size={26} className="text-[#0c0c0c]" />
+  </button>
 
-          {/* Profile */}
-          <div ref={profileRef} className="relative">
-            <button
-              onClick={() => setProfileOpen(!profileOpen)}
-              className="p-2 rounded-full hover:bg-[#d1cfc8] transition"
-              aria-label="Profile Options"
-            >
-              <User size={28} className="text-[#0c0c0c]" />
-            </button>
+  {/* Notifications */}
+  <div className="relative">
+    <button className="relative">
+      <Bell className="w-6 h-6" />
+      {/* <span className="absolute -top-2 -right-2 bg-[#FF9100] text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+        
+      </span> */}
+    </button>
+    {/* {unreadCount > 0 && ( */}
+      <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+        {/* {unreadCount} */}
+      </span>
+    {/* )} */}
+  </div>
 
-            {profileOpen && (
-              <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-4 flex flex-col gap-3 w-44 z-20">
-                <button
-                  onClick={() => router.push("/traveller-dashboard/profile/view-profile")}
-                  className="text-left hover:text-amber-700"
-                >
-                  View Profile
-                </button>
-                <button
-                  onClick={() => router.push("/traveller-dashboard/profile/edit-profile")}
-                  className="text-left hover:text-amber-700"
-                >
-                  Edit Profile
-                </button>
-                <button
-                  onClick={() => router.push("/traveller-dashboard/profile/change-password")}
-                  className="text-left hover:text-amber-700"
-                >
-                  Change Password
-                </button>
-                <button
-                  onClick={() => setLogoutDialogOpen(true)}
-                  className="text-left text-red-600 hover:text-red-800 flex items-center gap-1"
-                >
-                  <LogOut size={16} /> Logout
-                </button>
-              </div>
-            )}
-          </div>
-        </div>
+  {/* Profile */}
+  <div ref={profileRef} className="relative">
+    <button
+      onClick={() => setProfileOpen(!profileOpen)}
+      className="p-2 rounded-full hover:bg-[#d1cfc8] transition"
+      aria-label="Profile Options"
+    >
+      <User size={28} className="text-[#0c0c0c]" />
+    </button>
+
+    {profileOpen && (
+      <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-4 flex flex-col gap-3 w-44 z-20">
+        <button
+          onClick={() => router.push("/traveller-dashboard/profile/view-profile")}
+          className="text-left hover:text-amber-700"
+        >
+          View Profile
+        </button>
+        <button
+          onClick={() => router.push("/traveller-dashboard/profile/edit-profile")}
+          className="text-left hover:text-amber-700"
+        >
+          Edit Profile
+        </button>
+        <button
+          onClick={() => router.push("/traveller-dashboard/profile/change-password")}
+          className="text-left hover:text-amber-700"
+        >
+          Change Password
+        </button>
+        <button
+          onClick={() => setLogoutDialogOpen(true)}
+          className="text-left text-red-600 hover:text-red-800 flex items-center gap-1"
+        >
+          <LogOut size={16} /> Logout
+        </button>
+      </div>
+    )}
+  </div>
+</div>
+
       </header>
 
       {/* Logout Confirmation Dialog */}
