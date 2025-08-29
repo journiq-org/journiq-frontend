@@ -13,6 +13,9 @@ import {
   Typography,
 } from "@mui/material";
 import toast from "react-hot-toast";
+import { selectUnreadNotifications } from "@/redux/slices/notificationSlice";
+import { useAppSelector } from "@/redux/hook";
+
 
 const TravellerNavbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -21,6 +24,8 @@ const TravellerNavbar = () => {
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const router = useRouter();
   const profileRef = useRef<HTMLDivElement>(null);
+
+  const unreadNotifications = useAppSelector(selectUnreadNotifications);
 
   // Close profile dropdown when clicking outside
   useEffect(() => {
@@ -113,14 +118,21 @@ const TravellerNavbar = () => {
 
   {/* Notifications */}
   
-  <button
-    onClick={() => router.push("/notifications")}
-    className="p-2 rounded-full hover:bg-[#d1cfc8] transition"
-    aria-label="notifications"
-  >
-    <Bell size={26} className="text-[#0c0c0c]" />
-  </button>
+   {/* Notifications */}
+<button
+  onClick={() => router.push("/notifications")}
+  className="relative p-2 rounded-full hover:bg-[#d1cfc8] transition" // ✅ add relative here
+  aria-label="notifications"
+>
+  <Bell size={26} className="text-[#0c0c0c]" />
+  {unreadNotifications.length > 0 && (
+    <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+      {unreadNotifications.length}
+    </span>
+  )}
+</button>
 
+      
   {/* Profile */}
   <div ref={profileRef} className="relative">
     <button
