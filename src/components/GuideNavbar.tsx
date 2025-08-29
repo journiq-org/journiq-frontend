@@ -129,8 +129,6 @@
 //   );
 // }
 
-
-
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { Bell, User, LogOut, Menu, X, Compass } from "lucide-react";
