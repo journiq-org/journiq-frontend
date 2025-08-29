@@ -136,18 +136,23 @@ import React, { useState, useRef, useEffect } from "react";
 import { Bell, User, LogOut, Menu, X, Compass } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { useAppSelector } from "@/redux/hook";
-import { selectUnreadNotifications } from "@/redux/slices/notificationSlice";
+import { useAppSelector, useAppDispatch } from "@/redux/hook";
+import { fetchNotifications, selectUnreadNotifications } from "@/redux/slices/notificationSlice";
 
 export default function GuideNavbar() {
   const router = useRouter();
+  const dispatch = useAppDispatch();
+  const unreadNotifications = useAppSelector(selectUnreadNotifications);
+
   const [profileOpen, setProfileOpen] = useState(false);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
 
-  // ✅ Get unread notifications count from Redux
-  const unreadNotifications = useAppSelector(selectUnreadNotifications);
+  // ✅ Fetch notifications when Navbar mounts
+  useEffect(() => {
+    dispatch(fetchNotifications());
+  }, [dispatch]);
 
   // ✅ Close dropdown when clicking outside
   useEffect(() => {
@@ -195,7 +200,7 @@ export default function GuideNavbar() {
               <div className="flex items-center justify-center w-10 h-10 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
                 <Compass className="w-6 h-6 text-white" />
               </div>
-              
+
               {/* Brand Name */}
               <div className="flex flex-col">
                 <h1
@@ -354,7 +359,7 @@ export default function GuideNavbar() {
               </h3>
 
               <p className="text-slate-600 text-center mb-8 leading-relaxed">
-                Are you sure you want to log out from <span className="font-semibold text-blue-600">journiq</span>? 
+                Are you sure you want to log out from <span className="font-semibold text-blue-600">journiq</span>?
                 You'll need to sign in again to access your guide dashboard.
               </p>
 
