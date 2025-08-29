@@ -43,7 +43,7 @@ export default function GuideNavbar() {
           <a href="/guide-dashboard" className="hover:text-[#FF9100] transition">Dashboard</a>
           <a href="/guide/tours" className="hover:text-[#FF9100] transition cursor-pointer">My Tours</a>
           <a href="/booking/guide-booking" className="hover:text-[#FF9100] transition">Bookings</a>
-          <a href="/guide-dashboard/settings" className="hover:text-[#FF9100] transition">Settings</a>
+          <a href="/settings" className="hover:text-[#FF9100] transition">Settings</a>
         </nav>
 
         {/* Right Section */}

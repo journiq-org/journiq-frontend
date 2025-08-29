@@ -79,7 +79,7 @@ const TravellerNavbar = () => {
               <a href="/traveller-dashboard" className="hover:text-amber-700">Home</a>
               <a href="/booking/my-booking" className="hover:text-amber-700">Booking</a>
               <a href="/tour" className="hover:text-amber-700">Tour</a>
-              <a href="/contact" className="hover:text-amber-700">Contact</a>
+              <a href="/message" className="hover:text-amber-700">message</a>
             </div>
           )}
         </div>

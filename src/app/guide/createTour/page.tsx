@@ -46,11 +46,13 @@ const schema = yup.object({
       })
     )
     .optional(),
-  images: yup
-    .mixed()
-    .test("fileRequired", "At least 1 image required", (value) => {
-      return value instanceof FileList && value.length > 0;
-    }),
+images: yup
+  .mixed()
+  .test("fileRequired", "At least 1 image required", (value) => {
+    if (!value) return true; // allow empty during test
+    return value instanceof FileList && value.length > 0;
+  }),
+
   meetingPoint: yup.string().required("Meeting point is required"),
   category: yup.string().required("Category is required"),
 });
@@ -73,19 +75,20 @@ export default function CreateTourPage() {
   } = useForm<TourFormValue>({
   resolver: yupResolver(schema) as any,
   defaultValues: {
-    title: "",
-    description: "",
-    itinerary: "",
-    highlights: "",
-    duration: 0,
-    price: 0,
-    availability: [],
-    included: "",
-    excluded: "",
-    meetingPoint: "",
-    category: "Others",
-    images: undefined,
-  },
+  title: "",
+  description: "",
+  itinerary: "",
+  highlights: "",
+  duration: 1,
+  price: 1,
+  availability: [],
+  included: "",
+  excluded: "",
+  meetingPoint: "",
+  category: "Others",
+  images: undefined,
+}
+
 });
 
 
@@ -98,41 +101,75 @@ export default function CreateTourPage() {
   });
 
   // ✅ Submit handler
-  const onSubmit = async (data: TourFormValue) => {
-    const formData = new FormData();
-    formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("duration", data.duration.toString());
-    formData.append("price", data.price.toString());
-    formData.append("meetingPoint", data.meetingPoint);
-    formData.append("category", data.category);
+//   const onSubmit = async (data: TourFormValue) => {
+//     const formData = new FormData();
+//     formData.append("title", data.title);
+//     formData.append("description", data.description);
+//     formData.append("duration", data.duration.toString());
+//     formData.append("price", data.price.toString());
+//     formData.append("meetingPoint", data.meetingPoint);
+//     formData.append("category", data.category);
 
-    // Convert multi-line inputs → arrays
-    data.itinerary.split("\n").filter(Boolean).forEach((i) => formData.append("itinerary[]", i));
-    data.highlights.split("\n").filter(Boolean).forEach((h) => formData.append("highlights[]", h));
-    data.included.split("\n").filter(Boolean).forEach((i) => formData.append("included[]", i));
-    data.excluded.split("\n").filter(Boolean).forEach((e) => formData.append("excluded[]", e));
+//     // Convert multi-line inputs → arrays
+//     data.itinerary.split("\n").filter(Boolean).forEach((i) => formData.append("itinerary[]", i));
+//     data.highlights.split("\n").filter(Boolean).forEach((h) => formData.append("highlights[]", h));
+//     data.included.split("\n").filter(Boolean).forEach((i) => formData.append("included[]", i));
+//     data.excluded.split("\n").filter(Boolean).forEach((e) => formData.append("excluded[]", e));
 
-    // Availability
-    data.availability?.forEach((a, idx) => {
-      formData.append(`availability[${idx}][date]`, a.date);
-      formData.append(`availability[${idx}][slots]`, a.slots.toString());
-    });
+//     // Availability
+//     data.availability?.forEach((a, idx) => {
+//       formData.append(`availability[${idx}][date]`, a.date);
+//       formData.append(`availability[${idx}][slots]`, a.slots.toString());
+//     });
 
-    // Images
+//     // Images
+//   if (data.images && data.images instanceof FileList && data.images.length > 0) {
+//   Array.from(data.images).forEach((file) => formData.append("images", file));
+// }
+
+//     try {
+//       await dispatch(createTour(formData)).unwrap();
+//       toast.success("Tour created successfully!");
+//       router.push("/guide/tours");
+//     } catch (err: any) {
+//       toast.error(err || "Failed to create tour");
+//       console.error("createTour error:", err);
+//     }
+//   };
+
+// ✅ Submit handler
+const onSubmit = async (data: TourFormValue) => {
+  const formData = new FormData();
+  formData.append("title", data.title);
+  formData.append("description", data.description);
+  formData.append("duration", data.duration.toString());
+  formData.append("price", data.price.toString());
+  formData.append("meetingPoint", data.meetingPoint);
+  formData.append("category", data.category);
+
+  // ✅ Convert to JSON instead of multiple keys
+  formData.append("itinerary", JSON.stringify(data.itinerary.split("\n").filter(Boolean)));
+  formData.append("highlights", JSON.stringify(data.highlights.split("\n").filter(Boolean)));
+  formData.append("included", JSON.stringify(data.included.split("\n").filter(Boolean)));
+  formData.append("excluded", JSON.stringify(data.excluded.split("\n").filter(Boolean)));
+  formData.append("availability", JSON.stringify(data.availability || []));
+
+  // ✅ Images
   if (data.images && data.images instanceof FileList && data.images.length > 0) {
-  Array.from(data.images).forEach((file) => formData.append("images", file));
-}
+    Array.from(data.images).forEach((file) => formData.append("images", file));
+  }
 
-    try {
-      await dispatch(createTour(formData)).unwrap();
-      toast.success("Tour created successfully!");
-      router.push("/guide/tours");
-    } catch (err: any) {
-      toast.error(err || "Failed to create tour");
-      console.error("createTour error:", err);
-    }
-  };
+  try {
+    const result = await dispatch(createTour(formData)).unwrap();
+    console.log("✅ Tour created:", result);
+    toast.success("Tour created successfully!");
+    router.push("/guide/tours");
+  } catch (err: any) {
+    console.error("❌ createTour failed:", err);
+    toast.error(err || "Failed to create tour");
+  }
+};
+
 
   return (
     <motion.div

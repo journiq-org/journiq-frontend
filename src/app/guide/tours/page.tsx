@@ -108,6 +108,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { guideViewTours } from "@/redux/slices/tourSlice";
 import { AppDispatch } from "@/redux/store";
 import { Tour } from "@/types/tour";
+import GuideNavbar from "@/components/GuideNavbar";
 
 const GuideToursPage = () => {
   const router = useRouter();
@@ -119,6 +120,8 @@ const GuideToursPage = () => {
   }, [dispatch]);
 
   return (
+    <>
+   <GuideNavbar/>
     <div className="min-h-screen bg-[#E0DDD7] p-8">
       {/* Header with Add Button */}
       <div className="flex justify-between items-center mb-6">
@@ -179,6 +182,7 @@ const GuideToursPage = () => {
         ))}
       </div>
     </div>
+     </>
   );
 };
 

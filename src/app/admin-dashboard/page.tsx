@@ -11,7 +11,7 @@ import {
   MapPin,
   CalendarCheck,
   MessageSquare,
-  Settings,
+  MessageCircleCode,
   LogOut,
   Bell,
   Search,
@@ -22,6 +22,7 @@ import AllToursPage from "./tour/page";
 import AdminReviewsPage from "./reviews/page";
 import AdminGuidesPage from "./guide/page";
 import AdminUsersPage from "./traveller/page";
+import AdminMessagesPage from "./message/page";
 
 const AdminDashboard = () => {
   const [active, setActive] = useState("dashboard");
@@ -35,7 +36,7 @@ const AdminDashboard = () => {
     { name: "Tours", icon: <MapPin size={20} />, key: "tours" },
     { name: "Bookings", icon: <CalendarCheck size={20} />, key: "bookings", path: "/booking/my-booking"  },
     { name: "Reviews", icon: <MessageSquare size={20} />, key: "reviews" },
-    { name: "Settings", icon: <Settings size={20} />, key: "settings" },
+    { name: "Messages", icon: <MessageCircleCode size={20} />, key: "messages" },
   ];
 
 
@@ -148,14 +149,7 @@ const AdminDashboard = () => {
 
           {active === "reviews" && <AdminReviewsPage/>}
 
-          {active === "settings" && (
-            <div>
-              <h2 className="text-2xl font-bold mb-6">Settings</h2>
-              <div className="bg-white rounded-xl shadow p-6 space-y-4">
-                <p>General admin settings page.</p>
-              </div>
-            </div>
-          )}
+          {active === "messages" && <AdminMessagesPage/>}
         </div>
       </div>
 
