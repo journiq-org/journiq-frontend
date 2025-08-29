@@ -3,12 +3,17 @@ import React, { useState, useRef, useEffect } from "react";
 import { Bell, User, LogOut } from "lucide-react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { useAppSelector } from "@/redux/hook";
+import { selectUnreadNotifications } from "@/redux/slices/notificationSlice";
 
 export default function GuideNavbar() {
   const router = useRouter();
   const [profileOpen, setProfileOpen] = useState(false);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
+
+  // ✅ Get unread notifications count from Redux
+  const unreadNotifications = useAppSelector(selectUnreadNotifications);
 
   // ✅ Close dropdown when clicking outside
   useEffect(() => {
@@ -43,17 +48,21 @@ export default function GuideNavbar() {
           <a href="/guide-dashboard" className="hover:text-[#FF9100] transition">Dashboard</a>
           <a href="/guide/tours" className="hover:text-[#FF9100] transition cursor-pointer">My Tours</a>
           <a href="/booking/guide-booking" className="hover:text-[#FF9100] transition">Bookings</a>
-          <a href="/settings" className="hover:text-[#FF9100] transition">Settings</a>
         </nav>
 
         {/* Right Section */}
         <div className="flex items-center gap-6">
           {/* Notifications */}
-          <button className="relative">
+          <button
+            className="relative"
+            onClick={() => router.push("/notifications")}
+          >
             <Bell className="w-6 h-6" />
-            <span className="absolute -top-2 -right-2 bg-[#FF9100] text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-              3
-            </span>
+            {unreadNotifications.length > 0 && (
+              <span className="absolute -top-2 -right-2 bg-[#FF9100] text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
+                {unreadNotifications.length}
+              </span>
+            )}
           </button>
 
           {/* Profile Dropdown */}

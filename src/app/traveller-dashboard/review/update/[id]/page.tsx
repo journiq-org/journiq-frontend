@@ -4,90 +4,70 @@ import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { fetchReviewById, updateReview, selectReview } from "@/redux/slices/reviewSlice";
-import { fetchBookings } from "@/redux/slices/bookingSlice";
 import { publicViewTourDetails } from "@/redux/slices/tourSlice";
 import TravellerNavbar from "@/components/TravellerNavbar";
 import { TextField, Button, Typography, Card, CardContent } from "@mui/material";
 import toast from "react-hot-toast";
 
-const UpdateReviewPage = () => {
-  const { id } = useParams(); // reviewId
+const EditReviewPage = () => {
+  const params = useParams<{ id: string }>();
+  const reviewId = params?.id;
   const router = useRouter();
   const dispatch = useAppDispatch();
 
   const review = useAppSelector(selectReview);
-  const { bookings } = useAppSelector((state) => state.booking);
   const { selectedTour } = useAppSelector((state) => state.tour);
   const loading = useAppSelector((state) => state.reviews.loading);
 
+  // local form state
   const [serviceQuality, setServiceQuality] = useState(5);
   const [punctuality, setPunctuality] = useState(5);
   const [satisfactionSurvey, setSatisfactionSurvey] = useState(5);
   const [comment, setComment] = useState("");
 
-  // Fetch review & bookings
-//   useEffect(() => {
-//     if (id) dispatch(fetchReviewById(id));
-//     dispatch(fetchBookings());
-//   }, [dispatch, id]);
-
-
-const reviewId = Array.isArray(id) ? id[0] : id;
-
-useEffect(() => {
-  if (reviewId) dispatch(fetchReviewById(reviewId));
-  dispatch(fetchBookings());
-}, [dispatch, reviewId]);
-
-
-  // Prefill form
-//   useEffect(() => {
-//     if (review) {
-//       setServiceQuality(review.experience.serviceQuality ?? 5);
-//       setPunctuality(review.experience.punctuality ?? 5);
-//       setSatisfactionSurvey(review.experience.satisfactionSurvey ?? 5);
-//       setComment(review.comment ?? "");
-
-//       if (review.tour) {
-//         const tourId = typeof review.tour === "string" ? review.tour : review.tour._id;
-//         dispatch(publicViewTourDetails(tourId));
-//       }
-//     }
-//   }, [review, dispatch]);
-
-
-useEffect(() => {
-  if (review && review.experience) {
-    setServiceQuality(review.experience.serviceQuality ?? 5);
-    setPunctuality(review.experience.punctuality ?? 5);
-    setSatisfactionSurvey(review.experience.satisfactionSurvey ?? 5);
-    setComment(review.comment ?? "");
-
-    if (review.tour) {
-      const tourId = typeof review.tour === "string" ? review.tour : review.tour._id;
-      if (tourId) dispatch(publicViewTourDetails(tourId));
+  // fetch review when page loads
+  useEffect(() => {
+    if (reviewId) {
+      dispatch(fetchReviewById(reviewId));
     }
-  }
-}, [review, dispatch]);
+  }, [dispatch, reviewId]);
 
+  // prefill form when review is loaded
+  useEffect(() => {
+    if (review && review.experience) {
+      setServiceQuality(review.experience.serviceQuality ?? 5);
+      setPunctuality(review.experience.punctuality ?? 5);
+      setSatisfactionSurvey(review.experience.satisfactionSurvey ?? 5);
+      setComment(review.comment ?? "");
+
+      if (review.tour) {
+        const tourId = typeof review.tour === "string" ? review.tour : review.tour._id;
+        if (tourId) dispatch(publicViewTourDetails(tourId));
+      }
+    }
+  }, [review, dispatch]);
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!id) return toast.error("Missing review ID");
+    if (!reviewId) return toast.error("Missing review ID");
 
     try {
-     await dispatch(
-  updateReview({
-    reviewId: reviewId!,
-    data: {
-      experience: { serviceQuality, punctuality, satisfactionSurvey },
-      comment,
-    },
-  })
-).unwrap();
+      await dispatch(
+        updateReview({
+          reviewId,
+          data: {
+            booking:
+              typeof review?.tour === "string"
+                ? review.tour
+                : review?.tour?._id || "", // depends on backend schema
+            experience: { serviceQuality, punctuality, satisfactionSurvey },
+            comment,
+          },
+        })
+      ).unwrap();
 
       toast.success("Review updated successfully!");
-      router.push("/booking/my-booking");
+      router.push("/traveller-dashboard/review/my-reviews"); // redirect to my reviews page
     } catch (err: any) {
       toast.error(err || "Failed to update review");
     }
@@ -99,7 +79,7 @@ useEffect(() => {
       <div className="min-h-screen bg-[#E2E0DF] p-6 md:p-8 flex justify-center">
         <div className="bg-white rounded-2xl shadow-md p-8 max-w-2xl w-full space-y-6">
           <Typography variant="h4" className="text-center mb-6">
-            Update Review
+            Edit Review
           </Typography>
 
           {selectedTour && (
@@ -163,4 +143,4 @@ useEffect(() => {
   );
 };
 
-export default UpdateReviewPage;
+export default EditReviewPage;

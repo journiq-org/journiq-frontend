@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import Header from '@/components/Header'
+import TravellerNavbar from '@/components/TravellerNavbar' // ✅ import your traveller navbar
 import { publicViewTourDetails } from '@/redux/slices/tourSlice'
 import { fetchReviewsForTour } from '@/redux/slices/reviewSlice'
 import { AppDispatch, RootState } from '@/redux/store'
@@ -20,7 +21,10 @@ const TourDetails = () => {
   const id = Array.isArray(rawId) ? rawId[0] : rawId ?? ''
 
   const [avgRating, setAvgRating] = useState<number>(0)
+  const [role, setRole] = useState<string | null>(null)
+  const [token, setToken] = useState<string | null>(null)
 
+  // ✅ Fetch tour + reviews
   useEffect(() => {
     if (id) {
       dispatch(publicViewTourDetails(id))
@@ -28,6 +32,7 @@ const TourDetails = () => {
     }
   }, [dispatch, id])
 
+  // ✅ Calculate avg rating
   useEffect(() => {
     if (reviews && reviews.length > 0) {
       const tourReviews = reviews.filter((r) =>
@@ -49,34 +54,48 @@ const TourDetails = () => {
     }
   }, [reviews, id])
 
-  const handleBooking = async () => {
-    try {
-      const res = await fetch('/api/auth/get-cookie', {
-        method: 'GET',
-        credentials: 'include',
-      })
+  // ✅ Check cookies for token & role
+  useEffect(() => {
+    const fetchCookies = async () => {
+      try {
+        const res = await fetch('/api/auth/get-cookie', {
+          method: 'GET',
+          credentials: 'include',
+        })
 
-      if (!res.ok) throw new Error('Failed to fetch cookies')
+        if (!res.ok) throw new Error('Failed to fetch cookies')
 
-      const data = await res.json()
-      const { token, role } = data
-
-      if (token && role) {
-        router.push(`/booking?tourId=${id}`)
-      } else {
-        router.push('/login')
+        const data = await res.json()
+        setToken(data.token || null)
+        setRole(data.role || null)
+      } catch (error) {
+        console.error('Error fetching cookies:', error)
+        setToken(null)
+        setRole(null)
       }
-    } catch (error) {
-      console.error('Error fetching cookies:', error)
+    }
+
+    fetchCookies()
+  }, [])
+
+  // ✅ Booking
+  const handleBooking = async () => {
+    if (token && role) {
+      router.push(`/booking?tourId=${id}`)
+    } else {
       router.push('/login')
     }
   }
 
-  if (!selectedTour) return <p className="text-gray-500 text-center mt-10">Loading tour details...</p>
+  if (!selectedTour)
+    return (
+      <p className="text-gray-500 text-center mt-10">Loading tour details...</p>
+    )
 
   return (
     <div className="bg-[#E2E0DF] min-h-screen">
-      <Header />
+      {/* ✅ Conditionally render navbar */}
+      {token && role === 'traveller' ? <TravellerNavbar /> : <Header />}
 
       <div className="max-w-7xl mx-auto p-6 space-y-12">
         {/* Hero Image */}

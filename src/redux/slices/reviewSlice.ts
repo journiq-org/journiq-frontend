@@ -150,7 +150,14 @@ export const addReview = createAsyncThunk<
 // ✅ Update review
 export const updateReview = createAsyncThunk<
   Review,
-  { reviewId: string; data: { experience: Review["experience"]; comment: string } },
+  {
+    reviewId: string;
+    data: {
+      booking: string; // required in payload
+      experience: Review["experience"];
+      comment: string;
+    };
+  },
   { rejectValue: string }
 >("reviews/updateReview", async ({ reviewId, data }, { rejectWithValue }) => {
   try {
@@ -168,6 +175,8 @@ export const updateReview = createAsyncThunk<
     );
   }
 });
+
+
 
 // ✅ Delete review
 export const deleteReview = createAsyncThunk<

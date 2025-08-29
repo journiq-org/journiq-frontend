@@ -112,19 +112,14 @@ const TravellerNavbar = () => {
   </button>
 
   {/* Notifications */}
-  <div className="relative">
-    <button className="relative">
-      <Bell className="w-6 h-6" />
-      {/* <span className="absolute -top-2 -right-2 bg-[#FF9100] text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-        
-      </span> */}
-    </button>
-    {/* {unreadCount > 0 && ( */}
-      <span className="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
-        {/* {unreadCount} */}
-      </span>
-    {/* )} */}
-  </div>
+  
+  <button
+    onClick={() => router.push("/notifications")}
+    className="p-2 rounded-full hover:bg-[#d1cfc8] transition"
+    aria-label="notifications"
+  >
+    <Bell size={26} className="text-[#0c0c0c]" />
+  </button>
 
   {/* Profile */}
   <div ref={profileRef} className="relative">

@@ -179,7 +179,7 @@ const MyBookingPage = () => {
                 )}
 
                 {/* Update Review */}
-                {status === "completed" && booking.review && (
+                {/* {status === "completed" && booking.review && (
                   <button
                     onClick={() => {
                       if (booking.review?._id) {
@@ -193,10 +193,10 @@ const MyBookingPage = () => {
                     <Edit3 className="w-4 h-4" />
                     Update Review
                   </button>
-                )}
+                )} */}
 
                 {/* Delete Review */}
-                {status === "completed" && booking.review && (
+                {/* {status === "completed" && booking.review && (
                   <button
                     onClick={() => {
                       if (!booking.review?._id) return;
@@ -207,7 +207,7 @@ const MyBookingPage = () => {
                     <Trash2 className="w-4 h-4" />
                     Delete Review
                   </button>
-                )}
+                )} */}
 
                 {/* Cancel Confirmation Dialog */}
                 {openDialogId === booking._id && (
