@@ -10,6 +10,7 @@ import adminToursReducer from "@/redux/slices/adminTourSlice"
 import reviewsReducer from "@/redux/slices/reviewSlice"
 import adminGuidesReducer from "@/redux/slices/adminGuideSlice"
 import adminUsersReducer from "@/redux/slices/adminUserSlice"
+import createtourReducer from "@/redux/slices/createTourSlice"
 
 export const store = configureStore({
     reducer:{
@@ -23,7 +24,8 @@ export const store = configureStore({
         adminTours: adminToursReducer,
         reviews: reviewsReducer,
         adminGuides: adminGuidesReducer,
-        adminUsers: adminUsersReducer
+        adminUsers: adminUsersReducer,
+        createtour: createtourReducer
     }
 })
 
