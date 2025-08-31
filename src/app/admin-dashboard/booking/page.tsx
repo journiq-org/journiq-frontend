@@ -1,12 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { fetchBookingsByTourId } from "@/redux/slices/adminBookingSlice";
+import { fetchBookingsByTourId } from "@/redux/slices/adminSlice";
 import { useRouter } from "next/navigation";
 
 const MyBookingPage = () => {
   const dispatch = useAppDispatch();
-  const { bookings, loading, error } = useAppSelector((state) => state.adminBookings);
+  const { allBookings, loading, error } = useAppSelector((state) => state.admin);
 
   const [tourId, setTourId] = useState(""); // Optional: filter by tour
 
@@ -51,7 +51,7 @@ const MyBookingPage = () => {
             </tr>
           </thead>
           <tbody>
-            {bookings.map((b) => (
+            {allBookings.map((b) => (
               <tr key={b._id} className="hover:bg-gray-50 border-b">
                 <td className="p-2 border">{b._id}</td>
                 <td className="p-2 border">{b.user.name} ({b.user.email})</td>

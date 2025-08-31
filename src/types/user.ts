@@ -7,6 +7,9 @@ export interface User {
   location?: string;
   bio?: string;
   profilePic?: string;
+  createdAt: string
+   isBlocked?: boolean;
+   isVerified: boolean
 }
 
 export interface ProfileState {

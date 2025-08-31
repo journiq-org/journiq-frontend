@@ -43,3 +43,16 @@ export interface Tour {
   createdAt: string;
   updatedAt: string;
 }
+
+
+
+// define a type for the filters
+export interface TourFilters {
+  title?: string;
+  category?: string;
+  destination?: string;
+  priceMin?: string;
+  priceMax?: string;
+  ratingMin?: string;
+  popular?: string;
+}
