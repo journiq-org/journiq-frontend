@@ -164,7 +164,7 @@ const tourSlice = createSlice({
               state.error = action.error.message || ' Failed to load tour details'
             })
 
-            //guide update product
+            //guide update 
             .addCase(guideUpdateTour.pending, state =>{
               state.isLoading = true
             })

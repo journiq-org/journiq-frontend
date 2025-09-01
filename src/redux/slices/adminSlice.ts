@@ -120,7 +120,7 @@ export const adminDeleteUser = createAsyncThunk('admin/deleteUser', async (id: s
 })
 
 
-
+//BOOKING
 
 //fetch booking by tour id
 export const fetchBookingsByTourId = createAsyncThunk('admin/fetchBookingsByTourId',async (tourId: string) => {
@@ -129,6 +129,14 @@ export const fetchBookingsByTourId = createAsyncThunk('admin/fetchBookingsByTour
     })
 
     return  res.data.data
+})
+
+//GET single booking
+export const getSingleBooking = createAsyncThunk('admin/viewSingleBooking', async(bookingId: string) => {
+    const res = await api.get(`/api/admin/bookings/${bookingId}`,{
+        withCredentials: true
+    })
+    return res.data.data
 })
 
 
@@ -197,8 +205,8 @@ export const fetchAllTours = createAsyncThunk<
   })
 
   //get single tour by guide
-  export const getSingleTourByGuide = createAsyncThunk('admin/viewSingleTourByGuide', async(guideId, tourId) => {
-    const res = await api.get(`/api/admin/tours/${guideId}/tour/${tourId}`,{
+  export const getSingleTourByGuide = createAsyncThunk('admin/viewSingleTourByGuide', async({guideId, tourId}:{guideId:string, tourId: string}) => {
+    const res = await api.get(`/api/admin/tours/guide/${guideId}/tour/${tourId}`,{
         withCredentials:true
     })
     return res.data.data
@@ -343,6 +351,7 @@ const adminSlice = createSlice({
             })
 
 
+            //booking
 
             //fetch bookings by id
             .addCase(fetchBookingsByTourId.pending, (state) => {
@@ -356,6 +365,19 @@ const adminSlice = createSlice({
             .addCase(fetchBookingsByTourId.rejected, (state, action) => {
                 state.loading = false;
                 state.error = action.error.message || "Failed to fetch bookings";
+            })
+
+            //get single booking
+            .addCase(getSingleBooking.pending, state => {
+                state.loading = true
+            })
+            .addCase(getSingleBooking.fulfilled, (state, action) => {
+                state.loading = false
+                state.singleBooking = action.payload
+            })
+            .addCase(getSingleBooking.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.error.message || ' Failed to fetch booking details'
             })
 
 

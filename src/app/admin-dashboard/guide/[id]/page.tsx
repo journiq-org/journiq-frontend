@@ -637,13 +637,13 @@ const AdminGuidesPage = () => {
     try {
       await dispatch(revokeGuide(id)).unwrap();
       toast.success('Guide verification revoked successfully');
-    } catch (error) {
+    } catch (error) { 
       toast.error('Failed to revoke guide verification');
     }
   };
 
-  const openGuideDetails = (id: string) => {
-    router.push(`/admin-dashboard/guideDetails/${id}`);
+  const openGuideDetails = (guideId: string) => {
+    router.push(`/admin-dashboard/guideDetails/${guideId}`);
   };
 
   const getInitials = (name: string) => {

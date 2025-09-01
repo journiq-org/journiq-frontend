@@ -128,7 +128,7 @@ interface Tour {
 const GuideDetailsPage = () => {
   const router = useRouter();
   const params = useParams();
-  const id = params?.id as string;
+  const id = params?.guideId as string;
 
   const dispatch = useDispatch<AppDispatch>();
   const { singleGuide, allTours, loading, error } = useSelector((state: any) => state.admin);
@@ -562,7 +562,7 @@ const GuideDetailsPage = () => {
                             </span>
                           </div>
 
-                          <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
+                          <Button size="sm" className="bg-blue-600 hover:bg-blue-700" onClick={() => router.push(`/admin-dashboard/guideDetails/${id}/viewTourDetails/${tour._id}`)}>
                             <Eye className="h-4 w-4 mr-2" />
                             View Details
                           </Button>
