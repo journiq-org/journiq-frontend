@@ -135,6 +135,7 @@ const destinationSlice = createSlice({
             //create destination
             .addCase(createDestination.pending, state => {
               state.loading = true
+              
             })
             .addCase(createDestination.fulfilled, (state,action) => {
               state.loading =false 
