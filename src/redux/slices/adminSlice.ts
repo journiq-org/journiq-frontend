@@ -4,6 +4,7 @@ import { Tour, TourFilters } from "@/types/tour";
 import { User } from "@/types/user";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { RootState } from "../store";
+import { DestinationType } from "@/types/destination";
 
 
 export interface AdminState {
@@ -33,7 +34,11 @@ export interface AdminState {
   totalBookings: number;
 
   // REVIEWS
+  allReviews: Review[]
   deletedReviews: Review[];
+
+  //DESTINATION
+  allDestinations: DestinationType[]
 }
 
 
@@ -64,7 +69,11 @@ export const adminInitialState: AdminState = {
   totalBookings: 0,
 
   // REVIEWS
+  allReviews: [],
   deletedReviews: [],    // track deleted review IDs or objects
+
+  //DESTINATIONS
+  allDestinations: []
 };
 
 
@@ -221,6 +230,26 @@ export const fetchAllTours = createAsyncThunk<
   })
 
 
+  //review
+
+  //get review by tour
+  export const getReviewByTour = createAsyncThunk('admin/getReviewByTour', async (id: string) => {
+    const res = await api.get(`/api/review/tour/${id}`,{
+        withCredentials: true
+    })
+    return res.data.data
+  })
+
+
+  //destination
+
+  //get all destination
+  export const getAllDestinationsAdmin =createAsyncThunk('admin/getAllDestinations', async () => {
+    const res = await api.get(`/api/admin/allDestinations`, {
+        withCredentials: true
+    })
+    return res.data.data
+  })
 
   //get dashboard statistics
   export const fetchDashboardStats = createAsyncThunk('admin/fetchDashboardStats', async() => {
@@ -532,6 +561,37 @@ const adminSlice = createSlice({
             state.error = action.error.message || 'failed to block tour'
             })
 
+
+            //review
+
+            //get review by tour
+            .addCase(getReviewByTour.pending, state => {
+                state.loading = true
+            })
+            .addCase(getReviewByTour.fulfilled, (state, action) => {
+                state.loading = false
+                state.allReviews = action.payload
+            })
+            .addCase(getReviewByTour.rejected, (state,action) => {
+                state.loading = false
+                state.error = action.error.message || 'Failed to load reviews'
+            })
+
+
+            //destinations
+
+            //get all destinations
+            .addCase(getAllDestinationsAdmin.pending, state =>{
+                state.loading = true
+            })
+            .addCase(getAllDestinationsAdmin.fulfilled, (state, action) =>{
+                state.loading = false
+                state.allDestinations = action.payload
+            })
+            .addCase(getAllDestinationsAdmin.rejected, (state, action) =>{
+                state.loading = false
+                state.error = action.error.message || ' Failed to load destinations'
+            })
 
 
             //get dashboard stats

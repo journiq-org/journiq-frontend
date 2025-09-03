@@ -59,14 +59,27 @@ export const listDestinations = createAsyncThunk('/destinations', async() => {
 export const getTourByDestination = createAsyncThunk('destination/getTourByDestination', async(id: string) => {
 
   const res = await api.get(`/api/tour/publicView/${id}`)
-  console.log("API called:", `/destination/${id}/tours`)
-
-  console.log("tours by destination", res.data.data)
 
   return res.data.data
 })
 
-//get single tour
+//get single destination
+export const getSingleDestination = createAsyncThunk('destination/getSingleDestination', async (destinationId: string) => {
+  const res = await api.get(`/api/destination/viewDestination/${destinationId}`,{
+    withCredentials: true
+  })
+  return res.data.data
+})
+
+//create destination
+export const createDestination = createAsyncThunk('destination/createDestination', async (formData: FormData) => {
+  const res = await api.post('/api/destination/createDestination',formData,  {
+    withCredentials: true
+  })
+  return res.data.data
+})
+
+
 
 
 //slice
@@ -103,6 +116,35 @@ const destinationSlice = createSlice({
               state.loading = false
               state.error = action.error.message || 'Failed to load Tour of corresponding destination'
             })
+
+
+            //get single destinations
+            .addCase(getSingleDestination.pending, state =>{
+              state.loading = true
+            })
+            .addCase(getSingleDestination.fulfilled, (state, action) => {
+              state.loading = false 
+              state.selectedDestination = action.payload
+            })
+            .addCase(getSingleDestination.rejected, (state, action) => {
+              state.loading = false
+              state.error = action.error.message || 'Failed to load destination'
+            })
+
+
+            //create destination
+            .addCase(createDestination.pending, state => {
+              state.loading = true
+            })
+            .addCase(createDestination.fulfilled, (state,action) => {
+              state.loading =false 
+              state.destinations.push(action.payload)
+            })
+            .addCase(createDestination.rejected, (state, action) => {
+              state.loading = false 
+              state.error = action.error.message || 'Failed to create destination'
+            })
+            
     }
 })
 

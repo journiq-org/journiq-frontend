@@ -233,6 +233,7 @@ import AdminReviewsPage from "./reviews/page";
 import AdminGuidesPage from "./guide/[id]/page";
 import AdminUsersPage from "./traveller/[id]/page";
 import AdminMessagesPage from "./message/page";
+import AdminDestinationsPage from "./destinations/page";
 
 const AdminDashboard = () => {
   const [active, setActive] = useState("dashboard");
@@ -265,7 +266,7 @@ const AdminDashboard = () => {
     { name: "Dashboard", icon: <Home size={20} />, key: "dashboard" },
     { name: "Users", icon: <Users size={20} />, key: "users" },
     { name: "Guides", icon: <UserCheck size={20} />, key: "guides" },
-    { name: "Tours", icon: <MapPin size={20} />, key: "tours" },
+    { name: "Destinations", icon: <MapPin size={20} />, key: "destinations" },
     { name: "Bookings", icon: <CalendarCheck size={20} />, key: "bookings", path: "/booking/my-booking" },
     { name: "Reviews", icon: <MessageSquare size={20} />, key: "reviews" },
     { name: "Messages", icon: <MessageCircleCode size={20} />, key: "messages" },
@@ -534,11 +535,11 @@ const AdminDashboard = () => {
                       <span className="text-sm font-medium text-blue-900">Manage Users</span>
                     </button>
                     <button
-                      onClick={() => setActive("tours")}
+                      onClick={() => setActive("destinations")}
                       className="p-4 bg-green-50 hover:bg-green-100 rounded-xl transition-colors group"
                     >
                       <MapPin className="w-6 h-6 text-green-600 mb-2" />
-                      <span className="text-sm font-medium text-green-900">View Tours</span>
+                      <span className="text-sm font-medium text-green-900">View Destinations</span>
                     </button>
                     <button
                       onClick={() => setActive("bookings")}
@@ -562,7 +563,7 @@ const AdminDashboard = () => {
 
           {active === "users" && <AdminUsersPage/>}
           {active === "guides" && <AdminGuidesPage/>}
-          {/* {active === "tours" && <AllToursPage/>} */}
+          {active === "destinations" && <AdminDestinationsPage/>}
           {active === "bookings" && <MyBookingPage/>}
           {active === "reviews" && <AdminReviewsPage/>}
           {active === "messages" && <AdminMessagesPage/>}
