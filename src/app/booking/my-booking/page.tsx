@@ -160,23 +160,23 @@ const MyBookingPage = () => {
                 )}
 
                 {/* Add Review */}
-                {status === "completed" && !booking.review && (
-                  <button
-                    onClick={() => {
-                      const tourId =
-                        typeof booking.tour === "object"
-                          ? booking.tour._id
-                          : booking.tour;
-                      router.push(
-                        `/traveller-dashboard/review/?tourId=${tourId}&bookingId=${booking._id}`
-                      );
-                    }}
-                    className="flex items-center justify-center gap-2 bg-yellow-600 hover:bg-yellow-700 text-white py-2 rounded-lg font-medium transition-all w-full mt-2"
-                  >
-                    <MessageSquarePlus className="w-4 h-4" />
-                    Add Review
-                  </button>
-                )}
+               {status === "completed" && !booking.review && (
+                <button
+                  onClick={() => {
+                    const tourId =
+                      typeof booking.tour === "object"
+                        ? booking.tour._id
+                        : booking.tour;
+                    router.push(
+                      `/traveller-dashboard/review/?tourId=${tourId}&bookingId=${booking._id}`
+                    );
+                  }}
+                  className="flex items-center justify-center gap-2 bg-yellow-600 hover:bg-yellow-700 text-white py-2 rounded-lg font-medium transition-all w-full mt-2"
+                >
+                  <MessageSquarePlus className="w-4 h-4" />
+                  Add Review
+                </button>
+              )}
 
                 {/* Update Review */}
                 {/* {status === "completed" && booking.review && (

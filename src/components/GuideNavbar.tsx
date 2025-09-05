@@ -178,7 +178,7 @@ export default function GuideNavbar() {
     { href: "/guide-dashboard", label: "Dashboard" },
     { href: "/guide/tours", label: "My Tours" },
     { href: "/booking/guide-booking", label: "Bookings" },
-    { href: "/guide-dashboard/settings", label: "Settings" },
+    { href: "/settings", label: "Settings" },
   ];
 
   const profileItems = [

@@ -149,6 +149,18 @@ export const getSingleBooking = createAsyncThunk('admin/viewSingleBooking', asyn
 })
 
 
+// fetch all bookings   
+export const fetchAllBookings = createAsyncThunk(
+  "admin/fetchAllBookings",
+  async () => {
+    const res = await api.get("/api/booking/admin/all", {
+      withCredentials: true,
+    });
+    return res.data.bookings; // ✅ matches controller response
+  }
+);
+
+
 //guide 
 
 
@@ -234,7 +246,8 @@ export const fetchAllTours = createAsyncThunk<
 
   //get review by tour
   export const getReviewByTour = createAsyncThunk('admin/getReviewByTour', async (id: string) => {
-    const res = await api.get(`/api/review/tour/${id}`,{
+    const res = await api.get(`/api/review/tour/${id}`,
+        {
         withCredentials: true
     })
     return res.data.data
@@ -408,6 +421,21 @@ const adminSlice = createSlice({
                 state.loading = false
                 state.error = action.error.message || ' Failed to fetch booking details'
             })
+            // fetch all bookings
+            .addCase(fetchAllBookings.pending, (state) => {
+            state.loading = true;
+            state.error = null;
+            })
+            .addCase(fetchAllBookings.fulfilled, (state, action) => {
+            state.loading = false;
+            state.allBookings = action.payload;
+            state.totalBookings = action.payload.length; // keep total count updated
+            })
+            .addCase(fetchAllBookings.rejected, (state, action) => {
+            state.loading = false;
+            state.error = action.error.message || "Failed to fetch bookings";
+            })
+
 
 
             //guides 

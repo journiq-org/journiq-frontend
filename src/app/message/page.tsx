@@ -1,26 +1,28 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { Mail, Phone, MapPin } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Send, Mail, Phone, MapPin } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { sendMessage, getTravellerMessages } from "@/redux/slices/messageSlice";
 import TravellerNavbar from "@/components/TravellerNavbar";
 
-export default function ContactPage() {
+export default function Page() {
   const dispatch = useAppDispatch();
   const { messages, loading, error } = useAppSelector((state) => state.messages);
-  const profile = useAppSelector((state) => state.user.profile);
 
-  const [formData, setFormData] = useState({
-    subject: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState({ subject: "", message: "" });
   const [success, setSuccess] = useState(false);
+  const chatEndRef = useRef<HTMLDivElement | null>(null);
 
-  // Fetch traveller messages on mount
   useEffect(() => {
     dispatch(getTravellerMessages());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (chatEndRef.current) {
+      chatEndRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  }, [messages]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -28,11 +30,16 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await dispatch(sendMessage({ subject: formData.subject, message: formData.message }));
+    if (!formData.message.trim()) return;
+
+    const result = await dispatch(
+      sendMessage({ subject: formData.subject || "No Subject", message: formData.message })
+    );
+
     if (sendMessage.fulfilled.match(result)) {
       setSuccess(true);
       setFormData({ subject: "", message: "" });
-      dispatch(getTravellerMessages()); // refresh messages to show new message
+      dispatch(getTravellerMessages());
       setTimeout(() => setSuccess(false), 3000);
     } else {
       setSuccess(false);
@@ -42,85 +49,117 @@ export default function ContactPage() {
   return (
     <>
       <TravellerNavbar />
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center p-6">
-        <div className="max-w-4xl w-full bg-white rounded-2xl shadow-lg p-8">
-          <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">
-            Message <span className="text-indigo-600">Journiq</span>
-          </h1>
+      <div className="h-screen grid grid-cols-1 md:grid-cols-2">
+        
+        {/* Left side - Contact Info */}
+        <div className="bg-[#E2E0DF] p-8 border-r flex flex-col gap-6">
+          <h2 className="text-2xl font-semibold mb-4">📞 Contact Us</h2>
 
-          {/* Chat Box */}
-          <div className="mb-6 max-h-96 overflow-y-auto space-y-4 border rounded-lg p-4 bg-gray-50">
+          <div className="flex items-center gap-3 text-gray-700">
+            <Mail className="w-5 h-5 text-green-600" />
+            <span>support@travelsite.com</span>
+          </div>
+
+          <div className="flex items-center gap-3 text-gray-700">
+            <Phone className="w-5 h-5 text-green-600" />
+            <span>+1 (555) 123-4567</span>
+          </div>
+
+          <div className="flex items-center gap-3 text-gray-700">
+            <MapPin className="w-5 h-5 text-green-600" />
+            <span>123 Main Street, New York, USA</span>
+          </div>
+
+          {/* Embedded Google Map */}
+          <div className="mt-6">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d24170.123456!2d-74.006!3d40.7128!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sNew%20York!5e0!3m2!1sen!2sus!4v1234567890"
+              width="100%"
+              height="250"
+              allowFullScreen
+              loading="lazy"
+              className="rounded-lg shadow"
+            ></iframe>
+          </div>
+        </div>
+
+        {/* Right side - Chat */}
+        <div className="flex flex-col bg-[#E2E0DF]">
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {loading && <p className="text-gray-600">Loading messages...</p>}
-            {!loading && messages.length === 0 && <p className="text-gray-500">No messages yet.</p>}
+            {!loading && messages.length === 0 && (
+              <p className="text-gray-500 text-center">No messages yet.</p>
+            )}
+
             {messages.map((msg) => (
               <div key={msg._id} className="space-y-1">
-                <div className="bg-blue-100 text-gray-800 p-3 rounded-lg w-fit max-w-xs">
-                  <strong>{msg.subject}</strong>
-                  <p>{msg.message}</p>
-                  <small className="text-gray-500 text-xs">{new Date(msg.createdAt).toLocaleString()}</small>
+                {/* Traveller message */}
+                <div className="flex justify-end">
+                  <div className="bg-green-500 text-white p-3 rounded-2xl rounded-br-sm max-w-xs shadow">
+                    <strong>{msg.subject}</strong>
+                    <p>{msg.message}</p>
+                    <small className="text-gray-200 text-xs block">
+                      {new Date(msg.createdAt).toLocaleString()}
+                    </small>
+                  </div>
                 </div>
 
+                {/* Admin reply */}
                 {msg.adminReply && (
-                  <div className="bg-green-100 text-gray-800 p-3 rounded-lg w-fit max-w-xs ml-auto">
-                    <strong>Admin </strong>
-                    <p>{msg.adminReply}</p>
-                    {msg.repliedAt && (
-                      <small className="text-gray-500 text-xs">
-                        {new Date(msg.repliedAt).toLocaleString()}
-                      </small>
-                    )}
+                  <div className="flex justify-start">
+                    <div className="bg-gray-300 text-gray-800 p-3 rounded-2xl rounded-bl-sm max-w-xs shadow">
+                      <strong>Admin</strong>
+                      <p>{msg.adminReply}</p>
+                      {msg.repliedAt && (
+                        <small className="text-gray-600 text-xs block">
+                          {new Date(msg.repliedAt).toLocaleString()}
+                        </small>
+                      )}
+                    </div>
                   </div>
                 )}
               </div>
             ))}
+
+
+            <div ref={chatEndRef} />
           </div>
 
-          {/* Send new message form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
+          {/* Chat input */}
+          <form onSubmit={handleSubmit} className="p-4 flex flex-col gap-3 border-t bg-[#E2E0DF]">
+            {/* Subject field */}
             <input
               type="text"
               name="subject"
               placeholder="Subject"
               value={formData.subject}
               onChange={handleChange}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
+              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-green-500"
               required
             />
-            <textarea
-              name="message"
-              placeholder="Your Message"
-              value={formData.message}
-              onChange={handleChange}
-              rows={4}
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500"
-              required
-            />
-            <button
-              type="submit"
-              className="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 transition disabled:opacity-50"
-            >
-              {loading ? "Sending..." : "Send Message"}
-            </button>
 
-            {success && <p className="text-green-600 text-sm text-center mt-2">✅ Message sent!</p>}
-            {error && <p className="text-red-600 text-sm text-center mt-2">❌ {error}</p>}
+            {/* Message field */}
+            <div className="flex items-center gap-2">
+              <textarea
+                name="message"
+                placeholder="Type your message..."
+                value={formData.message}
+                onChange={handleChange}
+                rows={1}
+                className="flex-1 resize-none px-4 py-2 border rounded-full focus:ring-2 focus:ring-green-500"
+                required
+              />
+              <button
+                type="submit"
+                className="p-3 bg-green-500 text-white rounded-full hover:bg-green-600 transition disabled:opacity-50"
+              >
+                <Send className="w-5 h-5" />
+              </button>
+            </div>
           </form>
 
-          {/* Contact Details */}
-          <div className="mt-8 space-y-6">
-            <div className="flex items-center gap-4">
-              <Mail className="text-indigo-600 w-6 h-6" />
-              <span className="text-gray-700">support@journiq.com</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <Phone className="text-indigo-600 w-6 h-6" />
-              <span className="text-gray-700">+91 98765 43210</span>
-            </div>
-            <div className="flex items-center gap-4">
-              <MapPin className="text-indigo-600 w-6 h-6" />
-              <span className="text-gray-700">Kochi, Kerala, India</span>
-            </div>
-          </div>
+          {success && <p className="text-green-600 text-sm text-center pb-2">✅ Message sent!</p>}
+          {error && <p className="text-red-600 text-sm text-center pb-2">❌ {error}</p>}
         </div>
       </div>
     </>

@@ -234,6 +234,11 @@ import AdminGuidesPage from "./guide/[id]/page";
 import AdminUsersPage from "./traveller/[id]/page";
 import AdminMessagesPage from "./message/page";
 import AdminDestinationsPage from "./destinations/page";
+// import { useAppSelector } from "@/redux/hook";
+import { selectUnreadNotifications } from "@/redux/slices/notificationSlice";
+import AdminNotificationDrawer from "../../components/AdminNotificationDrawer";
+
+
 
 const AdminDashboard = () => {
   const [active, setActive] = useState("dashboard");
@@ -254,6 +259,9 @@ const AdminDashboard = () => {
   useEffect(() => {
     dispatch(fetchDashboardStats());
   }, [dispatch]);
+
+  const unreadNotifications = useAppSelector(selectUnreadNotifications);
+  const [openDrawer, setOpenDrawer] = useState(false);
 
   // Show error toast if there's an error
   useEffect(() => {
@@ -412,12 +420,39 @@ const AdminDashboard = () => {
             </div>
 
             <div className="flex items-center gap-4">
-              <button className="relative p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
+              {/* <button className="relative p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
                 <Bell className="w-5 h-5" />
                 <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-medium">
-                  3
+                  
                 </span>
+              </button> */}
+              {/* <button
+                onClick={() => router.push("/admin-dashboard/notifications")}
+                className="relative p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                aria-label="Notifications"
+              >
+                <Bell className="w-5 h-5" />
+                {unreadNotifications.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-medium">
+                    {unreadNotifications.length}
+                  </span>
+                )}
+              </button> */}
+
+
+              <button
+                onClick={() => setOpenDrawer(true)}
+                className="relative p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                aria-label="Notifications"
+              >
+                <Bell className="w-5 h-5" />
+                {unreadNotifications.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full font-medium">
+                    {unreadNotifications.length}
+                  </span>
+                )}
               </button>
+
 
               <div className="flex items-center gap-3 pl-4 border-l border-slate-200">
                 <div className="w-9 h-9 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
@@ -569,6 +604,10 @@ const AdminDashboard = () => {
           {active === "messages" && <AdminMessagesPage/>}
         </div>
       </div>
+
+      {/* Notification Drawer */}
+      <AdminNotificationDrawer open={openDrawer} onClose={() => setOpenDrawer(false)} />
+
 
       {/* Logout Confirmation Dialog */}
       {showDialog && (

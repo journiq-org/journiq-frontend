@@ -650,7 +650,7 @@ const GuideDetailsPage = () => {
                         </div>
                         <div className="flex justify-between items-center py-2 border-b border-gray-100">
                           <span className="text-gray-600">Guide ID</span>
-                          <span className="font-medium text-gray-900 font-mono text-sm">{singleGuide._id?.slice(-8)}</span>
+                          <span className="font-medium text-gray-900 font-mono text-sm">{singleGuide._id?.slice(-0)}</span>
                         </div>
                       </div>
                     </div>

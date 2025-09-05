@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react'
 import Header from '@/components/Header'
 import TravellerNavbar from '@/components/TravellerNavbar' // ✅ import your traveller navbar
 import { publicViewTourDetails } from '@/redux/slices/tourSlice'
-import { fetchReviewsForTour } from '@/redux/slices/reviewSlice'
+import { getReviewsForTour } from '@/redux/slices/reviewSlice'
 import { AppDispatch, RootState } from '@/redux/store'
 import { useParams, useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux'
@@ -28,7 +28,7 @@ const TourDetails = () => {
   useEffect(() => {
     if (id) {
       dispatch(publicViewTourDetails(id))
-      dispatch(fetchReviewsForTour(id))
+      dispatch(getReviewsForTour(id))
     }
   }, [dispatch, id])
 
@@ -39,15 +39,10 @@ const TourDetails = () => {
         typeof r.tour === 'string' ? r.tour === id : r.tour._id === id
       )
 
-      if (tourReviews.length > 0) {
-        const avg =
-          tourReviews.reduce((sum, r) => {
-            const exp = r.experience
-            return (
-              sum +
-              (exp.serviceQuality + exp.punctuality + exp.satisfactionSurvey) / 3
-            )
-          }, 0) / tourReviews.length
+     
+    if (tourReviews.length > 0) {
+      const avg =
+        tourReviews.reduce((sum, r) => sum + r.rating, 0) / tourReviews.length;
 
         setAvgRating(parseFloat(avg.toFixed(1)))
       }
@@ -221,10 +216,10 @@ const TourDetails = () => {
                 .map((review, idx) => (
                   <div key={idx} className="border-b border-gray-200 pb-4 last:border-none">
                     <p className="text-gray-800 font-medium">
-                      {review.user?.name || 'Anonymous'}
+                      {/* {review.user?.name || 'Anonymous'} */}
                     </p>
                     <p className="text-sm text-gray-500">
-                      Service: {review.experience.serviceQuality} • Punctuality: {review.experience.punctuality} • Satisfaction: {review.experience.satisfactionSurvey}
+                      rating: {review.rating} 
                     </p>
                     <p className="mt-2 text-gray-700">{review.comment}</p>
                   </div>

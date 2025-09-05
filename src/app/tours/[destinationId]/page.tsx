@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
-import TravellerNavbar from '@/components/TravellerNavbar'; // ✅ make sure you have this component
+import TravellerNavbar from '@/components/TravellerNavbar';
 import { getTourByDestination } from '@/redux/slices/destinationSlice';
-import { fetchReviewsForTour } from '@/redux/slices/reviewSlice';
+import { getReviewsForTour } from '@/redux/slices/reviewSlice';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useParams, useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
@@ -24,7 +24,7 @@ const PublicViewToursByDestination = () => {
   const [reviewMap, setReviewMap] = useState<Record<string, number>>({});
   const [role, setRole] = useState<string | null>(null);
 
-  // ✅ Check cookies for auth role
+  //  Check cookies for auth role
   useEffect(() => {
     const fetchCookie = async () => {
       try {
@@ -42,49 +42,45 @@ const PublicViewToursByDestination = () => {
     fetchCookie();
   }, []);
 
-  // ✅ Fetch tours by destination
+  //  Fetch tours by destination
   useEffect(() => {
     if (id) {
       dispatch(getTourByDestination(id));
     }
   }, [dispatch, id]);
 
-  // ✅ Fetch reviews for each tour
+  //  Fetch reviews for each tour
   useEffect(() => {
     if (toursByDestination?.length > 0) {
       toursByDestination.forEach((tour: any) => {
-        dispatch(fetchReviewsForTour(tour._id));
+        dispatch(getReviewsForTour(tour._id));
       });
     }
   }, [dispatch, toursByDestination]);
 
-  // ✅ Map reviews → calculate avg ratings
-  useEffect(() => {
-    const newMap: Record<string, number> = {};
-    toursByDestination.forEach((tour: any) => {
-      const tourReviews = reviews.filter((r) =>
-        typeof r.tour === 'string' ? r.tour === tour._id : r.tour._id === tour._id
-      );
+  //  Map reviews → calculate avg ratings
+useEffect(() => {
+  const newMap: Record<string, number> = {};
 
-      if (tourReviews.length > 0) {
-        const avg =
-          tourReviews.reduce((sum, r) => {
-            const exp = r.experience;
-            return (
-              sum +
-              (exp.serviceQuality + exp.punctuality + exp.satisfactionSurvey) / 3
-            );
-          }, 0) / tourReviews.length;
+  toursByDestination.forEach((tour: any) => {
+    const tourReviews = reviews.filter((r) =>
+      typeof r.tour === 'string' ? r.tour === tour._id : r.tour._id === tour._id
+    );
 
-        newMap[tour._id] = parseFloat(avg.toFixed(1));
-      } else {
-        newMap[tour._id] = 0; // no reviews yet
-      }
-    });
-    setReviewMap(newMap);
-  }, [toursByDestination, reviews]);
+    if (tourReviews.length > 0) {
+      const avg =
+        tourReviews.reduce((sum, r) => sum + r.rating, 0) / tourReviews.length;
 
-  // ✅ Sort tours
+      newMap[tour._id] = parseFloat(avg.toFixed(1));
+    } else {
+      newMap[tour._id] = 0; // no reviews yet
+    }
+  });
+
+  setReviewMap(newMap);
+}, [toursByDestination, reviews]);
+
+  //  Sort tours
   const sortedTours = [...toursByDestination].sort((a: any, b: any) => {
     const aDemand = a.bookingsCount || 0;
     const bDemand = b.bookingsCount || 0;
@@ -99,7 +95,7 @@ const PublicViewToursByDestination = () => {
 
   return (
     <div>
-      {/* ✅ Navbar/Header depending on cookie */}
+      {/*  Navbar/Header depending on cookie */}
       {role === 'traveller' ? <TravellerNavbar /> : <Header />}
 
       <h1 className="text-2xl pt-8 font-bold mb-3 text-center">Tours</h1>
@@ -119,8 +115,9 @@ const PublicViewToursByDestination = () => {
             <p className="text-gray-600 text-sm line-clamp-2">{tour.description}</p>
             <p className="mt-2 font-semibold text-black">₹{tour.price}</p>
             <p className="text-sm text-gray-500">
-              {tour.duration} days • ⭐ {reviewMap[tour._id] || tour.rating || 0} (
-              {tour.bookingsCount || 0} booked)
+              {tour.duration} days • ⭐ {reviewMap[tour._id] || tour.rating || 0}
+               {/* ( */}
+              {/* {tour.bookingsCount || 0} booked) */}
             </p>
           </div>
         ))}
