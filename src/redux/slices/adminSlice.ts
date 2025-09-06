@@ -36,6 +36,7 @@ export interface AdminState {
   // REVIEWS
   allReviews: Review[]
   deletedReviews: Review[];
+  guideReviewCount: number
 
   //DESTINATION
   allDestinations: DestinationType[]
@@ -71,6 +72,7 @@ export const adminInitialState: AdminState = {
   // REVIEWS
   allReviews: [],
   deletedReviews: [],    // track deleted review IDs or objects
+  guideReviewCount:0,  
 
   //DESTINATIONS
   allDestinations: []
@@ -137,7 +139,7 @@ export const fetchBookingsByTourId = createAsyncThunk('admin/fetchBookingsByTour
         withCredentials: true
     })
 
-    return  res.data.data
+    return  res.data.bookings 
 })
 
 //GET single booking
@@ -147,7 +149,6 @@ export const getSingleBooking = createAsyncThunk('admin/viewSingleBooking', asyn
     })
     return res.data.data
 })
-
 
 // fetch all bookings   
 export const fetchAllBookings = createAsyncThunk(
@@ -250,9 +251,16 @@ export const fetchAllTours = createAsyncThunk<
         {
         withCredentials: true
     })
-    return res.data.data
+    return res.data.reviews
   })
 
+  //get review count for guide
+  export const getGuideTotalReview =createAsyncThunk('admin/getGuideTotalReviewCount', async (id: string) => {
+    const res = await api.get(`/api/admin/guide/${id}/review/count`,{
+        withCredentials:true
+    })
+    return res.data.data
+  })
 
   //destination
 
@@ -409,6 +417,7 @@ const adminSlice = createSlice({
                 state.error = action.error.message || "Failed to fetch bookings";
             })
 
+
             //get single booking
             .addCase(getSingleBooking.pending, state => {
                 state.loading = true
@@ -421,19 +430,21 @@ const adminSlice = createSlice({
                 state.loading = false
                 state.error = action.error.message || ' Failed to fetch booking details'
             })
+
+            
             // fetch all bookings
             .addCase(fetchAllBookings.pending, (state) => {
-            state.loading = true;
-            state.error = null;
+                state.loading = true;
+                state.error = null;
             })
             .addCase(fetchAllBookings.fulfilled, (state, action) => {
-            state.loading = false;
-            state.allBookings = action.payload;
-            state.totalBookings = action.payload.length; // keep total count updated
+                state.loading = false;
+                state.allBookings = action.payload;
+                state.totalBookings = action.payload.length; // keep total count updated
             })
             .addCase(fetchAllBookings.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.error.message || "Failed to fetch bookings";
+                state.loading = false;
+                state.error = action.error.message || "Failed to fetch bookings";
             })
 
 
@@ -536,57 +547,57 @@ const adminSlice = createSlice({
 
             // get tours by guide
             .addCase(getTourByGuide.pending, (state) => {
-            state.loading = true;
-            state.error = null;
+                state.loading = true;
+                state.error = null;
             })
             .addCase(getTourByGuide.fulfilled, (state, action) => {
-            state.loading = false;
-            state.allTours = action.payload;
+                state.loading = false;
+                state.allTours = action.payload;
             })
             .addCase(getTourByGuide.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string;
+                state.loading = false;
+                state.error = action.payload as string;
             })
 
 
             // get single tour by guide
             .addCase(getSingleTourByGuide.pending, (state) => {
-            state.loading = true;
-            state.error = null;
+                state.loading = true;
+                state.error = null;
             })
             .addCase(getSingleTourByGuide.fulfilled, (state, action) => {
-            state.loading = false;
-            state.singleTour = action.payload;
+                state.loading = false;
+                state.singleTour = action.payload;
             })
             .addCase(getSingleTourByGuide.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.payload as string;
+                state.loading = false;
+                state.error = action.payload as string;
             })
 
 
             //toggle block tour
             .addCase(toggleBlockTour.pending, (state) => {
-            state.loading = true;
-            state.error = null;
+                state.loading = true;
+                state.error = null;
             })
             .addCase(toggleBlockTour.fulfilled, (state, action) => {
-            state.loading = false;
+                state.loading = false;
 
-            const updatedTour = action.payload;
+                const updatedTour = action.payload;
 
             // update in allTours
-            state.allTours = state.allTours.map((t) =>
-                t._id === updatedTour.tourId ? { ...t, isBlocked: updatedTour.isBlocked } : t
-            );
+                state.allTours = state.allTours.map((t) =>
+                    t._id === updatedTour.tourId ? { ...t, isBlocked: updatedTour.isBlocked } : t
+                );
 
             // update singleTour if open
-            if (state.singleTour && state.singleTour._id === updatedTour.tourId) {
-                state.singleTour = { ...state.singleTour, isBlocked: updatedTour.isBlocked };
-            }
+                if (state.singleTour && state.singleTour._id === updatedTour.tourId) {
+                    state.singleTour = { ...state.singleTour, isBlocked: updatedTour.isBlocked };
+                }
             })
             .addCase(toggleBlockTour.rejected, (state, action) => {
-            state.loading = false;
-            state.error = action.error.message || 'failed to block tour'
+                state.loading = false;
+                state.error = action.error.message || 'failed to block tour'
             })
 
 
@@ -603,6 +614,18 @@ const adminSlice = createSlice({
             .addCase(getReviewByTour.rejected, (state,action) => {
                 state.loading = false
                 state.error = action.error.message || 'Failed to load reviews'
+            })
+
+            .addCase(getGuideTotalReview.pending, (state) => {
+                state.loading = true;
+            })
+            .addCase(getGuideTotalReview.fulfilled, (state, action) => {
+                state.loading = false;
+                state.guideReviewCount = action.payload.totalReviews; 
+            })
+            .addCase(getGuideTotalReview.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || "Failed to fetch guide review count";
             })
 
 

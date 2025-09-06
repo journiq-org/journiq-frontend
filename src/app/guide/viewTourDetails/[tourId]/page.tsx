@@ -398,6 +398,7 @@ export default function GuideTourDetailsPage() {
   const handleDeleteTour = async (): Promise<void> => {
     try {
       const res = await api.patch(`/api/tour/deleteTour/${selectedTour._id}`);
+      
       toast.success(res.data.message || 'Tour deleted successfully');
       router.push('/guide/tours');
     } catch (err: unknown) {

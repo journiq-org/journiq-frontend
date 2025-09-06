@@ -2446,6 +2446,7 @@ const StandardImageCarousel = ({
   );
 };
 
+
 // Booking Card Component
 const BookingCard = ({ booking, onViewDetails }: { booking: any; onViewDetails: (id: string) => void }) => {
   return (
@@ -2453,8 +2454,12 @@ const BookingCard = ({ booking, onViewDetails }: { booking: any; onViewDetails: 
       <CardContent className="p-4">
         <div className="flex justify-between items-start mb-3">
           <div>
-            <h3 className="font-semibold text-gray-900">{booking.customerName}</h3>
-            <p className="text-sm text-gray-600">{booking.customerEmail}</p>
+            <h3 className="font-semibold text-gray-900">
+              {booking.user?.name  || "Customer"}
+            </h3>
+            <p className="text-sm text-gray-600">
+              {booking.user?.email  || "No email"}
+            </p>
           </div>
           <Badge variant={booking.status === 'confirmed' ? 'default' : 'secondary'}>
             {booking.status}
@@ -2464,19 +2469,19 @@ const BookingCard = ({ booking, onViewDetails }: { booking: any; onViewDetails: 
         <div className="space-y-2 text-sm text-gray-600">
           <div className="flex items-center gap-2">
             <Calendar className="h-4 w-4" />
-            <span>{new Date(booking.bookingDate).toLocaleDateString()}</span>
+            <span>{new Date(booking.createdAt ).toLocaleDateString()}</span>
           </div>
           <div className="flex items-center gap-2">
             <Users className="h-4 w-4" />
-            <span>{booking.numberOfPeople} people</span>
+            <span>{booking.numOfPeople } people</span>
           </div>
           <div className="flex items-center gap-2">
             <DollarSign className="h-4 w-4" />
-            <span className="font-semibold text-gray-900">${booking.totalAmount}</span>
+            <span className="font-semibold text-gray-900">{booking.totalPrice }</span>
           </div>
         </div>
         
-        <div className="mt-4 pt-3 border-t border-gray-200">
+        {/* <div className="mt-4 pt-3 border-t border-gray-200">
           <Button 
             onClick={() => onViewDetails(booking._id)}
             variant="outline" 
@@ -2485,7 +2490,7 @@ const BookingCard = ({ booking, onViewDetails }: { booking: any; onViewDetails: 
           >
             View Details
           </Button>
-        </div>
+        </div> */}
       </CardContent>
     </Card>
   );
@@ -2529,7 +2534,7 @@ const ReviewCard = ({ review, tourId }: { review: any; tourId: string }) => {
             </div>
           </div>
           <div className="flex flex-col items-end gap-2">
-            <StarRating rating={averageRating} size="sm" />
+            <StarRating rating={review.rating} size="sm" />
             <span className="text-xs text-gray-500">
               {new Date(review.createdAt).toLocaleDateString()}
             </span>

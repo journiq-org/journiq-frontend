@@ -4,7 +4,7 @@ import api from "@/lib/api";
 import { Booking } from "@/types/booking";
 import { Tour } from "@/types/tour";
 
-// 🔹 Local state type
+//  Local state type
 interface BookingState {
   bookings: Booking[];
   publicTours: Tour[];
@@ -14,7 +14,7 @@ interface BookingState {
   successMessage: string | null;
 }
 
-// 🔹 Initial state
+//  Initial state
 const initialState: BookingState = {
   bookings: [],
   publicTours: [],
@@ -24,7 +24,7 @@ const initialState: BookingState = {
   successMessage: null,
 };
 
-// 🔹 Check Availability
+//  Check Availability
 export const checkAvailability = createAsyncThunk<
   { available: boolean; slots: number; message?: string },
   { tourId: string; date: string; numOfPeople: number },
@@ -47,7 +47,7 @@ export const checkAvailability = createAsyncThunk<
   }
 );
 
-// 🔹 Fetch Bookings
+//  Fetch Bookings
 export const fetchBookings = createAsyncThunk<Booking[]>(
   "booking/fetchBookings",
   async (_, { rejectWithValue }) => {
@@ -65,7 +65,7 @@ export const fetchBookings = createAsyncThunk<Booking[]>(
   }
 );
 
-// 🔹 Create Booking
+//  Create Booking
 export const createBooking = createAsyncThunk<
   Booking,
   { tourId: string; date: string; numOfPeople: number }
@@ -86,7 +86,7 @@ export const createBooking = createAsyncThunk<
   }
 );
 
-// 🔹 Cancel Booking
+//  Cancel Booking
 export const cancelBooking = createAsyncThunk<Booking, string>(
   "booking/cancelBooking",
   async (bookingId, { rejectWithValue }) => {
@@ -104,7 +104,7 @@ export const cancelBooking = createAsyncThunk<Booking, string>(
   }
 );
 
-// 🔹 Fetch Public Tours
+//  Fetch Public Tours
 export const fetchPublicTours = createAsyncThunk<Tour[]>(
   "booking/fetchPublicTours",
   async (_, { rejectWithValue }) => {

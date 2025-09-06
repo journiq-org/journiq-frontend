@@ -419,11 +419,15 @@ const GuideBookingsPage = () => {
                       </button>
                     )}
 
+<<<<<<< Updated upstream
                     {(
                       // booking.status === "completed" 
                        booking.status === "confirmed"
                     //  || booking.status === "cancelled"
                     ) && (
+=======
+                    {(booking.status === "completed" || booking.status === "confirmed" || booking.status === "cancelled") && (
+>>>>>>> Stashed changes
                       <button
                         onClick={() => handleEditStatus(booking._id)}
                         className="w-full bg-slate-600 hover:bg-slate-700 text-white px-4 py-2.5 rounded-lg font-medium transition-all duration-200 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"

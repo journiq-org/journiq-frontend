@@ -25,6 +25,7 @@ export interface Tour {
   images: string[];
   included: string[];
   excluded: string[];
+  reviewCount?: number;
   meetingPoint: string;
   category:
     | "Adventure"

@@ -169,7 +169,7 @@ export default function GuideDashboard() {
               
               <div className="flex items-center gap-3">
                 <button
-                  onClick={() => router.push('/guide/addTour')}
+                  onClick={() => router.push('/guide/createTour')}
                   className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2"
                 >
                   <Plus size={18} />

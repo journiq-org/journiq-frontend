@@ -80,6 +80,32 @@ export const createDestination = createAsyncThunk('destination/createDestination
 })
 
 
+//update destination
+export const updateDestination = createAsyncThunk('destination/updateDestination', async({id,formData}: {id:string, formData: FormData}) => {
+  const res = await api.patch(`/api/destination/updateDestination/${id}`, formData,{
+      withCredentials: true
+  })
+  return res.data.data
+})
+
+
+//delete destination
+export const deleteDestination = createAsyncThunk('destination/deleteDestination', async (id: string) => {
+  const res = await api.patch(`/api/destination/deleteDestination/${id}`,{},{
+    withCredentials: true
+  })
+  return {id, destination: res.data.data}
+})
+
+
+//toggle destination status
+export const toggleDestinationStatus = createAsyncThunk('destination/toggle', async(id:string) => {
+  const res = await api.patch(`/api/destination/${id}/toggle-status`, {},{
+    withCredentials: true
+  })
+
+  return res.data.data
+})
 
 
 //slice
@@ -135,7 +161,7 @@ const destinationSlice = createSlice({
             //create destination
             .addCase(createDestination.pending, state => {
               state.loading = true
-              
+              state.error = null
             })
             .addCase(createDestination.fulfilled, (state,action) => {
               state.loading =false 
@@ -146,6 +172,93 @@ const destinationSlice = createSlice({
               state.error = action.error.message || 'Failed to create destination'
             })
             
+
+            //update destination
+            .addCase(updateDestination.pending, state => {
+              state.loading = true
+              state.error = null
+            })
+            .addCase(updateDestination.fulfilled, (state, action) => {
+            state.loading = false;
+            state.selectedDestination = action.payload;
+
+            //  update in destinations list 
+            const index = state.destinations.findIndex(
+              (d) => d._id === action.payload._id
+            );
+            if (index !== -1) {
+              state.destinations[index] = action.payload;
+            }
+          })
+          .addCase(updateDestination.rejected , (state, action) => {
+            state.loading = false
+            state.error = action.error.message || 'Failed to update destination'
+          })
+
+          //delete destination
+          .addCase(deleteDestination.pending, state =>{
+            state.loading = true
+          })
+          .addCase(deleteDestination.fulfilled, (state, action) => {
+          state.loading = false;
+
+          // Remove from list
+          state.destinations = state.destinations.filter(
+            (d) => d._id !== action.payload.id
+          );
+
+          // If the currently selected destination was deleted, clear it
+          if (
+            state.selectedDestination &&
+            state.selectedDestination._id === action.payload.id
+          ) {
+            state.selectedDestination = null;
+          }
+
+          state.successMessage = "Destination deleted successfully";
+        })
+
+        .addCase(deleteDestination.rejected, (state, action) => {
+          state.loading = false
+          state.error = action.error.message || "Failed to delete destination"
+        })
+
+        
+
+        //toggle destination status
+        .addCase(toggleDestinationStatus.pending , state => {
+          state.loading = true
+        })
+        .addCase(toggleDestinationStatus.fulfilled, (state, action) => {
+        state.loading = false;
+        const { destinationId, is_active } = action.payload;
+
+        // update in destination list
+        const index = state.destinations.findIndex(
+          (d) => d._id === destinationId
+        );
+        if (index !== -1) {
+          state.destinations[index].is_active = is_active;
+        }
+
+        // update selected destination if same
+        if (
+          state.selectedDestination &&
+          state.selectedDestination._id === destinationId
+        ) {
+          state.selectedDestination.is_active = is_active;
+        }
+
+        state.successMessage = `Destination ${
+          is_active ? "activated" : "deactivated"
+        } successfully`;
+      })
+      .addCase(toggleDestinationStatus.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to toggle destination";
+      });
+
+
     }
 })
 

@@ -3,7 +3,7 @@ import api from "@/lib/api";
 import { RootState } from "../store";
 import { Review, ReviewState } from "@/types/review";
 
-// 🔹 Initial State
+//  Initial State
 const initialState: ReviewState = {
   reviews: [],
   loading: false,
@@ -11,7 +11,7 @@ const initialState: ReviewState = {
   message: null,
 };
 
-// 🔹 Add Review
+// Add Review
 export const addReview = createAsyncThunk(
   "review/addReview",
   async ({
@@ -34,16 +34,16 @@ export const addReview = createAsyncThunk(
   }
 );
 
-// 🔹 Get Reviews for a Tour
-export const getReviewsForTour = createAsyncThunk(
-  "review/getReviewsForTour",
-  async (tourId: string) => {
-    const res = await api.get(`/api/review/tour/${tourId}`);
-    return res.data.reviews as Review[];
-  }
-);
+// //  Get Reviews for a Tour
+// export const getReviewsForTour = createAsyncThunk(
+//   "review/getReviewsForTour",
+//   async (tourId: string) => {
+//     const res = await api.get(`/api/review/tour/${tourId}`);
+//     return res.data.reviews as Review[];
+//   }
+// );
 
-// 🔹 Get Reviews by Role (admin / guide / traveller)
+//  Get Reviews by Role (admin / guide / traveller)
 export const getReviewsByRole = createAsyncThunk(
   "review/getReviewsByRole",
   async () => {
@@ -54,7 +54,7 @@ export const getReviewsByRole = createAsyncThunk(
   }
 );
 
-// 🔹 Update Review
+//  Update Review
 export const updateReview = createAsyncThunk(
   "review/updateReview",
   async ({
@@ -75,7 +75,7 @@ export const updateReview = createAsyncThunk(
   }
 );
 
-// 🔹 Delete Review
+//  Delete Review
 export const deleteReview = createAsyncThunk(
   "review/deleteReview",
   async (id: string) => {
@@ -112,18 +112,18 @@ const reviewSlice = createSlice({
         state.error = action.error.message || "Failed to add review";
       })
 
-      // Get Reviews for Tour
-      .addCase(getReviewsForTour.pending, (state) => {
-        state.loading = true;
-      })
-      .addCase(getReviewsForTour.fulfilled, (state, action) => {
-        state.loading = false;
-        state.reviews = action.payload;
-      })
-      .addCase(getReviewsForTour.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message || "Failed to load reviews";
-      })
+      // // Get Reviews for Tour
+      // .addCase(getReviewsForTour.pending, (state) => {
+      //   state.loading = true;
+      // })
+      // .addCase(getReviewsForTour.fulfilled, (state, action) => {
+      //   state.loading = false;
+      //   state.reviews = action.payload;
+      // })
+      // .addCase(getReviewsForTour.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error = action.error.message || "Failed to load reviews";
+      // })
 
       // Get Reviews by Role
       .addCase(getReviewsByRole.pending, (state) => {
@@ -157,7 +157,7 @@ const reviewSlice = createSlice({
 export const { clearReviewState } = reviewSlice.actions;
 export default reviewSlice.reducer;
 
-// 🔹 Selectors
+//  Selectors
 export const selectReviews = (state: RootState) => state.reviews.reviews;
 export const selectReviewError = (state: RootState) => state.reviews.error;
 export const selectReviewMessage = (state: RootState) => state.reviews.message;

@@ -73,6 +73,8 @@
 
 // export default GuideDetailsPage;
 
+
+
 "use client";
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -84,7 +86,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { useParams, useRouter } from "next/navigation";
-import { viewGuideById, getTourByGuide } from "@/redux/slices/adminSlice";
+import { viewGuideById, getTourByGuide, getGuideTotalReview } from "@/redux/slices/adminSlice";
 import {
   User,
   Mail,
@@ -108,22 +110,23 @@ import {
   Heart
 } from "lucide-react";
 import toast from "react-hot-toast";
+import { Tour } from "@/types/tour";
 
-interface Tour {
-  _id: string;
-  title: string;
-  description: string;
-  price: number;
-  duration: string;
-  maxParticipants: number;
-  images: string[];
-  location: string;
-  rating?: number;
-  reviewCount?: number;
-  createdAt: string;
-  isActive: boolean;
-  category?: string;
-}
+// interface Tour {
+//   _id: string;
+//   title: string;
+//   description: string;
+//   price: number;
+//   duration: string;
+//   maxParticipants: number;
+//   images: string[];
+//   location: string;
+//   rating?: number;
+//   reviewCount?: number;
+//   createdAt: string;
+//   isActive: boolean;
+//   category?: string;
+// }
 
 const GuideDetailsPage = () => {
   const router = useRouter();
@@ -131,7 +134,7 @@ const GuideDetailsPage = () => {
   const id = params?.guideId as string;
 
   const dispatch = useDispatch<AppDispatch>();
-  const { singleGuide, allTours, loading, error } = useSelector((state: any) => state.admin);
+  const { singleGuide, allTours, loading, error , guideReviewCount} = useSelector((state: any) => state.admin);
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredTours, setFilteredTours] = useState<Tour[]>([]);
@@ -141,17 +144,24 @@ const GuideDetailsPage = () => {
     if (id) {
       dispatch(viewGuideById(id));
       dispatch(getTourByGuide(id));
+      dispatch(getGuideTotalReview(id))
+
     }
   }, [id, dispatch]);
 
   useEffect(() => {
+    
     if (allTours) {
       const filtered = allTours.filter((tour: Tour) =>
         tour.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        tour.location?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        tour.description?.toLowerCase().includes(searchTerm.toLowerCase())
-      );
+        tour.description?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        (typeof tour.destination === "object" &&
+        "name" in tour.destination &&
+        tour.destination.name?.toLowerCase().includes(searchTerm.toLowerCase()))
+        
+    );
       setFilteredTours(filtered);
+
     }
   }, [allTours, searchTerm]);
 
@@ -193,10 +203,10 @@ const GuideDetailsPage = () => {
     return totalRating / allTours.length;
   };
 
-  const getTotalReviews = () => {
-    if (!allTours || allTours.length === 0) return 0;
-    return allTours.reduce((sum: number, tour: Tour) => sum + (tour.reviewCount || 0), 0);
-  };
+const getTotalReviews = () => {
+  if (!guideReviewCount) return 0;
+  return guideReviewCount;
+};
 
   if (loading) {
     return (
@@ -255,6 +265,7 @@ const GuideDetailsPage = () => {
     );
   }
 
+  
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
@@ -443,6 +454,7 @@ const GuideDetailsPage = () => {
                   {filteredTours && filteredTours.length > 0 ? (
                     <div className="space-y-3">
                       {filteredTours.slice(0, 3).map((tour: Tour) => (
+                        
                         <div key={tour._id} className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-gray-50 transition-colors">
                           <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
                             {tour.images && tour.images.length > 0 ? (
@@ -457,7 +469,9 @@ const GuideDetailsPage = () => {
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="font-medium text-gray-900 truncate">{tour.title}</p>
-                            <p className="text-sm text-gray-600 truncate">{tour.location}</p>
+                            <p className="text-sm text-gray-600 truncate">
+                             {tour.destination.name}
+                            </p>
                           </div>
                           <div className="text-right">
                             <p className="font-bold text-green-600">{formatPrice(tour.price)}</p>
@@ -538,14 +552,16 @@ const GuideDetailsPage = () => {
 
                         <div className="flex items-center space-x-2 text-sm text-gray-600">
                           <MapPin className="h-4 w-4 flex-shrink-0" />
-                          <span className="truncate">{tour.location}</span>
+                          <span className="truncate">{tour.destination.name}</span>
                         </div>
 
                         <div className="flex items-center justify-between text-sm">
                           <div className="flex items-center space-x-4">
                             <div className="flex items-center space-x-1">
                               <Users className="h-4 w-4 text-gray-500" />
-                              <span>{tour.maxParticipants}</span>
+                              <span> {tour.availability.length > 0
+                                ? tour.availability.reduce((sum, a) => sum + a.slots, 0)
+                                : "N/A"}</span>
                             </div>
                             <div className="flex items-center space-x-1">
                               <Clock className="h-4 w-4 text-gray-500" />
@@ -556,7 +572,7 @@ const GuideDetailsPage = () => {
 
                         <div className="flex items-center justify-between pt-4 border-t">
                           <div className="flex items-center space-x-1">
-                            <DollarSign className="h-5 w-5 text-green-600" />
+                            {/* <DollarSign className="h-5 w-5 text-green-600" /> */}
                             <span className="text-2xl font-bold text-green-600">
                               {formatPrice(tour.price)}
                             </span>
