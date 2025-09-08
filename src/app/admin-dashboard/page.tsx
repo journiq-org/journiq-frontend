@@ -899,14 +899,14 @@ const AdminDashboard = () => {
                   <Menu className="w-5 h-5 text-slate-600" />
                 </button>
               )}
-              <div className="flex items-center gap-3">
+              {/* <div className="flex items-center gap-3">
                 <Search className="w-5 h-5 text-slate-400" />
                 <input
                   type="text"
                   placeholder="Search..."
                   className="border-0 bg-slate-50 rounded-lg px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-all w-64"
                 />
-              </div>
+              </div> */}
             </div>
 
             <div className="flex items-center gap-4">

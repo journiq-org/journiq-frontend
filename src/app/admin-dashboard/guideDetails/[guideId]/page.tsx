@@ -99,7 +99,7 @@ import {
   ArrowLeft,
   Star,
   Clock,
-  DollarSign,
+  IndianRupee,
   Users,
   Eye,
   Loader2,
@@ -177,12 +177,13 @@ const GuideDetailsPage = () => {
     });
   };
 
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: 'USD'
-    }).format(price);
-  };
+const formatPrice = (price: number) => {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+  }).format(price);
+};
+
 
   const renderStars = (rating: number) => {
     return Array.from({ length: 5 }, (_, i) => (
@@ -474,6 +475,7 @@ const getTotalReviews = () => {
                             </p>
                           </div>
                           <div className="text-right">
+                            
                             <p className="font-bold text-green-600">{formatPrice(tour.price)}</p>
                             <div className="flex items-center space-x-1">
                               <Star className="h-3 w-3 text-yellow-400 fill-current" />
@@ -572,9 +574,9 @@ const getTotalReviews = () => {
 
                         <div className="flex items-center justify-between pt-4 border-t">
                           <div className="flex items-center space-x-1">
-                            {/* <DollarSign className="h-5 w-5 text-green-600" /> */}
+                            <IndianRupee className="h-5 w-5 text-green-600" />
                             <span className="text-2xl font-bold text-green-600">
-                              {formatPrice(tour.price)}
+                              {(tour.price)}
                             </span>
                           </div>
 

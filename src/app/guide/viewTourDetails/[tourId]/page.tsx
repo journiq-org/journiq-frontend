@@ -262,7 +262,7 @@
 'use client'
 
 import React, { useEffect, useState } from "react";
-import { MapPin, Clock, Users, Star, ArrowLeft, Edit3, Trash2, Eye, Calendar, DollarSign, CheckCircle, XCircle, Upload, ImageIcon, Tag, Heart, MoreHorizontal, Settings, Plus } from "lucide-react";
+import { MapPin, Clock, Users, Star, ArrowLeft, Edit3, Trash2, Eye, Calendar, IndianRupee, CheckCircle, XCircle, Upload, ImageIcon, Tag, Heart, MoreHorizontal, Settings, Plus } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { guideViewSingleTour } from "@/redux/slices/tourSlice";

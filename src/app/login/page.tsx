@@ -44,7 +44,7 @@ const onSubmit = async (data: LoginFormData) => {
   try {
     const res = await api.post("/api/users/login", data, { withCredentials: true })
 
-    toast.success("Login successful 🎉")
+    toast.success("Login successful ")
 
     const role = res.data.data.role?.toLowerCase()
     const token = res.data.access_token
@@ -58,14 +58,12 @@ const onSubmit = async (data: LoginFormData) => {
 
     const cookieData = await cookieRes.json()
 
-    console.log(role, "user role...........")
-
     if (role === "admin") window.location.href = "/admin-dashboard"
     else if (role === "guide") window.location.href = "/guide-dashboard"
     else if (role === "traveller") router.push("/traveller-dashboard");
     else window.location.href = "/register"
   } catch (err) {
-    console.error("Error:", err)
+   toast.error("login failed" )
   }
 }
 

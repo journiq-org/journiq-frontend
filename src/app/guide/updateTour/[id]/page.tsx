@@ -451,7 +451,7 @@ import { useFieldArray, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from 'yup';
 import toast from "react-hot-toast";
-import { ArrowLeft, Save, X, Upload, ImageIcon, MapPin, Calendar, DollarSign, Tag } from "lucide-react";
+import { ArrowLeft, Save, X, Upload, ImageIcon, MapPin, Calendar, IndianRupee, Tag } from "lucide-react";
 
 // Validation schema
 const schema = yup.object().shape({
@@ -779,7 +779,7 @@ export default function UpdateTourPage() {
                     <div className="space-y-2">
                       <label className="text-sm font-medium text-slate-700">Price (₹)</label>
                       <div className="relative">
-                        <DollarSign className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={16} />
+                        <IndianRupee className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400" size={16} />
                         <Input
                           {...register('price')}
                           type="number"

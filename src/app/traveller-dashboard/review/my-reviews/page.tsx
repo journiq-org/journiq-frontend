@@ -136,7 +136,7 @@ function MyReviewsPage() {   // 👈 use `function` instead of `const`
                       alignItems="center"
                       mb={1}
                     >
-                      <Typography variant="h6" fontWeight="600">
+                      <Typography variant="h6" fontWeight="600" color="black">
                         {typeof review.tour === "string"
                           ? "Tour"
                           : review.tour?.title || "Tour"}
@@ -157,7 +157,7 @@ function MyReviewsPage() {   // 👈 use `function` instead of `const`
                       </Box>
                     </Box>
 
-                    <Typography variant="body1" mb={1}>
+                    <Typography variant="body1" mb={1} color="black">
                       {review.comment}
                     </Typography>
 

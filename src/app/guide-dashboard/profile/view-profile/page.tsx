@@ -68,12 +68,22 @@
 
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
-import { fetchUserProfile } from "@/redux/slices/userSlice";
+import { deleteUser, fetchUserProfile, logout } from "@/redux/slices/userSlice";
 import { Edit2, Mail, Phone, MapPin, FileText, User as UserIcon, Loader2 } from "lucide-react";
 import GuideNavbar from "@/components/GuideNavbar";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Button,
+  CircularProgress,
+} from "@mui/material";
+import toast from "react-hot-toast";
 
 const getImageUrl = (path?: string) =>
   path?.startsWith("http") ? path : `${process.env.NEXT_PUBLIC_BACKEND_URL}/${path}` || "/default-avatar.png";
@@ -83,7 +93,10 @@ const ProfilePage = () => {
   const router = useRouter();
   const { profile, loading, error } = useAppSelector((state) => state.user);
 
-  useEffect(() => {
+
+const [openDialog, setOpenDialog] = useState(false);
+
+useEffect(() => {
     const checkToken = async () => {
       const res = await fetch("/api/auth/get-cookie");
       const { token } = await res.json();
@@ -96,6 +109,23 @@ const ProfilePage = () => {
 
     checkToken();
   }, [dispatch, router]);
+
+   const handleDeleteConfirm = async () => {
+    try {
+      await dispatch(deleteUser()).unwrap();
+      await fetch("/api/auth/clear-cookie", {
+        method: "POST",
+        credentials: "include",
+      });
+      toast.success("Account deleted successfully!");
+      dispatch(logout());
+      router.push("/register");
+    } catch (err) {
+      toast.error("Failed to delete account");
+    } finally {
+      setOpenDialog(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -279,11 +309,43 @@ const ProfilePage = () => {
             </button>
             <button
               onClick={() => router.push("/guide-dashboard/profile/change-password")}
-              className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-8 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 justify-center"
+              className="bg-green-100 hover:bg-green-200 text-slate-700 px-8 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 justify-center"
             >
               Change Password
             </button>
+            <button
+            onClick={() => setOpenDialog(true)}
+            className="bg-red-600 hover:bg-red-500 text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 justify-center"
+          >
+            Delete Account
+          </button>
           </div>
+
+          
+      {/* Confirm Delete Dialog */}
+      <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+        <DialogTitle>Confirm Account Deletion</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to permanently delete your account? This
+            action cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setOpenDialog(false)} color="primary">
+            Cancel
+          </Button>
+          <Button
+            onClick={handleDeleteConfirm}
+            color="error"
+            variant="contained"
+            startIcon={loading ? <CircularProgress size={18} /> : null}
+            disabled={loading}
+          >
+            {loading ? "Deleting..." : "Delete"}
+          </Button>
+        </DialogActions>
+      </Dialog>
 
           {/* Additional Info Cards */}
           <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -313,6 +375,7 @@ const ProfilePage = () => {
           </div>
         </div>
       </div>
+      
     </>
   );
 };

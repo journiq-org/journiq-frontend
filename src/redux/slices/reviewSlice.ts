@@ -34,14 +34,14 @@ export const addReview = createAsyncThunk(
   }
 );
 
-// //  Get Reviews for a Tour
-// export const getReviewsForTour = createAsyncThunk(
-//   "review/getReviewsForTour",
-//   async (tourId: string) => {
-//     const res = await api.get(`/api/review/tour/${tourId}`);
-//     return res.data.reviews as Review[];
-//   }
-// );
+//  Get Reviews for a Tour
+export const getReviewsForTour = createAsyncThunk(
+  "review/getReviewsForTour",
+  async (tourId: string) => {
+    const res = await api.get(`/api/review/tour/${tourId}`);
+    return res.data.reviews as Review[];
+  }
+);
 
 //  Get Reviews by Role (admin / guide / traveller)
 export const getReviewsByRole = createAsyncThunk(
@@ -112,18 +112,18 @@ const reviewSlice = createSlice({
         state.error = action.error.message || "Failed to add review";
       })
 
-      // // Get Reviews for Tour
-      // .addCase(getReviewsForTour.pending, (state) => {
-      //   state.loading = true;
-      // })
-      // .addCase(getReviewsForTour.fulfilled, (state, action) => {
-      //   state.loading = false;
-      //   state.reviews = action.payload;
-      // })
-      // .addCase(getReviewsForTour.rejected, (state, action) => {
-      //   state.loading = false;
-      //   state.error = action.error.message || "Failed to load reviews";
-      // })
+      // Get Reviews for Tour
+      .addCase(getReviewsForTour.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getReviewsForTour.fulfilled, (state, action) => {
+        state.loading = false;
+        state.reviews = action.payload;
+      })
+      .addCase(getReviewsForTour.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Failed to load reviews";
+      })
 
       // Get Reviews by Role
       .addCase(getReviewsByRole.pending, (state) => {

@@ -262,7 +262,7 @@ import {
   SelectItem,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Trash2, Plus, Calendar, ImageIcon, X, Upload, FileImage, ArrowLeft, Save, Tag, MapPin, DollarSign } from "lucide-react";
+import { Trash2, Plus, Calendar, ImageIcon, X, Upload, FileImage, ArrowLeft, Save, Tag, MapPin, IndianRupee } from "lucide-react";
 import { createTour } from "@/redux/slices/tourSlice";
 
 interface Destination {
@@ -713,7 +713,7 @@ const AddTourPage = () => {
                   <div className="space-y-6">
                     <div className="flex items-center gap-2 mb-4">
                       <div className="w-8 h-8 bg-purple-100 rounded-lg flex items-center justify-center">
-                        <DollarSign className="text-purple-600" size={16} />
+                        <IndianRupee className="text-purple-600" size={16} />
                       </div>
                       <h3 className="text-lg font-semibold text-slate-900">Pricing & Duration</h3>
                     </div>

@@ -26,8 +26,8 @@ export const store = configureStore({
         reviews: reviewsReducer,
         // adminGuides: adminGuidesReducer,
         // adminUsers: adminUsersReducer,
-         messages: messageReducer, 
-         admin: AdminReducer
+        messages: messageReducer, 
+        admin: AdminReducer
     }
 })
 

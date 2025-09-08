@@ -3,7 +3,7 @@
 
 // "use client";
 // import React, { useEffect } from "react";
-// import { MapPin, Calendar, DollarSign, Plus } from "lucide-react";
+// import { MapPin, Calendar, IndianRupee, Plus } from "lucide-react";
 // import { useRouter } from "next/navigation";
 // import { useDispatch, useSelector } from "react-redux";
 // import { guideViewTours } from "@/redux/slices/tourSlice";
@@ -66,7 +66,7 @@
 //                 {tour.duration} Days
 //               </p>
 //               <p className="flex items-center font-semibold text-gray-800">
-//                 <DollarSign className="w-4 h-4 mr-1 text-green-600" />
+//                 <IndianRupee className="w-4 h-4 mr-1 text-green-600" />
 //                 ₹{tour.price}
 //               </p>
 //               <button
@@ -456,7 +456,7 @@
 
 "use client";
 import React, { useEffect, useState } from "react";
-import { MapPin, Calendar, DollarSign, Plus, Search, Filter, Eye, Edit3, MoreVertical, Star, Users, TrendingUp, AlertCircle, CheckCircle, XCircle } from "lucide-react";
+import { MapPin, Calendar, IndianRupee, Plus, Search, Filter, Eye, Edit3, MoreVertical, Star, Users, TrendingUp, AlertCircle, CheckCircle, XCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { guideViewTours } from "@/redux/slices/tourSlice";

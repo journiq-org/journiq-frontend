@@ -511,7 +511,7 @@ import {
   ArrowRight,
   Loader2,
   Star,
-  DollarSign
+  IndianRupee
 } from "lucide-react";
 import GuideNavbar from "@/components/GuideNavbar";
 
@@ -766,8 +766,8 @@ const GuideBookingsPage = () => {
                       )}
                       {booking.totalPrice && (
                         <div className="flex items-center gap-2">
-                          <DollarSign className="w-4 h-4 text-[#1e3a8a]" />
-                          <span className="text-[#363636] font-bold">₹{booking.totalPrice}</span>
+                          <IndianRupee className="w-4 h-4 text-green-600" />
+                          <span className="text-slate-600 font-medium">₹{booking.totalPrice}</span>
                         </div>
                       )}
                     </div>
@@ -804,7 +804,11 @@ const GuideBookingsPage = () => {
                       </button>
                     )}
 
-                    {( booking.status === "confirmed" ) && (
+                    {(
+                      // booking.status === "completed" 
+                       booking.status === "confirmed"
+                    //  || booking.status === "cancelled"
+                    ) && (
                       <button
                         onClick={() => handleEditStatus(booking._id)}
                         className="w-full bg-[#e2e0df] hover:bg-[#e4e2e1] text-[#363636] px-4 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 border border-[#e2e0df] hover:border-[#333333]"

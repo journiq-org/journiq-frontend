@@ -9,7 +9,7 @@
 // import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 // import { Badge } from "@/components/ui/badge";
 // import { Separator } from "@/components/ui/separator";
-// import { Calendar, MapPin, DollarSign, User } from "lucide-react";
+// import { Calendar, MapPin, IndianRupee, User } from "lucide-react";
 // import Image from "next/image";
 // import { getSingleTourByGuide } from "@/redux/slices/adminSlice";
 // import { Tour } from "@/types/tour";
@@ -77,7 +77,7 @@
 //               <Calendar size={18} /> Duration: {tour.duration} days
 //             </p>
 //             <p className="flex items-center gap-2">
-//               <DollarSign size={18} /> Price: ${tour.price}
+//               <IndianRupee size={18} /> Price: ${tour.price}
 //             </p>
 //           </div>
 //         </CardContent>
@@ -186,7 +186,7 @@
 // import { 
 //   Calendar, 
 //   MapPin, 
-//   DollarSign, 
+//   IndianRupee, 
 //   User, 
 //   Clock, 
 //   Star, 
@@ -443,7 +443,7 @@
 //             <span>{booking.numberOfPeople} people</span>
 //           </div>
 //           <div className="flex items-center gap-2">
-//             <DollarSign className="h-4 w-4" />
+//             <IndianRupee className="h-4 w-4" />
 //             <span className="font-semibold text-gray-900">${booking.totalAmount}</span>
 //           </div>
 //         </div>
@@ -748,7 +748,7 @@
 //                         {tour.duration} days
 //                       </div>
 //                       <div className="flex items-center gap-2">
-//                         <DollarSign className="h-4 w-4" />
+//                         <IndianRupee className="h-4 w-4" />
 //                         <span className="font-semibold text-lg">${tour.price}</span>
 //                       </div>
 //                     </div>
@@ -801,7 +801,7 @@
 //                         <div className="text-sm text-gray-600">Days</div>
 //                       </div>
 //                       <div className="text-center p-4 bg-green-50 rounded-lg">
-//                         <DollarSign className="h-8 w-8 text-green-600 mx-auto mb-2" />
+//                         <IndianRupee className="h-8 w-8 text-green-600 mx-auto mb-2" />
 //                         <div className="text-2xl font-bold text-green-600">${tour.price}</div>
 //                         <div className="text-sm text-gray-600">Price</div>
 //                       </div>
@@ -1109,7 +1109,7 @@
 // import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 // import { Badge } from "@/components/ui/badge";
 // import { Separator } from "@/components/ui/separator";
-// import { Calendar, MapPin, DollarSign, User } from "lucide-react";
+// import { Calendar, MapPin, IndianRupee, User } from "lucide-react";
 // import Image from "next/image";
 // import { getSingleTourByGuide } from "@/redux/slices/adminSlice";
 // import { Tour } from "@/types/tour";
@@ -1177,7 +1177,7 @@
 //               <Calendar size={18} /> Duration: {tour.duration} days
 //             </p>
 //             <p className="flex items-center gap-2">
-//               <DollarSign size={18} /> Price: ${tour.price}
+//               <IndianRupee size={18} /> Price: ${tour.price}
 //             </p>
 //           </div>
 //         </CardContent>
@@ -1286,7 +1286,7 @@
 // import { 
 //   Calendar, 
 //   MapPin, 
-//   DollarSign, 
+//   IndianRupee, 
 //   User, 
 //   Clock, 
 //   Star, 
@@ -1543,7 +1543,7 @@
 //             <span>{booking.numberOfPeople} people</span>
 //           </div>
 //           <div className="flex items-center gap-2">
-//             <DollarSign className="h-4 w-4" />
+//             <IndianRupee className="h-4 w-4" />
 //             <span className="font-semibold text-gray-900">${booking.totalAmount}</span>
 //           </div>
 //         </div>
@@ -1848,7 +1848,7 @@
 //                         {tour.duration} days
 //                       </div>
 //                       <div className="flex items-center gap-2">
-//                         <DollarSign className="h-4 w-4" />
+//                         <IndianRupee className="h-4 w-4" />
 //                         <span className="font-semibold text-lg">${tour.price}</span>
 //                       </div>
 //                     </div>
@@ -1901,7 +1901,7 @@
 //                         <div className="text-sm text-gray-600">Days</div>
 //                       </div>
 //                       <div className="text-center p-4 bg-green-50 rounded-lg">
-//                         <DollarSign className="h-8 w-8 text-green-600 mx-auto mb-2" />
+//                         <IndianRupee className="h-8 w-8 text-green-600 mx-auto mb-2" />
 //                         <div className="text-2xl font-bold text-green-600">${tour.price}</div>
 //                         <div className="text-sm text-gray-600">Price</div>
 //                       </div>
@@ -2213,7 +2213,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Calendar, 
   MapPin, 
-  DollarSign, 
+  IndianRupee, 
   User, 
   Clock, 
   Star, 
@@ -2476,7 +2476,7 @@ const BookingCard = ({ booking, onViewDetails }: { booking: any; onViewDetails: 
             <span>{booking.numOfPeople } people</span>
           </div>
           <div className="flex items-center gap-2">
-            <DollarSign className="h-4 w-4" />
+            <IndianRupee className="h-4 w-4" />
             <span className="font-semibold text-gray-900">{booking.totalPrice }</span>
           </div>
         </div>
@@ -2880,7 +2880,7 @@ export default function TourDetailsPage() {
                         {tour.duration} days
                       </div>
                       <div className="flex items-center gap-2">
-                        <DollarSign className="h-4 w-4" />
+                        <IndianRupee className="h-4 w-4" />
                         <span className="font-semibold text-lg">{tour.price}</span>
                       </div>
                     </div>
@@ -2941,7 +2941,7 @@ export default function TourDetailsPage() {
                         <div className="text-sm text-gray-600">Days</div>
                       </div>
                       <div className="text-center p-4 bg-green-50 rounded-lg">
-                        <DollarSign className="h-8 w-8 text-green-600 mx-auto mb-2" />
+                        <IndianRupee className="h-8 w-8 text-green-600 mx-auto mb-2" />
                         <div className="text-2xl font-bold text-green-600">{tour.price}</div>
                         <div className="text-sm text-gray-600">Price</div>
                       </div>

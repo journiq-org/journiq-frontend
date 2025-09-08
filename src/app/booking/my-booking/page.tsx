@@ -8,7 +8,7 @@ import {
   Loader2,
   Calendar,
   Users,
-  DollarSign,
+  IndianRupee,
   CheckCircle,
   XCircle,
   Trash2,
@@ -90,6 +90,10 @@ const MyBookingPage = () => {
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           {bookings.map((booking) => {
+            // const tourTitle =
+            //   typeof booking.tour === "object" && booking.tour?.title
+            //     ? booking.tour.title
+            //     : "Tour";
             const tourTitle =
               typeof booking.tour === "object" && booking.tour?.title
                 ? booking.tour.title
@@ -101,10 +105,14 @@ const MyBookingPage = () => {
               <div
                 key={booking._id}
                 className="bg-[#F8F7F5] rounded-2xl shadow-md border border-[#d1cfc8] p-6 hover:shadow-xl transition-shadow"
+                // className="bg-[#F8F7F5] rounded-2xl shadow-md border border-[#d1cfc8] p-6 hover:shadow-xl transition-shadow"
               >
                 <h2 className="text-2xl font-semibold text-[#0c0c0c] mb-4">
                   {tourTitle}
                 </h2>
+                {/* <h2 className="text-2xl font-semibold text-[#0c0c0c] mb-4">
+                  {tourTitle}
+                </h2> */}
 
                 {/* Booking Info */}
                 <div className="space-y-3 text-[#4E4D45] mb-4">
@@ -126,6 +134,18 @@ const MyBookingPage = () => {
                   </p>
 
                   <p className="flex items-center gap-2">
+                    {/* {isCancelled ? (
+                      <XCircle className="w-5 h-5 text-red-600" />
+                    ) : (
+                      <CheckCircle className="w-5 h-5 text-green-600" />
+                    )}
+                    <span
+                      className={`font-medium ${
+                        isCancelled ? "text-red-700" : "text-green-700"
+                      }`}
+                    >
+                      {status.charAt(0).toUpperCase() + status.slice(1)}
+                    </span> */}
                     {isCancelled ? (
                       <XCircle className="w-5 h-5 text-red-600" />
                     ) : (
@@ -141,7 +161,7 @@ const MyBookingPage = () => {
                   </p>
 
                   <p className="flex items-center gap-2">
-                    <DollarSign className="w-5 h-5 text-yellow-700" />
+                    <IndianRupee className="w-5 h-5 text-yellow-700" />
                     <span className="font-medium text-[#0c0c0c]">
                       ₹{booking.totalPrice?.toLocaleString()}
                     </span>
@@ -213,6 +233,12 @@ const MyBookingPage = () => {
                 {openDialogId === booking._id && (
                   <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
                     <div className="bg-white rounded-xl p-6 max-w-sm w-full">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                        Confirm Cancellation
+                      </h3>
+                      <p className="text-gray-700 mb-6">
+                        Are you sure you want to cancel this booking?
+                      </p>
                       <h3 className="text-lg font-semibold text-gray-900 mb-4">
                         Confirm Cancellation
                       </h3>
