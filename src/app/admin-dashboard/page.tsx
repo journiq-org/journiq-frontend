@@ -705,7 +705,7 @@ import AdminDestinationsPage from "./destinations/page";
 
 // Notifications
 import { selectUnreadNotifications } from "@/redux/slices/notificationSlice";
-import AdminNotificationDrawer from "../../components/AdminNotificationDrawer";
+import NotificationDrawer from "@/components/NotificationDrawer";
 
 const AdminDashboard = () => {
   const router = useRouter();
@@ -1056,7 +1056,7 @@ const AdminDashboard = () => {
       </div>
 
       {/* Notification Drawer */}
-      <AdminNotificationDrawer
+      <NotificationDrawer
         open={openDrawer}
         onClose={() => setOpenDrawer(false)}
       />
