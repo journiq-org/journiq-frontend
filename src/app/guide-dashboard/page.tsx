@@ -385,7 +385,7 @@
 
 
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect , useState } from "react";
 import { Bell, User, LogOut, MapPin, Calendar, Search, Filter, Plus, Star, TrendingUp, Users } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 import GuideNavbar from "@/components/GuideNavbar";
@@ -402,25 +402,20 @@ export default function GuideDashboard() {
 
   const {id} = useParams<{id: string}>()
   const dispatch = useDispatch<AppDispatch>();
-  const { destinations, loading, error } = useSelector((state: any) => state.destination )
-  // const {allTours} = useSelector((state: any) => state.admin)
-
-  const handleLogout = async () => {
-    try {
-      await fetch("/api/auth/clear-cookie", {
-        method: "POST",
-      });
-      toast.success("Logged out successfully");
-    } catch (err) {
-      console.warn("Failed to clear cookies", err);
-    }
-    router.replace("/");
-  };
+  const [page, setPage] = useState(1);
+  const limit = 3;
+  const skip = (page - 1) * limit;
 
   useEffect(() => {
-    dispatch(listDestinations()).unwrap();
-    // dispatch(getTourByGuide(id))
-  }, [dispatch]);
+    dispatch(listDestinations({ skip, limit }));
+  }, [dispatch, page]);
+
+  const { destinations, loading, error, total } = useSelector(
+    (state: any) => state.destination
+  );
+
+  const totalPages = Math.ceil(total / limit);
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#fdfdfd] to-[#e4e2e1] text-[#363636]">
@@ -445,7 +440,7 @@ export default function GuideDashboard() {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => router.push('/guide/createTour')}
-                  className="bg-[#3b82f6] hover:bg-[#1e3a8a] text-[#fdfdfd] px-6 py-2.5 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 shadow-lg"
+                  className="bg-gradient-to-r from-[#22252c] via-[#1e3a8a] to-[#22252c] shadow-xl text-white px-6 py-2.5 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 shadow-lg"
                 >
                   <Plus size={18} />
                   Create Tour
@@ -622,6 +617,7 @@ export default function GuideDashboard() {
                         <Star className="text-[#ff9100]" size={14} />
                         <span className="text-xs text-[#363636]">4.5</span>
                       </div>
+
                     </div>
                     
                     <button className="text-[#3b82f6] hover:text-[#1e3a8a] text-sm font-medium transition-colors duration-200">
@@ -632,6 +628,29 @@ export default function GuideDashboard() {
               </div>
             ))}
           </div>
+            {/* Pagination Controls */}
+           {totalPages > 1 && (
+  <div className="flex justify-center items-center gap-3 mt-8">
+    <button
+      disabled={page === 1}
+      onClick={() => setPage((p) => p - 1)}
+      className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed bg-white hover:bg-gray-100"
+    >
+      Prev
+    </button>
+    <span className="text-sm font-medium">
+      Page {page} of {totalPages}
+    </span>
+    <button
+      disabled={page === totalPages}
+      onClick={() => setPage((p) => p + 1)}
+      className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed bg-white hover:bg-gray-100"
+    >
+      Next
+    </button>
+  </div>
+)}
+
         </div>
       </main>
 

@@ -25,6 +25,9 @@ interface TourState {
   isLoading: boolean;
   error: string | null;
   successMessage: string | null;
+  guideToursTotal: number;   // total tours for guide
+  guideCurrentPage: number;
+  guideLimit: number;
 }
 
 const initialState: TourState= {
@@ -32,6 +35,10 @@ const initialState: TourState= {
   publicTours: [],        // tours visible to public without login
   guideTours: [],         // tours belonging to a guide (for profile page)
   selectedTour: null,     // single tour details (from viewTour)
+  guideToursTotal: 0,
+  guideCurrentPage: 1,
+  guideLimit: 6,
+
   
   filters: {              // support search + filters
     destination: null,
@@ -62,25 +69,40 @@ export const publicViewTourDetails = createAsyncThunk('tour/details', async(id :
     return res.data.data
 })
 
-//view tours of a guide
-export const guideViewTours = createAsyncThunk('/tours', async() => {
+// //view tours of a guide
+// export const guideViewTours = createAsyncThunk('/tours', async() => {
+//   const res = await api.get('api/tour/viewAll', {
+//     withCredentials: true,
+//   })
 
-  // const cookieRes = await fetch('/api/auth/get-cookie',{
-  //    credentials: "include", 
-  // })
-  // const {token , role} = await cookieRes.json()
+//   console.log(res.data.data, "view all tour of guide")
+//   return res.data.data
+// })
 
+// view tours of a guide with pagination
+export const guideViewTours = createAsyncThunk(
+  '/tours',
+  async (
+    { page = 1, limit = 6 }: { page?: number; limit?: number } = {}
+  ) => {
+    const skip = (page - 1) * limit;
 
-  const res = await api.get('api/tour/viewAll', {
-    // headers:{
-    //   'Authorization': `Bearer ${token}`
-    // }
-    withCredentials: true,
-  })
+    const res = await api.get('api/tour/viewAll', {
+      params: { skip, limit },
+      withCredentials: true,
+    });
 
-  console.log(res.data.data, "view all tour of guide")
-  return res.data.data
-})
+    console.log(res.data, "view all tours of guide");
+
+    return {
+      tours: res.data.data,
+      total: res.data.total, // total tours count
+      page,
+      limit,
+    };
+  }
+);
+
 
 //guide view single tour
 
@@ -139,17 +161,21 @@ const tourSlice = createSlice({
 
 
             //guide view all tours
-            .addCase(guideViewTours.pending, state => {
-              state.isLoading = true
-            })
-            .addCase(guideViewTours.fulfilled, ( state, action) => {
-              state.isLoading = false,
-              state.guideTours = action.payload
-            })
-            .addCase(guideViewTours.rejected, (state, action) => {
-              state.isLoading = false,
-              state.error = action.error.message || 'Failed to load tours'
-            })
+            .addCase(guideViewTours.pending, state => { 
+                state.isLoading = true;
+                })
+                .addCase(guideViewTours.fulfilled, (state, action) => {
+                state.isLoading = false;
+                state.guideTours = action.payload.tours;
+                state.guideToursTotal = action.payload.total;
+                state.guideCurrentPage = action.payload.page;
+                state.guideLimit = action.payload.limit;
+                })
+                .addCase(guideViewTours.rejected, (state, action) => {
+                state.isLoading = false;
+                state.error = action.error.message || 'Failed to load tours';
+                })
+
 
             //guide view single tour
             .addCase(guideViewSingleTour.pending, state => {

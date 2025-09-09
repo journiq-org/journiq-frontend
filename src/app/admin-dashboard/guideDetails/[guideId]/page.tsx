@@ -1,80 +1,3 @@
-// "use client";
-// import React, { useEffect } from "react";
-// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-// import { Badge } from "@/components/ui/badge";
-// import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-// import { useDispatch, useSelector } from "react-redux";
-// import { AppDispatch } from "@/redux/store";
-// import { useParams } from "next/navigation";
-// import { viewGuideById } from "@/redux/slices/adminSlice";
-
-// // interface GuideDetailsPageProps {
-// //   params: { id: string }; // comes from URL
-// // }
-
-// const GuideDetailsPage = () => {
-
-//     const params = useParams(); 
-//     const id = params?.id as string; 
-
-//     const dispatch = useDispatch<AppDispatch>()
-//     const { singleGuide, loading, error} = useSelector((state:any) => state.admin)
-
-//     useEffect(() => {
-//         dispatch(viewGuideById(id))
-//     },[id,dispatch])
-//   return (
-//     <div className="p-6">
-//       <Card className="max-w-2xl mx-auto shadow-lg rounded-2xl">
-//         <CardHeader className="flex items-center gap-4">
-//           <Avatar className="w-16 h-16">
-//             {singleGuide.profilePic ? (
-//               <AvatarImage src={singleGuide.profilePic} alt={singleGuide.name} />
-//             ) : (
-//               <AvatarFallback>{singleGuide.name.charAt(0)}</AvatarFallback>
-//             )}
-//           </Avatar>
-//           <div>
-//             <CardTitle className="text-xl font-bold">{singleGuide.name}</CardTitle>
-//             <p className="text-gray-600">{singleGuide.email}</p>
-//             <p className="text-gray-600">{singleGuide.phone}</p>
-//           </div>
-//         </CardHeader>
-//         <CardContent className="space-y-4">
-//           <div>
-//             <span className="font-semibold">Role:</span>{" "}
-//             <Badge variant="outline" className="capitalize">
-//               {singleGuide.role}
-//             </Badge>
-//           </div>
-//           <div>
-//             <span className="font-semibold">Location:</span> {singleGuide.location}
-//           </div>
-//           <div>
-//             <span className="font-semibold">Bio:</span> {singleGuide.bio || "No bio provided"}
-//           </div>
-//           <div>
-//             <span className="font-semibold">Status:</span>{" "}
-//             {singleGuide.isVerified ? (
-//               <Badge className="bg-green-100 text-green-700">Verified</Badge>
-//             ) : (
-//               <Badge className="bg-yellow-100 text-yellow-700">Pending</Badge>
-//             )}
-//           </div>
-//           <div>
-//             <span className="font-semibold">Joined:</span>{" "}
-//             {new Date(singleGuide.createdAt).toLocaleDateString()}
-//           </div>
-//         </CardContent>
-//       </Card>
-//     </div>
-//   );
-// };
-
-// export default GuideDetailsPage;
-
-
-
 "use client";
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -111,22 +34,6 @@ import {
 } from "lucide-react";
 import toast from "react-hot-toast";
 import { Tour } from "@/types/tour";
-
-// interface Tour {
-//   _id: string;
-//   title: string;
-//   description: string;
-//   price: number;
-//   duration: string;
-//   maxParticipants: number;
-//   images: string[];
-//   location: string;
-//   rating?: number;
-//   reviewCount?: number;
-//   createdAt: string;
-//   isActive: boolean;
-//   category?: string;
-// }
 
 const GuideDetailsPage = () => {
   const router = useRouter();

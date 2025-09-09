@@ -1,28 +1,251 @@
+// "use client";
+
+// import React, { useState } from "react";
+// import {
+//   Box,
+//   Button,
+//   Avatar,
+//   Typography,
+//   Paper,
+//   TextField,
+// } from "@mui/material";
+// import { useForm, Controller } from "react-hook-form";
+// import { yupResolver } from "@hookform/resolvers/yup";
+// import * as yup from "yup";
+// import api from "@/lib/api";
+// import toast from "react-hot-toast";
+// import Navbar from "@/components/Navbar";
+
+// const schema = yup.object().shape({
+//   name: yup.string().required("Name is required"),
+//   email: yup.string().email("Invalid email").required("Email is required"),
+//   password: yup
+//     .string()
+//     .min(6, "Password must be at least 6 characters")
+//     .required("Password is required"),
+//   phone: yup.string().required("Phone number is required"),
+//   location: yup.string().required("Location is required"),
+//   bio: yup.string().required("Bio is required"),
+//   role: yup.string().required("Role is required"),
+// });
+
+// type RegisterFormData = yup.InferType<typeof schema>;
+
+// const RegisterPage = () => {
+//   const [image, setImage] = useState<File | null>(null);
+//   const [preview, setPreview] = useState("");
+
+//   const {
+//     handleSubmit,
+//     control,
+//     watch,
+//     setValue,
+//     reset,
+//     formState: { errors },
+//   } = useForm<RegisterFormData>({
+//     resolver: yupResolver(schema),
+//     defaultValues: {
+//       name: "",
+//       email: "",
+//       password: "",
+//       phone: "",
+//       location: "",
+//       bio: "",
+//       role: "",
+//     },
+//   });
+
+//   const selectedRole = watch("role");
+
+//   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//     const file = e.target.files?.[0];
+//     if (file) {
+//       setImage(file);
+//       setPreview(URL.createObjectURL(file));
+//     }
+//   };
+
+//   const removeImage = () => {
+//     setImage(null);
+//     setPreview("");
+//   };
+
+//   const onSubmit = async (data: RegisterFormData) => {
+//     try {
+//       const formData = new FormData();
+//       Object.entries(data).forEach(([key, value]) =>
+//         formData.append(key, value as string)
+//       );
+//       if (image) formData.append("profilePic", image);
+
+//       await api.post("/api/users/register", formData, {
+//         headers: { "Content-Type": "multipart/form-data" },
+//       });
+
+//       toast.success("Registration successful!");
+//       reset();
+//       removeImage();
+//     } catch (err: any) {
+//       toast.error(err.response?.data?.message || "Something went wrong");
+//     }
+//   };
+
+//   return (
+//     <>
+//       <Navbar />
+
+//       <Box className="flex min-h-screen items-center justify-center bg-[#d1cfc8] p-4 pt-24">
+//         <div className="w-full max-w-md rounded-2xl bg-[#d1cfc8]/95 p-8 shadow-lg backdrop-blur-md">
+//           <h1 className="text-4xl font-extrabold text-[#0c0c0c] text-center mb-2">Register</h1>
+//           <Typography className="text-[#4E4D45] text-center mb-6">
+//             Create your account 👋
+//           </Typography>
+
+//           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+//             {/* Avatar + Role */}
+//             <Box className="flex flex-col items-center mb-4">
+//               <Avatar
+//                 src={preview}
+//                 sx={{ width: 100, height: 100, mb: 2, cursor: "pointer" }}
+//                 onClick={() => document.getElementById("avatarInput")?.click()}
+//               />
+//               {preview && (
+//                 <Button
+//                   variant="outlined"
+//                   color="error"
+//                   size="small"
+//                   sx={{ mb: 2 }}
+//                   onClick={removeImage}
+//                 >
+//                   Remove Image
+//                 </Button>
+//               )}
+//               <input
+//                 type="file"
+//                 id="avatarInput"
+//                 hidden
+//                 accept="image/*"
+//                 onChange={handleImageChange}
+//               />
+
+//               <Box className="flex gap-2">
+//                 <Button
+//                   variant={selectedRole === "traveller" ? "contained" : "outlined"}
+//                   sx={{
+//                     backgroundColor:
+//                       selectedRole === "traveller" ? "#0c0c0c" : "white",
+//                     color: selectedRole === "traveller" ? "white" : "#0c0c0c",
+//                     "&:hover": {
+//                       backgroundColor: selectedRole === "traveller" ? "#4E4D45" : "#d1cfc8",
+//                     },
+//                   }}
+//                   onClick={() => setValue("role", "traveller")}
+//                 >
+//                   Traveller
+//                 </Button>
+
+//                 <Button
+//                   variant={selectedRole === "guide" ? "contained" : "outlined"}
+//                   sx={{
+//                     backgroundColor:
+//                       selectedRole === "guide" ? "#0c0c0c" : "white",
+//                     color: selectedRole === "guide" ? "white" : "#0c0c0c",
+//                     "&:hover": {
+//                       backgroundColor: selectedRole === "guide" ? "#4E4D45" : "#d1cfc8",
+//                     },
+//                   }}
+//                   onClick={() => setValue("role", "guide")}
+//                 >
+//                   Guide
+//                 </Button>
+//               </Box>
+
+//               {errors.role && (
+//                 <Typography color="error" variant="caption" sx={{ mt: 0.5 }}>
+//                   {errors.role.message}
+//                 </Typography>
+//               )}
+//             </Box>
+
+//             {/* Form Fields */}
+//             {(["name", "email", "password", "phone", "location", "bio"] as (keyof RegisterFormData)[]).map(
+//               (field) => (
+//                 <Controller
+//                   key={field}
+//                   name={field}
+//                   control={control}
+//                   render={({ field: f }) => (
+//                     <TextField
+//                       {...f}
+//                       type={field === "password" ? "password" : "text"}
+//                       label={field.charAt(0).toUpperCase() + field.slice(1)}
+//                       fullWidth
+//                       multiline={field === "bio"}
+//                       rows={field === "bio" ? 3 : 1}
+//                       error={!!errors[field]}
+//                       helperText={errors[field]?.message}
+//                       sx={{
+//                         backgroundColor: "white",
+//                         "& .MuiInputBase-input": { color: "#0c0c0c" },
+//                         "& .MuiInputLabel-root": { color: "#4E4D45" },
+//                         "& .MuiOutlinedInput-root": {
+//                           "& fieldset": {
+//                             borderColor: "#4E4D45",
+//                           },
+//                           "&:hover fieldset": {
+//                             borderColor: "#0c0c0c",
+//                           },
+//                           "&.Mui-focused fieldset": {
+//                             borderColor: "#0c0c0c",
+//                           },
+//                         },
+//                       }}
+//                     />
+//                   )}
+//                 />
+//               )
+//             )}
+
+//             <Button
+//               type="submit"
+//               fullWidth
+//               sx={{
+//                 mt: 2,
+//                 backgroundColor: "#0c0c0c",
+//                 color: "white",
+//                 py: 1.5,
+//                 borderRadius: "9999px",
+//                 "&:hover": { backgroundColor: "#4E4D45" },
+//               }}
+//             >
+//               Register
+//             </Button>
+//           </form>
+//         </div>
+//       </Box>
+//     </>
+//   );
+// };
+
+// export default RegisterPage;
+
+
 "use client";
 
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Avatar,
-  Typography,
-  Paper,
-  TextField,
-} from "@mui/material";
+import { Box, Button, Avatar, Typography, TextField } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
 import Navbar from "@/components/Navbar";
+import Link from "next/link";
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
-  password: yup
-    .string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
+  password: yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
   phone: yup.string().required("Phone number is required"),
   location: yup.string().required("Location is required"),
   bio: yup.string().required("Bio is required"),
@@ -41,7 +264,7 @@ const RegisterPage = () => {
     watch,
     setValue,
     reset,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<RegisterFormData>({
     resolver: yupResolver(schema),
     defaultValues: {
@@ -93,15 +316,12 @@ const RegisterPage = () => {
   return (
     <>
       <Navbar />
+      <Box className="flex min-h-screen items-center justify-center p-4 pt-24 bg-[#d1cfc8]">
+        <div className="w-full max-w-3xl rounded-3xl bg-[#1f2937]/90 p-8 shadow-2xl backdrop-blur-md border border-[#3b82f6]/30">
+          <h1 className="text-4xl font-extrabold text-[#fdfdfd] text-center mb-2">Register</h1>
+          <p className="text-[#93c5fd] text-center mb-6">Create your account 👋</p>
 
-      <Box className="flex min-h-screen items-center justify-center bg-[#E2E0DF] p-4 pt-24">
-        <div className="w-full max-w-md rounded-2xl bg-[#d1cfc8]/95 p-8 shadow-lg backdrop-blur-md">
-          <h1 className="text-4xl font-extrabold text-[#0c0c0c] text-center mb-2">Register</h1>
-          <Typography className="text-[#4E4D45] text-center mb-6">
-            Create your account 👋
-          </Typography>
-
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Avatar + Role */}
             <Box className="flex flex-col items-center mb-4">
               <Avatar
@@ -128,15 +348,14 @@ const RegisterPage = () => {
                 onChange={handleImageChange}
               />
 
-              <Box className="flex gap-2">
+              <Box className="flex gap-2 mt-2">
                 <Button
                   variant={selectedRole === "traveller" ? "contained" : "outlined"}
                   sx={{
-                    backgroundColor:
-                      selectedRole === "traveller" ? "#0c0c0c" : "white",
+                    backgroundColor: selectedRole === "traveller" ? "#6b5f30ff" : "#d1cfc8",
                     color: selectedRole === "traveller" ? "white" : "#0c0c0c",
                     "&:hover": {
-                      backgroundColor: selectedRole === "traveller" ? "#4E4D45" : "#d1cfc8",
+                      backgroundColor: selectedRole === "traveller" ? "#6b5f30ff" : "#d1cfc8",
                     },
                   }}
                   onClick={() => setValue("role", "traveller")}
@@ -147,11 +366,10 @@ const RegisterPage = () => {
                 <Button
                   variant={selectedRole === "guide" ? "contained" : "outlined"}
                   sx={{
-                    backgroundColor:
-                      selectedRole === "guide" ? "#0c0c0c" : "white",
+                    backgroundColor: selectedRole === "guide" ? "#484b46ff" : "#d1cfc8",
                     color: selectedRole === "guide" ? "white" : "#0c0c0c",
                     "&:hover": {
-                      backgroundColor: selectedRole === "guide" ? "#4E4D45" : "#d1cfc8",
+                      backgroundColor: selectedRole === "guide" ? "#484b46ff" : "#d1cfc8",
                     },
                   }}
                   onClick={() => setValue("role", "guide")}
@@ -167,59 +385,199 @@ const RegisterPage = () => {
               )}
             </Box>
 
-            {/* Form Fields */}
-            {(["name", "email", "password", "phone", "location", "bio"] as (keyof RegisterFormData)[]).map(
-              (field) => (
+            {/* Form Fields in Rows */}
+            <Box className="flex flex-col gap-4 md:gap-6">
+              <Box className="flex flex-col md:flex-row gap-4">
                 <Controller
-                  key={field}
-                  name={field}
+                  name="name"
                   control={control}
-                  render={({ field: f }) => (
+                  render={({ field }) => (
                     <TextField
-                      {...f}
-                      type={field === "password" ? "password" : "text"}
-                      label={field.charAt(0).toUpperCase() + field.slice(1)}
+                      {...field}
+                      label="Name"
                       fullWidth
-                      multiline={field === "bio"}
-                      rows={field === "bio" ? 3 : 1}
-                      error={!!errors[field]}
-                      helperText={errors[field]?.message}
+                      error={!!errors.name}
+                      helperText={errors.name?.message}
                       sx={{
-                        backgroundColor: "white",
-                        "& .MuiInputBase-input": { color: "#0c0c0c" },
-                        "& .MuiInputLabel-root": { color: "#4E4D45" },
+                        backgroundColor: "#22252c",
+                        "& .MuiInputBase-input": { color: "#fdfdfd" },
+                        "& .MuiInputLabel-root": { color: "#93c5fd" },
                         "& .MuiOutlinedInput-root": {
-                          "& fieldset": {
-                            borderColor: "#4E4D45",
-                          },
-                          "&:hover fieldset": {
-                            borderColor: "#0c0c0c",
-                          },
-                          "&.Mui-focused fieldset": {
-                            borderColor: "#0c0c0c",
-                          },
+                          "& fieldset": { borderColor: "#3b82f6" },
+                          "&:hover fieldset": { borderColor: "#60a5fa" },
+                          "&.Mui-focused fieldset": { borderColor: "#2563eb" },
                         },
                       }}
                     />
                   )}
                 />
-              )
-            )}
+                <Controller
+                  name="email"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Email"
+                      fullWidth
+                      error={!!errors.email}
+                      helperText={errors.email?.message}
+                       sx={{
+                        backgroundColor: "#22252c",
+                        "& .MuiInputBase-input": { color: "#fdfdfd" },
+                        "& .MuiInputLabel-root": { color: "#93c5fd" },
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": { borderColor: "#3b82f6" },
+                          "&:hover fieldset": { borderColor: "#60a5fa" },
+                          "&.Mui-focused fieldset": { borderColor: "#2563eb" },
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </Box>
+
+              <Box className="flex flex-col md:flex-row gap-4">
+                <Controller
+                  name="password"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      type="password"
+                      label="Password"
+                      fullWidth
+                      error={!!errors.password}
+                      helperText={errors.password?.message}
+                      sx={{
+                        backgroundColor: "#22252c",
+                        "& .MuiInputBase-input": { color: "#fdfdfd" },
+                        "& .MuiInputLabel-root": { color: "#93c5fd" },
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": { borderColor: "#3b82f6" },
+                          "&:hover fieldset": { borderColor: "#60a5fa" },
+                          "&.Mui-focused fieldset": { borderColor: "#2563eb" },
+                        },
+                      }}
+                    />
+                  )}
+                />
+                <Controller
+                  name="phone"
+                  control={control}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Phone"
+                      fullWidth
+                      error={!!errors.phone}
+                      helperText={errors.phone?.message}
+                      sx={{
+                        backgroundColor: "#22252c",
+                        "& .MuiInputBase-input": { color: "#fdfdfd" },
+                        "& .MuiInputLabel-root": { color: "#93c5fd" },
+                        "& .MuiOutlinedInput-root": {
+                          "& fieldset": { borderColor: "#3b82f6" },
+                          "&:hover fieldset": { borderColor: "#60a5fa" },
+                          "&.Mui-focused fieldset": { borderColor: "#2563eb" },
+                        },
+                      }}
+                    />
+                  )}
+                />
+              </Box>
+
+              <Box className="flex flex-col md:flex-row gap-4">
+                <Controller
+                name="location"
+                control={control}
+                render={({ field }) => (
+                  <TextField
+                    {...field}
+                    label="Location"
+                    fullWidth
+                    error={!!errors.location}
+                    helperText={errors.location?.message}
+                    sx={{
+                      "& .MuiOutlinedInput-root": {
+                        backgroundColor: "#22252c", // container background
+                        "& fieldset": { borderColor: "#3b82f6" },
+                        "&:hover fieldset": { borderColor: "#60a5fa" },
+                        "&.Mui-focused fieldset": { borderColor: "#2563eb" },
+                      },
+                      "& .MuiInputLabel-root": { color: "#93c5fd" }, // label color
+                      "& .MuiInputBase-input": { color: "#fdfdfd" }, // input text color
+                    }}
+                    InputProps={{
+                      sx: {
+                        backgroundColor: "#22252c", // input/textarea bg
+                        height: "60px", // match other single-line inputs
+                        padding: "12px",
+                        color: "#fdfdfd",
+                      },
+                    }}
+                  />
+                )}
+              />
+
+              <Controller
+              name="bio"
+              control={control}
+              render={({ field }) => (
+                <TextField
+                  {...field}
+                  label="Bio"
+                  fullWidth
+                  multiline // keep multiline if you want users to type longer locations
+                  rows={1} // looks like a normal input
+                  error={!!errors.bio}
+                  helperText={errors.bio?.message}
+                  sx={{
+                    "& .MuiOutlinedInput-root": {
+                      backgroundColor: "#22252c", // container background
+                      "& fieldset": { borderColor: "#3b82f6" },
+                      "&:hover fieldset": { borderColor: "#60a5fa" },
+                      "&.Mui-focused fieldset": { borderColor: "#2563eb" },
+                    },
+                    "& .MuiInputLabel-root": { color: "#93c5fd" }, // label color
+                    "& .MuiInputBase-input": { color: "#fdfdfd" }, // input text color
+                  }}
+                  InputProps={{
+                    sx: {
+                      backgroundColor: "#22252c", // input/textarea bg
+                      height: "60px", // match other single-line inputs
+                      padding: "12px",
+                      color: "#fdfdfd",
+                    },
+                  }}
+                />
+              )}
+            />
+
+              </Box>
+            </Box>
 
             <Button
               type="submit"
               fullWidth
+              disabled={isSubmitting}
               sx={{
                 mt: 2,
-                backgroundColor: "#0c0c0c",
+                backgroundColor: "#bc7a24",
                 color: "white",
                 py: 1.5,
                 borderRadius: "9999px",
-                "&:hover": { backgroundColor: "#4E4D45" },
+                "&:hover": { backgroundColor: "#bc7a24" },
               }}
             >
-              Register
+              {isSubmitting ? "Registering..." : "Register"}
             </Button>
+
+            <p className="mt-4 text-center text-sm text-[#93c5fd]">
+              Already have an account?{" "}
+              <Link href="/login" className="text-white font-semibold hover:text-blue-200 transition">
+                Login
+              </Link>
+            </p>
           </form>
         </div>
       </Box>

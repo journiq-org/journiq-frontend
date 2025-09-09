@@ -15,6 +15,7 @@ interface Filters {
 interface DestinationState {
   destinations: DestinationType[];
   popular: DestinationType[];
+  total: number;
   selectedDestination: DestinationType | null;
   toursByDestination: any[]; // refine later with TourType
   filters: Filters;
@@ -25,6 +26,7 @@ interface DestinationState {
 
 const initialState: DestinationState = {
   destinations: [],      // list of all destinations
+  total: 0,
   popular: [],           // popular destinations
   selectedDestination: null, // details of a single destination
   toursByDestination: [], // tours for a specific destination
@@ -46,13 +48,33 @@ const initialState: DestinationState = {
 
 //list destination
 
-export const listDestinations = createAsyncThunk('/destinations', async() => {
+// export const listDestinations = createAsyncThunk('/destinations', async() => {
 
-    const res = await api.get('/api/destination/viewAllDestination')
-    console.log('Destination list', res.data.data)
+//     const res = await api.get('/api/destination/viewAllDestination')
+//     console.log('Destination list', res.data.data)
 
-    return res.data.data
-})
+//     return res.data.data
+// })
+
+
+// destinationSlice.ts
+export const listDestinations = createAsyncThunk(
+  "/destinations",
+  async ({ skip, limit }: { skip: number; limit: number }) => {
+    const res = await api.get(
+      `/api/destination/viewAllDestination?skip=${skip}&limit=${limit}`
+    );
+
+    console.log("Destination list", res.data);
+
+    // Your backend already sends { total, count, data }
+    return {
+    destinations: res.data.data,
+    total: res.data.total,
+    };
+  }
+);
+
 
 //fetch tour based on destination
 
@@ -120,8 +142,9 @@ const destinationSlice = createSlice({
                 state.loading = true
             })
             .addCase(listDestinations.fulfilled, (state, action) => {
-                state.loading = false
-                state.destinations = action.payload
+               state.loading = false,
+                state.destinations = action.payload.destinations; 
+                state.total = action.payload.total;  
             })
             .addCase(listDestinations.rejected, (state,action) => {
                 state.loading = false

@@ -11,7 +11,7 @@ const Navbar = () => {
   const isRegisterPage = pathname === "/register";
 
   return (
-    <nav className="bg-[#E2E0DF] px-6 py-4 fixed top-0 left-0 w-full z-50 ">
+    <nav className="bg-[#d1cfc8] px-6 py-4 fixed top-0 left-0 w-full z-50 ">
       <div className="max-w-7xl mx-auto flex justify-between items-center">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">
@@ -22,7 +22,7 @@ const Navbar = () => {
             height={40}
             className="rounded-full"
           />
-          <span className="text-lg font-bold text-[#0c0c0c]"></span>
+          <span className="text-lg font-bold text-[#0c0c0c]">Journiq</span>
         </Link>
 
         {/* Auth Icons */}

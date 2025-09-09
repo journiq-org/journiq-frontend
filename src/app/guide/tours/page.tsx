@@ -467,16 +467,21 @@ import GuideNavbar from "@/components/GuideNavbar";
 const GuideToursPage = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const { guideTours, isloading, error } = useSelector((state: any) => state.tour);
+  const { guideTours, isLoading, error, guideCurrentPage, guideLimit, guideToursTotal } = useSelector((state: any) => state.tour);
+
 
   // State for search and filters
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
 
-  useEffect(() => {
-    dispatch(guideViewTours());
-  }, [dispatch]);
+  const [currentPage, setCurrentPage] = useState(1);
+const limit = 6; // tours per page
+
+
+useEffect(() => {
+  dispatch(guideViewTours({ page: currentPage, limit }));
+}, [dispatch, currentPage]);
 
   // Filter tours based on search and filters
   const filteredTours = guideTours?.filter((tour: Tour) => {
@@ -548,7 +553,7 @@ const GuideToursPage = () => {
             
             <button
               onClick={() => router.push("/guide/createTour")}
-              className="bg-[#3b82f6] hover:bg-[#1e3a8a] text-[#fdfdfd] px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 flex items-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
+              className="bg-gradient-to-r from-[#22252c] via-[#1e3a8a] to-[#22252c] shadow-xl text-white px-6 py-2.5 rounded-xl font-semibold transition-all duration-300 flex items-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
             >
               <Plus size={18} />
               Create New Tour
@@ -656,7 +661,7 @@ const GuideToursPage = () => {
         </div>
 
         {/* Loading State */}
-        {isloading && (
+        {isLoading && (
           <div className="flex items-center justify-center py-12">
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-[#3b82f6]"></div>
             <span className="ml-3 text-[#333333] text-lg">Loading your tours...</span>
@@ -679,7 +684,7 @@ const GuideToursPage = () => {
         )}
 
         {/* Empty State */}
-        {!isloading && !error && filteredTours.length === 0 && guideTours?.length === 0 && (
+        {!isLoading && !error && filteredTours.length === 0 && guideTours?.length === 0 && (
           <div className="text-center py-16">
             <div className="w-20 h-20 bg-[#e4e2e1] rounded-full flex items-center justify-center mx-auto mb-6 border-2 border-[#e2e0df]">
               <Plus className="text-[#333333]" size={32} />
@@ -696,7 +701,7 @@ const GuideToursPage = () => {
         )}
 
         {/* Filtered Results Info */}
-        {!isloading && !error && guideTours?.length > 0 && filteredTours.length !== guideTours.length && (
+        {!isLoading && !error && guideTours?.length > 0 && filteredTours.length !== guideTours.length && (
           <div className="mb-6">
             <p className="text-[#333333] bg-[#e4e2e1] px-4 py-2 rounded-lg inline-block">
               Showing {filteredTours.length} of {guideTours.length} tours
@@ -809,9 +814,38 @@ const GuideToursPage = () => {
                   </button>
                 </div>
               </div>
+
+              
+
             </div>
           ))}
         </div>
+
+        {/* Pagination */}
+        {guideToursTotal > limit && (
+          <div className="flex justify-center items-center gap-3 mt-8">
+            <button
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+              className="px-4 py-2 bg-[#fdfdfd] border border-[#e2e0df] rounded-xl hover:bg-[#e2e0df] disabled:opacity-50"
+            >
+              Previous
+            </button>
+
+            <span className="px-4 py-2 text-[#333333]">
+              Page {currentPage} of {Math.ceil(guideToursTotal / limit)}
+            </span>
+
+            <button
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(guideToursTotal / limit)))}
+              disabled={currentPage === Math.ceil(guideToursTotal / limit)}
+              className="px-4 py-2 bg-[#fdfdfd] border border-[#e2e0df] rounded-xl hover:bg-[#e2e0df] disabled:opacity-50"
+            >
+              Next
+            </button>
+          </div>
+        )}
+
       </div>
     </div>
     

@@ -181,9 +181,10 @@ useEffect(() => {
 
         <div className="max-w-4xl mx-auto px-6 py-8">
           {/* Profile Card */}
+         {/* bg-gradient-to-r from-[#22252c] via-[#1e3a8a] to-[#22252c] shadow-xl sticky top-0 z-40 border-b border-[#93c5fd]/20 */}
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
             {/* Profile Header */}
-            <div className="bg-gradient-to-r from-blue-600 to-blue-700 px-8 py-12">
+            <div className="bg-gradient-to-r from-[#22252c] via-[#1e3a8a] to-[#22252c] shadow-xl px-8 py-12">
               <div className="flex flex-col md:flex-row items-center md:items-start gap-6">
                 <div className="relative">
                   <img
@@ -302,7 +303,7 @@ useEffect(() => {
           <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
             <button
               onClick={() => router.push("/guide-dashboard/profile/edit-profile")}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 justify-center shadow-sm hover:shadow-md"
+              className="bg-gradient-to-r from-[#22252c] via-[#1e3a8a] to-[#22252c] shadow-xl text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 justify-center shadow-sm hover:shadow-md"
             >
               <Edit2 size={18} />
               Edit Profile Information
