@@ -65,9 +65,7 @@ export const getTourByDestination = createAsyncThunk('destination/getTourByDesti
 
 //get single destination
 export const getSingleDestination = createAsyncThunk('destination/getSingleDestination', async (destinationId: string) => {
-  const res = await api.get(`/api/destination/viewDestination/${destinationId}`,{
-    withCredentials: true
-  })
+  const res = await api.get(`/api/destination/viewDestination/${destinationId}`)
   return res.data.data
 })
 

@@ -80,7 +80,7 @@ const TravellerNavbar = () => {
   <nav className="hidden md:flex gap-8 mx-auto text-[#0c0c0c] font-medium">
     <a href="/traveller-dashboard" className="hover:text-amber-700">Home</a>
     <a href="/booking/my-booking" className="hover:text-amber-700">Booking</a>
-    <a href="/tours/destinantion" className="hover:text-amber-700">Tour</a>
+    <a href="/tours/destination" className="hover:text-amber-700">Tour</a>
     <a href="/message" className="hover:text-amber-700">Message</a>
   </nav>
 

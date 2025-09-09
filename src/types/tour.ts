@@ -16,6 +16,7 @@ export interface Tour {
     name: string;
     email?: string;
     phone: number
+    profilePic: string
   };
   itinerary: string[];
   duration: number;
