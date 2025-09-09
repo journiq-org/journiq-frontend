@@ -6,7 +6,7 @@ import { listDestinations } from '@/redux/slices/destinationSlice';
 import { AppDispatch } from '@/redux/store';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@mui/material';
 import { Bold } from 'lucide-react';
@@ -16,12 +16,21 @@ export default function TravellerDashboard() {
 
   // Redux
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, error, destinations } = useSelector((state: any) => state.destination);
-
-  useEffect(() => {
-    dispatch(listDestinations());
-  }, [dispatch]);
-
+  // const { loading, error, destinations } = useSelector((state: any) => state.destination);
+    const [page, setPage] = useState(1);
+    const limit = 3;
+    const skip = (page - 1) * limit;
+  
+    useEffect(() => {
+      dispatch(listDestinations({ skip, limit }));
+    }, [dispatch, page]);
+  
+    const { destinations, loading, error, total } = useSelector(
+      (state: any) => state.destination
+    );
+  
+    const totalPages = Math.ceil(total / limit);
+  
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navbar on top */}
@@ -187,6 +196,30 @@ export default function TravellerDashboard() {
             </div>
           )
         )}
+
+            {/* Pagination Controls */}
+           {totalPages > 1 && (
+  <div className="flex justify-center items-center gap-3 mt-8">
+    <button
+      disabled={page === 1}
+      onClick={() => setPage((p) => p - 1)}
+      className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed bg-white hover:bg-gray-100"
+    >
+      Prev
+    </button>
+    <span className="text-sm font-medium">
+      Page {page} of {totalPages}
+    </span>
+    <button
+      disabled={page === totalPages}
+      onClick={() => setPage((p) => p + 1)}
+      className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed bg-white hover:bg-gray-100"
+    >
+      Next
+    </button>
+  </div>
+)}
+
 
         {/* Stats Section */}
         {destinations?.length > 0 && (
