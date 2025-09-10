@@ -287,6 +287,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import GuideNavbar from "@/components/GuideNavbar";
 
 interface AvailabilitySlot {
   date: string;
@@ -446,6 +447,8 @@ export default function GuideTourDetailsPage() {
   };
 
   return (
+    <>
+    <GuideNavbar/>
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       {/* Header */}
       <div className="bg-white shadow-sm border-b border-slate-200">
@@ -498,7 +501,7 @@ export default function GuideTourDetailsPage() {
                     {/* Primary Actions */}
                     <button
                       onClick={() => router.push(`/guide/updateTour/${selectedTour._id}`)}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2.5 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md"
+                      className="bg-gradient-to-r from-[#22252c] via-[#1e3a8a] to-[#22252c] shadow-xl px-4 py-2.5 rounded-lg font-medium transition-all duration-200 flex items-center gap-2 shadow-sm hover:shadow-md text-white"
                     >
                       <Edit3 size={16} />
                       Edit
@@ -858,5 +861,6 @@ export default function GuideTourDetailsPage() {
         </div>
       )}
     </div>
+    </>
   );
 }

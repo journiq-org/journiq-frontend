@@ -12,17 +12,31 @@ interface Filters {
   sort: "latest" | "oldest" | "name" | "name-desc";
 }
 
+// interface DestinationState {
+//   destinations: DestinationType[];
+//   popular: DestinationType[];
+//   total: number;
+//   selectedDestination: DestinationType | null;
+//   toursByDestination: any[]; // refine later with TourType
+//   filters: Filters;
+//   loading: boolean;
+//   error: string | null;
+//   successMessage: string | null;
+// }
+
 interface DestinationState {
   destinations: DestinationType[];
   popular: DestinationType[];
   total: number;
   selectedDestination: DestinationType | null;
-  toursByDestination: any[]; // refine later with TourType
+  toursByDestination: any[];
   filters: Filters;
   loading: boolean;
   error: string | null;
   successMessage: string | null;
+  attractions?: string[];   
 }
+
 
 const initialState: DestinationState = {
   destinations: [],      // list of all destinations
@@ -60,20 +74,44 @@ const initialState: DestinationState = {
 // destinationSlice.ts
 export const listDestinations = createAsyncThunk(
   "/destinations",
-  async ({ skip, limit }: { skip: number; limit: number }) => {
-    const res = await api.get(
-      `/api/destination/viewAllDestination?skip=${skip}&limit=${limit}`
-    );
+  async ({
+    skip,
+    limit,
+    search,
+    tags,
+  }: { skip: number; limit: number; search?: string; tags?: string }) => {
+    let url = `/api/destination/viewAllDestination?skip=${skip}&limit=${limit}`;
+
+    if (search) url += `&search=${encodeURIComponent(search)}`;
+    if (tags) url += `&tags=${encodeURIComponent(tags)}`;
+
+    const res = await api.get(url);
 
     console.log("Destination list", res.data);
 
-    // Your backend already sends { total, count, data }
     return {
-    destinations: res.data.data,
-    total: res.data.total,
+      destinations: res.data.data,
+      total: res.data.total,
     };
   }
 );
+
+// export const listDestinations = createAsyncThunk(
+//   "/destinations",
+//   async ({ skip, limit }: { skip: number; limit: number }) => {
+//     const res = await api.get(
+//       `/api/destination/viewAllDestination?skip=${skip}&limit=${limit}`
+//     );
+
+//     console.log("Destination list", res.data);
+
+//     // Your backend already sends { total, count, data }
+//     return {
+//     destinations: res.data.data,
+//     total: res.data.total,
+//     };
+//   }
+// );
 
 
 //fetch tour based on destination

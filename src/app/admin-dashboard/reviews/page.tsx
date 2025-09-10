@@ -235,7 +235,7 @@ const AdminReviewsPage = () => {
 
         {/* Main Content Card */}
         <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl rounded-2xl overflow-hidden">
-          <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+          <CardHeader className="bg-gradient-to-r from-[#22252c] via-[#1e3a8a] to-[#22252c] shadow-xl text-white">
             <CardTitle className="text-xl font-semibold flex items-center gap-2">
               <Users className="h-5 w-5" />
               {searchTerm ? `Search Results (${filteredReviews.length})` : 'All Reviews'}

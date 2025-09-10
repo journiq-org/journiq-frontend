@@ -199,26 +199,26 @@ export default function TravellerDashboard() {
 
             {/* Pagination Controls */}
            {totalPages > 1 && (
-  <div className="flex justify-center items-center gap-3 mt-8">
-    <button
-      disabled={page === 1}
-      onClick={() => setPage((p) => p - 1)}
-      className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed bg-white hover:bg-gray-100"
-    >
-      Prev
-    </button>
-    <span className="text-sm font-medium">
-      Page {page} of {totalPages}
-    </span>
-    <button
-      disabled={page === totalPages}
-      onClick={() => setPage((p) => p + 1)}
-      className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed bg-white hover:bg-gray-100"
-    >
-      Next
-    </button>
-  </div>
-)}
+            <div className="flex justify-center items-center gap-3 mt-8">
+              <button
+                disabled={page === 1}
+                onClick={() => setPage((p) => p - 1)}
+                className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed bg-white hover:bg-gray-100"
+              >
+                Prev
+              </button>
+              <span className="text-sm font-medium">
+                Page {page} of {totalPages}
+              </span>
+              <button
+                disabled={page === totalPages}
+                onClick={() => setPage((p) => p + 1)}
+                className="px-4 py-2 border rounded-lg disabled:opacity-50 disabled:cursor-not-allowed bg-white hover:bg-gray-100"
+              >
+                Next
+              </button>
+            </div>
+          )}
 
 
         {/* Stats Section */}

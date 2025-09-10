@@ -21,9 +21,9 @@ interface TourState {
   publicTours: Tour[];
   guideTours: Tour[];
   selectedTour: Tour | null;
-  filters: FiltersState;
   isLoading: boolean;
   error: string | null;
+  filters: FiltersState;
   successMessage: string | null;
   guideToursTotal: number;   // total tours for guide
   guideCurrentPage: number;
@@ -38,6 +38,8 @@ const initialState: TourState= {
   guideToursTotal: 0,
   guideCurrentPage: 1,
   guideLimit: 6,
+  isLoading:false,
+  error:null,
 
   
   filters: {              // support search + filters
@@ -53,8 +55,7 @@ const initialState: TourState= {
     popular: false,
   },
   
-  isLoading: false,       // generic loading state
-  error: null,            // to capture errors
+           // to capture errors
   successMessage: null,   // for showing toast/alerts after create/update/delete
 };
 
@@ -81,27 +82,58 @@ export const publicViewTourDetails = createAsyncThunk('tour/details', async(id :
 
 // view tours of a guide with pagination
 export const guideViewTours = createAsyncThunk(
-  '/tours',
+  "/tours",
   async (
-    { page = 1, limit = 6 }: { page?: number; limit?: number } = {}
+    {
+      page = 1,
+      limit = 6,
+      destination,
+    }: { page?: number; limit?: number; destination?: string } = {}
   ) => {
     const skip = (page - 1) * limit;
 
-    const res = await api.get('api/tour/viewAll', {
-      params: { skip, limit },
+    const params: Record<string, any> = { skip, limit };
+
+    if (destination) {
+      params.destination = destination; // ✅ only add if exists
+    }
+
+    const res = await api.get("api/tour/viewAll", {
+      params,
       withCredentials: true,
     });
 
-    console.log(res.data, "view all tours of guide");
-
     return {
       tours: res.data.data,
-      total: res.data.total, // total tours count
+      total: res.data.total,
       page,
       limit,
     };
   }
 );
+
+// export const guideViewTours = createAsyncThunk(
+//   '/tours',
+//   async (
+//     { page = 1, limit = 6 }: { page?: number; limit?: number ; destination?:string} = {}
+//   ) => {
+//     const skip = (page - 1) * limit;
+
+//     const res = await api.get('api/tour/viewAll', {
+//       params: { skip, limit, destination },
+//       withCredentials: true,
+//     });
+
+//     console.log(res.data, "view all tours of guide");
+
+//     return {
+//       tours: res.data.data,
+//       total: res.data.total, // total tours count
+//       page,
+//       limit,
+//     };
+//   }
+// );
 
 
 //guide view single tour
