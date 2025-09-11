@@ -18,7 +18,7 @@ export default function TravellerDashboard() {
   const dispatch = useDispatch<AppDispatch>();
   // const { loading, error, destinations } = useSelector((state: any) => state.destination);
     const [page, setPage] = useState(1);
-    const limit = 3;
+    const limit = 6;
     const skip = (page - 1) * limit;
   
     useEffect(() => {
