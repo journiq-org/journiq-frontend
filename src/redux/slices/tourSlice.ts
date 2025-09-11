@@ -170,6 +170,15 @@ export const createTour = createAsyncThunk('guide/addTour', async(formData:FormD
   return res.data.data
 })
 
+
+//get all tour
+
+export const getAllTour = createAsyncThunk('traveller/getAllTour', async() =>{
+  const res = await api.get('/api/tour/viewAll',{
+    withCredentials:true
+  })  
+  return res.data.data
+})
 //slice
 const tourSlice = createSlice({
     name: 'tour',
@@ -259,6 +268,20 @@ const tourSlice = createSlice({
             .addCase(createTour.rejected, (state, action) => {
               state.isLoading = false;
               state.error = action.error.message || "Failed to create tour";
+            })
+
+
+            //get all tour
+            .addCase(getAllTour.pending, state => {
+              state.isLoading = true
+            })
+            .addCase(getAllTour.fulfilled, (state, action) =>{
+              state.isLoading = false
+              state.tours = action.payload
+            })
+            .addCase(getAllTour.rejected, (state, action) =>{
+              state.isLoading = false
+              state.error = action.error.message ||  'Failed to load tours'
             })
     }
 })
