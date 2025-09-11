@@ -262,7 +262,7 @@ const TravellerNavbar = () => {
         <nav className="hidden md:flex gap-8 mx-auto text-white font-medium">
           <a href="/traveller-dashboard" className="hover:text-amber-700">Home</a>
           <a href="/booking/my-booking" className="hover:text-amber-700">Booking</a>
-          <a href="/tours/destination" className="hover:text-amber-700">Tour</a>
+          <a href="/tours/viewAllTour" className="hover:text-amber-700">Tour</a>
           <button onClick={() => setOpenMessageDrawer(true)} className="hover:text-amber-700">Message</button>
         </nav>
 
