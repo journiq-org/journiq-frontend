@@ -227,7 +227,7 @@ const ToursPage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Navbar */}
-      {role === 'traveller' ? <TravellerNavbar /> : <Header />}
+      <TravellerNavbar />
 
       {/* Hero Section */}
       <div className="bg-gradient-to-r from-gray-800 to-gray-700 text-white py-16">
@@ -242,13 +242,13 @@ const ToursPage = () => {
           {/* Search Bar */}
           <div className="max-w-2xl mx-auto relative">
             <div className="relative">
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white-400 w-5 h-5" />
               <input
                 type="text"
                 placeholder="Search tours by name..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-4 rounded-2xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg"
+                className="w-full pl-12 pr-4 py-4 rounded-2xl text-white-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-lg"
               />
               {searchQuery && (
                 <button

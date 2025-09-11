@@ -881,37 +881,38 @@ const PublicViewToursByDestination = () => {
       </div>
 
       {/* Popular Attractions Section */}
-      {selectedDestination && !destinationError && selectedDestination.popularAttractions?.length > 0 && (
-        <div className="bg-gradient-to-br from-gray-50 to-blue-50 py-16">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="text-center mb-12">
-              <h3 className="text-3xl font-bold text-gray-900 mb-4">
-                Popular Attractions in {selectedDestination.name}
-              </h3>
-              <p className="text-lg text-gray-600">
-                Explore the must-visit places that make this destination special
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 ">
-              {selectedDestination.popularAttractions.map((attraction: string, index: number) => (
-                <div
-                  key={index}
-                  className="bg-white  rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100"
-                >
-                  <div className="text-center ">
-                    <div className="text-4xl mb-3">
-                      {['🏛️', '🏰', '⛰️', '🏞️', '🌉', '🏛️'][index % 6]}
-                    </div>
-                    <h4 className="text-lg font-semibold text-gray-900 mb-2">{attraction}</h4>
-                    <p className="text-sm text-gray-600">Popular attraction</p>
-                  </div>
-                </div>
-              ))}
+{selectedDestination && !destinationError && selectedDestination.popularAttractions?.length > 0 && (
+  <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-blue-50 py-16">
+    <div className="max-w-7xl w-full px-4">
+      <div className="text-center mb-12">
+        <h3 className="text-3xl font-bold text-gray-900 mb-4">
+          Popular Attractions in {selectedDestination.name}
+        </h3>
+        <p className="text-lg text-gray-600">
+          Explore the must-visit places that make this destination special
+        </p>
+      </div>
+      
+      <div className="grid grid-cols-[repeat(auto-fit,minmax(250px,1fr))] justify-center gap-6">
+        {selectedDestination.popularAttractions.map((attraction: string, index: number) => (
+          <div
+            key={index}
+            className="bg-white rounded-2xl p-6 shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-1 border border-gray-100"
+          >
+            <div className="text-center">
+              <div className="text-4xl mb-3">
+                {['🏛️', '🏰', '⛰️', '🏞️', '🌉', '🏛️'][index % 6]}
+              </div>
+              <h4 className="text-lg font-semibold text-gray-900 mb-2">{attraction}</h4>
+              <p className="text-sm text-gray-600">Popular attraction</p>
             </div>
           </div>
-        </div>
-      )}
+        ))}
+      </div>
+    </div>
+  </div>
+)}
+
 
       {/* Call to Action Section */}
       <div className="bg-gray-900 py-16">

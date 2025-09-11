@@ -791,7 +791,7 @@ const AddReviewPage = () => {
                 <Box display="flex" gap={2} justifyContent="flex-end" flexWrap="wrap">
                   <Button
                     variant="outlined"
-                    onClick={() => router.push("/traveller-dashboard")}
+                    onClick={() => router.push("/booking/my-booking")}
                     sx={{
                       borderColor: themeColors.border,
                       color: themeColors.textPrimary,

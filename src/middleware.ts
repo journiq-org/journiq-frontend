@@ -9,68 +9,67 @@ export const middleware = (request: NextRequest) => {
   if ((pathname === "/login" || pathname === "/register") && token && role) {
     let redirectUrl: URL;
 
-    if (role === "admin") {
-      redirectUrl = new URL("/admin-dashboard", request.url);
-    } else if (role === "traveller") {
-      redirectUrl = new URL("/traveller-dashboard", request.url);
-    } else if (role === "guide") {
-      redirectUrl = new URL("/guide-dashboard", request.url);
-    } else {
-      redirectUrl = new URL("/", request.url);
-    }
+    if (role === "admin") redirectUrl = new URL("/admin-dashboard", request.url);
+    else if (role === "traveller") redirectUrl = new URL("/traveller-dashboard", request.url);
+    else if (role === "guide") redirectUrl = new URL("/guide-dashboard", request.url);
+    else redirectUrl = new URL("/", request.url);
+
     return NextResponse.redirect(redirectUrl);
   }
 
-  /**
-   * =====================
-   * Admin route protection
-   * =====================
-   */
-  if (pathname.startsWith("/admin-dashboard")) {
-    if (!token || role !== "admin") {
-      return NextResponse.redirect(new URL("/unauthorised", request.url));
-    }
+  // Admin routes
+  if (pathname.startsWith("/admin-dashboard") && (!token || role !== "admin")) {
+    return NextResponse.redirect(new URL("/unauthorized", request.url));
   }
 
-  /**
-   * =====================
-   * Traveller route protection
-   * =====================
-   */
+  // Traveller routes
   if (
-    pathname.startsWith("/traveller-dashboard") ||
-    pathname.startsWith("/booking") ||
-    pathname.startsWith("/my-booking") ||
-    pathname.startsWith("/review")
+    (pathname.startsWith("/traveller-dashboard") ||
+      pathname.startsWith("/review")) &&
+    (!token || role !== "traveller")
   ) {
-    if (!token || role !== "traveller") {
-      return NextResponse.redirect(new URL("/unauthorised", request.url));
-    }
+    return NextResponse.redirect(new URL("/unauthorized", request.url));
   }
 
-  // Public traveller routes (accessible without login also)
+  // Public routes
   if (
     pathname.startsWith("/tour") ||
     pathname.startsWith("/destination") ||
     pathname.startsWith("/details")
   ) {
-    return NextResponse.next(); // Public access
+    return NextResponse.next();
   }
 
-  /**
-   * =====================
-   * Guide route protection
-   * =====================
-   */
+  // Guide routes
   if (
-    pathname.startsWith("/guide-dashboard") ||
-    pathname.startsWith("/guide") ||
-    pathname.startsWith("/guide-booking") ||
-    pathname.startsWith("/edit-status")
+    (pathname.startsWith("/guide-dashboard") ||
+      pathname.startsWith("/guide") ||
+      pathname.startsWith("/edit-status")) &&
+    (!token || role !== "guide")
   ) {
-    if (!token || role !== "guide") {
-      return NextResponse.redirect(new URL("/unauthorised", request.url));
-    }
+    return NextResponse.redirect(new URL("/unauthorized", request.url));
+  }
+
+  //  Catch-all: redirect unknown URLs to not-found
+  const knownRoutes = [
+    "/login",
+    "/register",
+    "/admin-dashboard",
+    "/traveller-dashboard",
+    "/guide-dashboard",
+    "/booking",
+    "/my-booking",
+    "/guide-booking",
+    "/edit-status",
+    "/review",
+    "/tour",
+    "/destination",
+    "/details",
+  ];
+
+  const isKnownRoute = knownRoutes.some((route) => pathname.startsWith(route));
+  if (!isKnownRoute) {
+    return NextResponse.redirect(new URL("/not-found", request.url));
   }
 
   return NextResponse.next();

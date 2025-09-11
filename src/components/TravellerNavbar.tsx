@@ -4,7 +4,7 @@
 "use client";
 
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useState, useEffect, useRef } from "react";
 import { User, Bell, BookOpen, LogOut, MessageSquare } from "lucide-react";
 import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Typography } from "@mui/material";
@@ -35,6 +35,8 @@ const TravellerNavbar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+const pathname = usePathname();
+
   const handleLogout = async () => {
     try {
       await fetch("/api/auth/clear-cookie", { method: "POST", credentials: "include" });
@@ -49,24 +51,56 @@ const TravellerNavbar = () => {
     <>
       <header className="w-full bg-gray-900 px-6 py-4 flex items-center">
         {/* Logo */}
-        <div className="flex items-center gap-2 mr-auto">
+        <div
+          className="flex items-center gap-2 mr-auto cursor-pointer"
+          onClick={() => router.push("/")}
+        >
           <Image src="/images/logo.png" alt="journiq-logo" width={35} height={35} />
           <span className="text-2xl font-bold text-white">Journiq</span>
         </div>
 
+
         {/* Menu */}
         <nav className="hidden md:flex gap-8 mx-auto text-white font-medium">
-          <a href="/traveller-dashboard" className="hover:text-amber-700">Home</a>
-          <a href="/booking/my-booking" className="hover:text-amber-700">Booking</a>
-          <a href="/tours/viewAllTour" className="hover:text-amber-700">Tour</a>
-          <a href="/contact" className="hover:text-amber-700">Contact</a>
-        </nav>
+        <a
+          href="/traveller-dashboard"
+          className={`px-2 py-1 rounded transition-all ${
+            pathname === "/traveller-dashboard" ? "bg-amber-700 text-white" : "hover:text-amber-700"
+          }`}
+        >
+          Home
+        </a>
+        <a
+          href="/booking/my-booking"
+          className={`px-2 py-1 rounded transition-all ${
+            pathname.startsWith("/booking/my-booking") ? "bg-amber-700 text-white" : "hover:text-amber-700"
+          }`}
+        >
+          Booking
+        </a>
+        <a
+          href="/tours/viewAllTour"
+          className={`px-2 py-1 rounded transition-all ${
+            pathname.startsWith("/tours/viewAllTour") ? "bg-amber-700 text-white" : "hover:text-amber-700"
+          }`}
+        >
+          Tour
+        </a>
+        <a
+          href="/contact"
+          className={`px-2 py-1 rounded transition-all ${
+            pathname === "/contact" ? "bg-amber-700 text-white" : "hover:text-amber-700"
+          }`}
+        >
+          Contact
+        </a>
+      </nav>
 
         {/* Icons */}
         <div className="flex items-center gap-4 ml-auto relative">
-          <button onClick={() => router.push("/booking/my-booking")} className="p-2 rounded-full hover:bg-black transition">
+          {/* <button onClick={() => router.push("/booking/my-booking")} className="p-2 rounded-full hover:bg-black transition">
             <BookOpen size={26} className="text-white" />
-          </button>
+          </button> */}
 
           <button onClick={() => router.push("/traveller-dashboard/review/my-reviews")} className="p-2 rounded-full hover:bg-black transition">
             <MessageSquare size={26} className="text-white" />

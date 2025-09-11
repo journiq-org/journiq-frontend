@@ -106,7 +106,7 @@ const bookingStats = {
               <div className="flex items-center gap-3">
                 <button
                   onClick={() => router.push('/guide/createTour')}
-                  className="bg-gradient-to-r from-[#22252c] via-[#1e3a8a] to-[#22252c] shadow-xl text-white px-6 py-2.5 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 shadow-lg"
+                  className="bg-gradient-to-r from-[#22252c] via-[#1e3a8a] to-[#22252c] shadow-xl text-white px-6 py-2.5 rounded-lg font-medium transition-colors duration-200 flex items-center gap-2 shadow-lg cursor-pointer"
                 >
                   <Plus size={18} />
                   Create Tour
@@ -341,7 +341,7 @@ const bookingStats = {
                       e.stopPropagation(); // prevent triggering parent card click
                       router.push(`/guide/destination/${dest._id}`);
                     }}
-                    className="text-[#3b82f6] hover:text-[#1e3a8a] text-sm font-medium transition-colors duration-200"
+                    className="text-[#3b82f6] hover:text-[#1e3a8a] text-sm font-medium transition-colors duration-200 cursor-pointer"
                   >
                     View Details →
                   </button>

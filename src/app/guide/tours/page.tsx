@@ -8,6 +8,7 @@ import { guideViewTours } from "@/redux/slices/tourSlice";
 import { AppDispatch } from "@/redux/store";
 import { Tour } from "@/types/tour";
 import GuideNavbar from "@/components/GuideNavbar";
+import { fetchGuideBookings } from "@/redux/slices/guideBookingSlice";
 
 const GuideToursPage = () => {
   const router = useRouter();
@@ -23,9 +24,14 @@ const GuideToursPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 const limit = 6; // tours per page
 
+const { bookings, loading: bookingsLoading } = useSelector(
+  (state: any) => state.guideBookings
+);  
+
 
 useEffect(() => {
   dispatch(guideViewTours({ page: currentPage, limit }));
+  dispatch(fetchGuideBookings());
 }, [dispatch, currentPage]);
 
   // Filter tours based on search and filters
@@ -47,6 +53,14 @@ useEffect(() => {
     inactive: guideTours?.filter((tour: Tour) => !tour.isActive).length || 0,
     totalBookings: 0, // This would come from a separate API call
   };
+
+  const bookingStats = {
+  total: bookings?.length || 0,
+  pending: bookings?.filter((b: any) => b.status === "pending").length || 0,
+  accepted: bookings?.filter((b: any) => b.status === "accepted").length || 0,
+  completed: bookings?.filter((b: any) => b.status === "completed").length || 0,
+  rejected: bookings?.filter((b: any) => b.status === "rejected").length || 0,
+}; 
 
   // Get status badge
   const getStatusBadge = (tour: Tour) => {
@@ -146,17 +160,19 @@ useEffect(() => {
             </div>
           </div>
           
-          <div className="bg-[#fdfdfd] rounded-xl shadow-lg border border-[#e2e0df] p-6 hover:shadow-xl transition-all duration-300">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-[#333333] text-sm font-semibold mb-1">Total Bookings</p>
-                <p className="text-2xl font-bold text-[#22252c]">{stats.totalBookings}</p>
-              </div>
-              <div className="bg-[#3b82f6]/20 p-3 rounded-xl border border-[#3b82f6]/30">
-                <TrendingUp className="text-[#1e3a8a]" size={24} />
-              </div>
-            </div>
-          </div>
+         <div className="bg-[#fdfdfd] rounded-xl shadow-sm border border-[#e2e0df] p-6 hover:shadow-lg transition-shadow duration-300">
+           <div className="flex items-center justify-between">
+             <div>
+               <p className="text-[#333333] text-sm font-medium mb-1">Total Bookings</p>
+               <p className="text-2xl font-bold text-[#22252c]">
+                 {bookingsLoading ? "Loading..." : bookingStats.total}
+               </p>
+             </div>
+             <div className="bg-[#1e3a8a] p-3 rounded-lg">
+               <Calendar className="text-[#fdfdfd]" size={24} />
+             </div>
+           </div>
+         </div>
         </div>
 
         {/* Search and Filters */}

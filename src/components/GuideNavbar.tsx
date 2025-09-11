@@ -390,7 +390,7 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 import { Bell, User, LogOut, Menu, X, Compass } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { useAppSelector, useAppDispatch } from "@/redux/hook";
 import { fetchNotifications, selectUnreadNotifications } from "@/redux/slices/notificationSlice";
@@ -406,6 +406,7 @@ export default function GuideNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
  const [openDrawer, setOpenDrawer] = useState(false)
   const profileRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
 
   //  Fetch notifications when Navbar mounts
   useEffect(() => {
@@ -473,17 +474,24 @@ export default function GuideNavbar() {
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-1">
-              {navItems.map((item) => (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  className="text-[#e2e0df] hover:text-[#fdfdfd] hover:bg-[#93c5fd]/10 px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 border border-transparent hover:border-[#93c5fd]/30"
-                >
-                  {item.label}
-                </a>
-              ))}
-            </nav>
+           <nav className="hidden md:flex items-center space-x-1">
+  {navItems.map((item) => {
+    const isActive = pathname === item.href; // or use pathname.startsWith(item.href) for partial matches
+    return (
+      <a
+        key={item.href}
+        href={item.href}
+        className={`px-4 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 border border-transparent
+          ${isActive
+            ? "bg-[#93c5fd]/20 text-white" // active style
+            : "text-[#e2e0df] hover:text-[#fdfdfd] hover:bg-[#93c5fd]/10 hover:border-[#93c5fd]/30"}`
+        }
+      >
+        {item.label}
+      </a>
+    );
+  })}
+</nav>
 
             {/* Right Section */}
             <div className="flex items-center gap-2">

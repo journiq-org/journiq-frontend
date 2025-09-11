@@ -184,6 +184,49 @@ const GuideBookingsPage = () => {
             </p>
           </div>
         )}
+        {/* Stats Summary */}
+        <div className="p-2">
+        {!loading && bookings.length > 0 && (
+          <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="bg-[#fdfdfd] rounded-xl p-5 border border-[#e2e0df] shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="flex items-center gap-2 mb-2">
+                <AlertCircle className="w-5 h-5 text-[#ff9100]" />
+                <span className="text-sm font-semibold text-[#333333]">Pending</span>
+              </div>
+              <p className="text-2xl font-bold text-[#22252c]">
+                {bookings.filter((b: any) => b.status === 'pending').length}
+              </p>
+            </div>
+            <div className="bg-[#fdfdfd] rounded-xl p-5 border border-[#e2e0df] shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle className="w-5 h-5 text-[#1e3a8a]" />
+                <span className="text-sm font-semibold text-[#333333]">Accepted</span>
+              </div>
+              <p className="text-2xl font-bold text-[#22252c]">
+                {bookings.filter((b: any) => b.status === 'accepted').length}
+              </p>
+            </div>
+            <div className="bg-[#fdfdfd] rounded-xl p-5 border border-[#e2e0df] shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="flex items-center gap-2 mb-2">
+                <CheckCircle className="w-5 h-5 text-[#3b82f6]" />
+                <span className="text-sm font-semibold text-[#333333]">Completed</span>
+              </div>
+              <p className="text-2xl font-bold text-[#22252c]">
+                {bookings.filter((b: any) => b.status === 'completed').length}
+              </p>
+            </div>
+            <div className="bg-[#fdfdfd] rounded-xl p-5 border border-[#e2e0df] shadow-lg hover:shadow-xl transition-all duration-300">
+              <div className="flex items-center gap-2 mb-2">
+                <XCircle className="w-5 h-5 text-[#ff9100]" />
+                <span className="text-sm font-semibold text-[#333333]">Rejected</span>
+              </div>
+              <p className="text-2xl font-bold text-[#22252c]">
+                {bookings.filter((b: any) => b.status === 'rejected').length}
+              </p>
+            </div>
+          </div>
+        )}
+        </div>
 
         {/* Bookings Grid */}
         {!loading && bookings.length > 0 && (
@@ -337,47 +380,6 @@ const GuideBookingsPage = () => {
           </div>
         )}
 
-        {/* Stats Summary */}
-        {!loading && bookings.length > 0 && (
-          <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-[#fdfdfd] rounded-xl p-5 border border-[#e2e0df] shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="flex items-center gap-2 mb-2">
-                <AlertCircle className="w-5 h-5 text-[#ff9100]" />
-                <span className="text-sm font-semibold text-[#333333]">Pending</span>
-              </div>
-              <p className="text-2xl font-bold text-[#22252c]">
-                {bookings.filter((b: any) => b.status === 'pending').length}
-              </p>
-            </div>
-            <div className="bg-[#fdfdfd] rounded-xl p-5 border border-[#e2e0df] shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="flex items-center gap-2 mb-2">
-                <CheckCircle className="w-5 h-5 text-[#1e3a8a]" />
-                <span className="text-sm font-semibold text-[#333333]">Accepted</span>
-              </div>
-              <p className="text-2xl font-bold text-[#22252c]">
-                {bookings.filter((b: any) => b.status === 'accepted').length}
-              </p>
-            </div>
-            <div className="bg-[#fdfdfd] rounded-xl p-5 border border-[#e2e0df] shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="flex items-center gap-2 mb-2">
-                <CheckCircle className="w-5 h-5 text-[#3b82f6]" />
-                <span className="text-sm font-semibold text-[#333333]">Completed</span>
-              </div>
-              <p className="text-2xl font-bold text-[#22252c]">
-                {bookings.filter((b: any) => b.status === 'completed').length}
-              </p>
-            </div>
-            <div className="bg-[#fdfdfd] rounded-xl p-5 border border-[#e2e0df] shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="flex items-center gap-2 mb-2">
-                <XCircle className="w-5 h-5 text-[#ff9100]" />
-                <span className="text-sm font-semibold text-[#333333]">Rejected</span>
-              </div>
-              <p className="text-2xl font-bold text-[#22252c]">
-                {bookings.filter((b: any) => b.status === 'rejected').length}
-              </p>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
