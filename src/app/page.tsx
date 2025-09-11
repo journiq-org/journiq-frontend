@@ -1,5 +1,6 @@
 'use client'
 
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import { listDestinations } from "@/redux/slices/destinationSlice";
 import { AppDispatch } from "@/redux/store";
@@ -15,7 +16,7 @@ export default function Home() {
     const dispatch = useDispatch<AppDispatch>()
     // const {loading,error, destinations} = useSelector((state:any) => state.destination)  // first destinations is the name of initialstate.. second destination is the name in store registered reducer
     const [page, setPage] = useState(1);
-    const limit = 3;
+    const limit = 9;
     const skip = (page - 1) * limit;
   
     useEffect(() => {
@@ -158,7 +159,7 @@ export default function Home() {
     </button>
   </div>
 )}
-
+<Footer/>
     </div>
   );
 }

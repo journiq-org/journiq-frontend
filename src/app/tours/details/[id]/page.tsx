@@ -256,6 +256,7 @@ import { getReviewsForTour } from '@/redux/slices/reviewSlice'
 import { AppDispatch, RootState } from '@/redux/store'
 import { useParams, useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux'
+import Footer from '@/components/Footer'
 
 const TourDetails = () => {
   const router = useRouter()
@@ -375,7 +376,7 @@ const TourDetails = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div >
       {/* Conditionally render navbar */}
       {token && role === 'traveller' ? <TravellerNavbar /> : <Header />}
 
@@ -748,6 +749,8 @@ const TourDetails = () => {
           )}
         </div>
       </div>
+      <Footer/>
+
     </div>
   )
 }

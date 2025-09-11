@@ -12,7 +12,7 @@ const Header = () => {
     <header className="w-full bg-[#E2E0DF]  px-15 py-4 flex justify-between items-center relative">
 
       {/* Menu Button */}
-      <div className="relative">
+      {/* <div className="relative">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="bg-[#d1cfc8]  px-7 py-3 rounded-4xl hover:bg-[#4E4D45] text-[#0c0c0c] hover:text-white"
@@ -29,7 +29,7 @@ const Header = () => {
             <a href="/contact" className="hover:text-amber-700">Contact</a>
           </div>
         )}
-      </div>
+      {/* </div> */} 
 
       {/* Logo / Brand */}
       <div className="text-2xl font-bold text-[#0c0c0c] flex justify-center align-center">
