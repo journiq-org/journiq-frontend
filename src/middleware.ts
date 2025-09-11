@@ -28,7 +28,7 @@ export const middleware = (request: NextRequest) => {
    */
   if (pathname.startsWith("/admin-dashboard")) {
     if (!token || role !== "admin") {
-      return NextResponse.redirect(new URL("/unauthorized", request.url));
+      return NextResponse.redirect(new URL("/unauthorised", request.url));
     }
   }
 
@@ -44,7 +44,7 @@ export const middleware = (request: NextRequest) => {
     pathname.startsWith("/review")
   ) {
     if (!token || role !== "traveller") {
-      return NextResponse.redirect(new URL("/unauthorized", request.url));
+      return NextResponse.redirect(new URL("/unauthorised", request.url));
     }
   }
 
@@ -69,7 +69,7 @@ export const middleware = (request: NextRequest) => {
     pathname.startsWith("/edit-status")
   ) {
     if (!token || role !== "guide") {
-      return NextResponse.redirect(new URL("/unauthorized", request.url));
+      return NextResponse.redirect(new URL("/unauthorised", request.url));
     }
   }
 
