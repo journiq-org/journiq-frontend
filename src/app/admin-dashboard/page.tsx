@@ -140,7 +140,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-gray-50 ">
       {/* Sidebar */}
       <div
         className={`${
@@ -165,7 +165,7 @@ const AdminDashboard = () => {
         </div>
 
         {/* Menu */}
-        <div className="flex-1 px-4 py-6">
+        <div className="flex-1 px-4 ">
           <ul className="space-y-2">
             {menu.map((item) => (
               <li

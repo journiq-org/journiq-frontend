@@ -120,3 +120,13 @@
     @apply bg-background text-foreground;
   }
 }
+
+.bg-chat-pattern {
+  background-color: #0b141a;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.custom-scroll::-webkit-scrollbar { width: 10px; }
+.custom-scroll::-webkit-scrollbar-thumb { background: #2a3942; border-radius: 999px; }
+.custom-scroll::-webkit-scrollbar-track { background: #111b21; }

@@ -14,6 +14,7 @@ export default function Home() {
   
     //redux
     const dispatch = useDispatch<AppDispatch>()
+    const [role, setRole] = useState<string | null>(null);
     // const {loading,error, destinations} = useSelector((state:any) => state.destination)  // first destinations is the name of initialstate.. second destination is the name in store registered reducer
     const [page, setPage] = useState(1);
     const limit = 9;
@@ -95,7 +96,7 @@ export default function Home() {
             <div 
               key={dest._id} 
               onClick={() => router.push(`/tours/${dest._id}`) }
-              className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition"
+              className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition cursor-pointer"
             >
               {/* Image */}
               {dest.images?.length > 0 && (
@@ -159,7 +160,39 @@ export default function Home() {
     </button>
   </div>
 )}
-<Footer/>
+  {/* Call to Action Section */}
+      <div className="bg-gray-900 py-16">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h3 className="text-3xl lg:text-4xl font-bold text-white mb-4">
+            Ready for Your Next Adventure?
+          </h3>
+          <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+            Book your dream tour today and create memories that will last a lifetime
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="bg-white text-blue-600 font-bold py-4 px-8 rounded-2xl shadow-2xl hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 cursor-pointer"
+            >
+              Explore
+            </button>
+            
+            {role === 'traveller' && (
+              <button
+                onClick={() => router.push('/booking/my-booking')}
+                className="bg-transparent border-2 border-white text-white font-bold py-4 px-8 rounded-2xl hover:bg-white hover:text-blue-600 transition-all duration-300"
+              >
+                My Bookings
+              </button>
+            )}
+          </div>
+          
+          <div className="mt-8 text-blue-100">
+            <p className="text-sm">🎯 Expert Guides • 📞 24/7 Support • 🔄 Flexible Cancellation</p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

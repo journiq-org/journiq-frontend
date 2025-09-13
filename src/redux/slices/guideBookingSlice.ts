@@ -55,16 +55,10 @@ export const respondToBooking = createAsyncThunk<
   "guideBookings/respondToBooking",
   async ({ bookingId, status }, { rejectWithValue }) => {
     try {
-      // const cookieRes = await fetch("/api/auth/get-cookie");
-      // const { token } = await cookieRes.json();
-
-      // if (!token) throw new Error("No token found");
-
       const res = await api.patch(
         `/api/booking/guide/update-status/${bookingId}`,
         { status },
         {
-          // headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         }
       );

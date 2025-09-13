@@ -444,7 +444,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "@/lib/api";
 import { RootState } from "../store";
 
-// 🔹 Notification type
+// Notification type
 export interface Notification {
   _id: string;
   recipient: string;
@@ -472,7 +472,7 @@ export const notificationInitialState: NotificationState = {
 };
 
 // ===================
-// 🔹 Thunks
+// Thunks
 // ===================
 
 // Fetch all notifications

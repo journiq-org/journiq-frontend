@@ -271,7 +271,7 @@ export default function TravellerDashboard() {
             
             <button
                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="bg-transparent border-2 border-white text-white font-bold py-4 px-8 rounded-xl hover:bg-white hover:text-gray-900 transition-all duration-300"
+              className="bg-transparent border-2 border-white text-white font-bold py-4 px-8 rounded-xl hover:bg-white hover:text-gray-900 transition-all duration-300 cursor-pointer"
             >
               View All Destination
             </button>

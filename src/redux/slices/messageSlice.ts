@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import api from "@/lib/api";
 
-// 🔹 Message type
+// Message type
 interface Message {
   _id: string;
   traveller: { _id: string; name: string; email: string };
@@ -25,7 +25,7 @@ const initialState: MessageState = {
   error: null,
 };
 
-// 🔹 Utility to get token from cookie
+// Utility to get token from cookie
 const getToken = async (): Promise<string> => {
   const cookieRes = await fetch("/api/auth/get-cookie");
   const { token } = await cookieRes.json();
@@ -33,7 +33,7 @@ const getToken = async (): Promise<string> => {
   return token;
 };
 
-// ✅ Traveller sends message
+// Traveller sends message
 export const sendMessage = createAsyncThunk(
   "messages/sendMessage",
   async (payload: { subject: string; message: string }, { rejectWithValue }) => {
@@ -51,7 +51,7 @@ export const sendMessage = createAsyncThunk(
   }
 );
 
-// ✅ Admin fetch all messages
+// Admin fetch all messages
 export const fetchMessages = createAsyncThunk(
   "messages/fetchMessages",
   async (_, { rejectWithValue }) => {
@@ -67,7 +67,7 @@ export const fetchMessages = createAsyncThunk(
   }
 );
 
-// ✅ Admin / Traveller mark message as read
+// Admin / Traveller mark message as read
 export const markAsRead = createAsyncThunk(
   "messages/markAsRead",
   async (id: string, { rejectWithValue }) => {
@@ -85,7 +85,7 @@ export const markAsRead = createAsyncThunk(
   }
 );
 
-// ✅ Traveller fetch their own messages
+// Traveller fetch their own messages
 export const getTravellerMessages = createAsyncThunk(
   "messages/getTravellerMessages",
   async (_, { rejectWithValue }) => {
@@ -101,7 +101,7 @@ export const getTravellerMessages = createAsyncThunk(
   }
 );
 
-// ✅ Admin replies to a message
+// Admin replies to a message
 export const replyToMessage = createAsyncThunk(
   "messages/replyToMessage",
   async ({ id, reply }: { id: string; reply: string }, { rejectWithValue }) => {

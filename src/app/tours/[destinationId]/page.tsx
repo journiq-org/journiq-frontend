@@ -927,7 +927,7 @@ const PublicViewToursByDestination = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="bg-white text-blue-600 font-bold py-4 px-8 rounded-2xl shadow-2xl hover:bg-gray-100 transition-all duration-300 transform hover:scale-105"
+              className="bg-white text-blue-600 font-bold py-4 px-8 rounded-2xl shadow-2xl hover:bg-gray-100 transition-all duration-300 transform hover:scale-105 cursor-pointer"
             >
               Explore All Tours
             </button>
