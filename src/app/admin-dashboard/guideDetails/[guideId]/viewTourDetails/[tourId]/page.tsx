@@ -991,7 +991,7 @@ export default function TourDetailsPage() {
                   onClick={handleToggleBlock}
                   disabled={isTogglingBlock}
                   variant={tour.isBlocked ? "default" : "destructive"}
-                  className="w-full"
+                  className="w-full cursor-pointer"
                   size="sm"
                 >
                   {isTogglingBlock ? (

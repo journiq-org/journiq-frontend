@@ -689,7 +689,7 @@ const SingleDestinationPage = () => {
                             <Button
                               variant="outline"
                               size="sm"
-                              className="w-full flex items-center gap-2"
+                              className="w-full cursor-pointer flex items-center gap-2"
                               onClick={() => {
                                 // Add navigation to tour details if needed
                                 router.push(`/admin-dashboard/guideDetails/${tour.guide._id}/viewTourDetails/${tour._id}`)

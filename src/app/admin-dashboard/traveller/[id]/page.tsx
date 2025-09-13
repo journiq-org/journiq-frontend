@@ -210,6 +210,12 @@
 // };
 
 // export default AdminUsersPage;
+
+
+
+
+
+
 "use client";
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
@@ -245,10 +251,11 @@ import {
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import toast from "react-hot-toast";
 import { User as UserType } from "@/types/user";
+import { Box, Typography } from "@mui/material";
 
 const AdminUsersPage = () => {
   const dispatch = useAppDispatch();
-  const { allUsers, blockedUsers, loading, error } = useAppSelector((state) => state.admin);
+  const { allUsers, blockedUsers, loading, error, total } = useAppSelector((state) => state.admin);
   
   const [selectedUser, setSelectedUser] = useState<UserType | null>(null);
   const [showModal, setShowModal] = useState(false);
@@ -257,9 +264,16 @@ const AdminUsersPage = () => {
   const [filteredUsers, setFilteredUsers] = useState<UserType[]>([]);
   const [blockedUsersError, setBlockedUsersError] = useState<string | null>(null);
 
+  //pagination
+  const [page, setPage] = useState(1)
+
+  const limit = 10
+  const skip = (page - 1) * limit
+  const totalPages = Math.ceil(total/limit)
+
   useEffect(() => {
     // Load all users first
-    dispatch(fetchAllUsers());
+    dispatch(fetchAllUsers({page, limit, skip}));
     
     // Try to load blocked users, but handle 404 gracefully
     dispatch(getBlockedUsers())
@@ -274,7 +288,7 @@ const AdminUsersPage = () => {
           setBlockedUsersError(err?.message || 'Failed to load blocked users');
         }
       });
-  }, [dispatch]);
+  }, [dispatch, page, limit]);
 
   useEffect(() => {
     const usersToFilter = activeTab === "all" ? allUsers : blockedUsers;
@@ -300,7 +314,7 @@ const AdminUsersPage = () => {
       );
       
       // Only refresh all users - blocked users list is updated by Redux slice
-      dispatch(fetchAllUsers());
+      dispatch(fetchAllUsers({page, limit, skip}));
       
       // Note: We don't call getBlockedUsers() here because the Redux slice
       // already handles updating the blockedUsers array when a user is toggled
@@ -315,7 +329,7 @@ const AdminUsersPage = () => {
       toast.success('User deleted successfully');
       
       // Refresh both lists after deletion
-      dispatch(fetchAllUsers());
+      dispatch(fetchAllUsers({limit, page, skip}));
       // Note: Redux slice handles removing deleted user from blockedUsers
     } catch (error) {
       toast.error('Failed to delete user');
@@ -556,6 +570,36 @@ const AdminUsersPage = () => {
                       ))}
                     </tbody>
                   </table>
+
+
+                   {/* Pagination */}
+                  <div className="flex justify-center items-center gap-2 mt-6">
+                    <Button
+                      variant="outline"
+                      disabled={page === 1}
+                      onClick={() => setPage((prev) => prev - 1)}
+                      className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+                    >
+                      Previous
+                    </Button>
+
+                    <p className="text-base font-semibold">
+                      Page {page} of {totalPages || 1}
+                    </p>
+
+                    <Button
+                      variant="outline"
+                      disabled={page === totalPages || totalPages === 0}
+                      onClick={() => setPage((prev) => prev + 1)}
+                      className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+                    >
+                      Next
+                    </Button>
+                  </div>
+
+
+
+
                 </div>
               ) : !loading && (
                 <div className="text-center py-12">

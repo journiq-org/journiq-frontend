@@ -453,7 +453,7 @@ const getTotalReviews = () => {
                     </div>
 
                     <CardContent className="p-6">
-                      <div className="space-y-4">
+                      <div className="space-y-4 ">
                         <div>
                           <h3 className="font-bold text-lg text-gray-900 mb-2 line-clamp-2">{tour.title}</h3>
                           <p className="text-gray-600 text-sm line-clamp-2">{tour.description}</p>
@@ -479,7 +479,7 @@ const getTotalReviews = () => {
                           </div>
                         </div>
 
-                        <div className="flex items-center justify-between pt-4 border-t">
+                        <div className="flex items-center justify-between pt-4 border-t ">
                           <div className="flex items-center space-x-1">
                             <IndianRupee className="h-5 w-5 text-green-600" />
                             <span className="text-2xl font-bold text-green-600">
@@ -487,7 +487,7 @@ const getTotalReviews = () => {
                             </span>
                           </div>
 
-                          <Button size="sm" className="bg-blue-600 hover:bg-blue-700" onClick={() => router.push(`/admin-dashboard/guideDetails/${id}/viewTourDetails/${tour._id}`)}>
+                          <Button size="sm" className="bg-blue-600 cursor-pointer hover:bg-blue-700" onClick={() => router.push(`/admin-dashboard/guideDetails/${id}/viewTourDetails/${tour._id}`)}>
                             <Eye className="h-4 w-4 mr-2" />
                             View Details
                           </Button>

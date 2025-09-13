@@ -756,7 +756,7 @@ const AdminDestinationsPage = () => {
             <div className="flex items-center gap-3">
               <Button
                 onClick={handleAddDestination}
-                className="flex items-center gap-2 bg-gradient-to-r from-[#22252c] via-[#1e3a8a] to-[#22252c] shadow-xl text-white"
+                className="flex cursor-pointer items-center gap-2 bg-gradient-to-r from-[#22252c] via-[#1e3a8a] to-[#22252c] shadow-xl text-white"
               >
                 <Plus className="h-4 w-4" />
                 Add Destination

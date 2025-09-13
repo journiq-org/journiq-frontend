@@ -32,14 +32,20 @@ import { User as UserType } from "@/types/user";
 const AdminGuidesPage = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const { allGuides, loading, error } = useAppSelector((state) => state.admin);
+  const { allGuides, loading, error , total} = useAppSelector((state) => state.admin);
   
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredGuides, setFilteredGuides] = useState<UserType[]>([]);
 
+  //pagination
+  const [page , setPage] = useState(1)
+  const limit = 10
+  const skip = (page - 1) * limit
+  const totalPages = Math.ceil(total/limit)
+
   useEffect(() => {
-    dispatch(fetchAllGuides());
-  }, [dispatch]);
+    dispatch(fetchAllGuides({page, limit, skip}));
+  }, [dispatch, page, limit]);
 
   useEffect(() => {
     if (allGuides) {
@@ -260,6 +266,34 @@ const AdminGuidesPage = () => {
               </table>
             </div>
           </CardContent>
+
+          
+            {/* Pagination */}
+          <div className="flex justify-center items-center gap-2 mt-6">
+            <Button
+              variant="outline"
+              disabled={page === 1}
+              onClick={() => setPage((prev) => prev - 1)}
+              className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+            >
+              Previous
+            </Button>
+
+            <p className="text-base font-semibold">
+              Page {page} of {totalPages || 1}
+            </p>
+
+            <Button
+              variant="outline"
+              disabled={page === totalPages || totalPages === 0}
+              onClick={() => setPage((prev) => prev + 1)}
+              className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+            >
+              Next
+            </Button>
+          </div>
+
+
         </Card>
       ) : !loading && (
         <Card>

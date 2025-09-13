@@ -242,7 +242,7 @@ const AdminDashboard = () => {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setOpenDrawer(true)}
-                className="relative p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                className="relative cursor-pointer p-2 text-slate-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
                 aria-label="Notifications"
               >
                 <Bell className="w-5 h-5" />
@@ -354,7 +354,7 @@ const AdminDashboard = () => {
                   <div className="grid grid-cols-2 gap-3">
                     <button
                       onClick={() => handleSetActive("users")}
-                      className="p-4 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors group"
+                      className="p-4 cursor-pointer bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors group"
                     >
                       <Users className="w-6 h-6 text-blue-600 mb-2" />
                       <span className="text-sm font-medium text-blue-900">
@@ -363,7 +363,7 @@ const AdminDashboard = () => {
                     </button>
                     <button
                       onClick={() => handleSetActive("destinations")}
-                      className="p-4 bg-green-50 hover:bg-green-100 rounded-xl transition-colors group"
+                      className="p-4 cursor-pointer bg-green-50 hover:bg-green-100 rounded-xl transition-colors group"
                     >
                       <MapPin className="w-6 h-6 text-green-600 mb-2" />
                       <span className="text-sm font-medium text-green-900">

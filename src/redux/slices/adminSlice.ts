@@ -11,6 +11,7 @@ export interface AdminState {
   // COMMON
   loading: boolean;
   error: string | null;
+  total: number
 
   // USERS
   allUsers: User[];
@@ -47,6 +48,7 @@ export const adminInitialState: AdminState = {
   // COMMON
   loading: false,
   error:  null,
+  total: 0,
 
   // USERS (travellers)
   allUsers: [],          // from getAllUser
@@ -85,16 +87,19 @@ export const adminInitialState: AdminState = {
 //Users
 
 //fetch all users
-export const fetchAllUsers = createAsyncThunk("adminUsers/fetchAllUsers", async () => {
+export const fetchAllUsers = createAsyncThunk("adminUsers/fetchAllUsers", async ({page, limit , skip}: {page: number, limit:number, skip: number}) => {
     // const cookieRes = await fetch("/api/auth/get-cookie");
     // const { token } = await cookieRes.json();
     // if (!token) throw new Error("No token found");
 
-    const res = await api.get("/api/admin/users", {
+    const res = await api.get(`/api/admin/users?limit=${limit}&skip=${skip}`, {
       withCredentials: true,
     });
 
-    return  res.data.data        
+    return  {
+        users: res.data.data  ,
+        total: res.data.total
+    }      
 });
 
 //get users by id
@@ -166,13 +171,13 @@ export const fetchAllBookings = createAsyncThunk(
 
 
 //get all guides
-export const fetchAllGuides = createAsyncThunk("adminGuides/fetchAllGuides", async () => {
+export const fetchAllGuides = createAsyncThunk("adminGuides/fetchAllGuides", async ({page, limit, skip}: {page: number, limit: number, skip: number}) => {
 
-    const res = await api.get("/api/admin/guide", {
+    const res = await api.get(`/api/admin/guide?limit=${limit}&skip=${skip}`, {
       withCredentials: true,
     });
 
-    return res.data.data
+    return { guide:res.data.data, total: res.data.total }
 });
 
 //verify guide 
@@ -302,7 +307,8 @@ const adminSlice = createSlice({
             })
              .addCase(fetchAllUsers.fulfilled, (state, action) => {
                 state.loading = false;
-                state.allUsers = action.payload
+                state.allUsers = action.payload.users
+                state.total = action.payload.total
             })
             .addCase(fetchAllUsers.rejected, (state, action) => {
                 state.loading = false
@@ -458,7 +464,8 @@ const adminSlice = createSlice({
             })
             .addCase(fetchAllGuides.fulfilled, (state, action) => {
                 state.loading = false;
-                state.allGuides = action.payload
+                state.allGuides = action.payload.guide
+                state.total = action.payload.total
             })
             .addCase(fetchAllGuides.rejected, (state, action) => {
                 state.loading = false;
