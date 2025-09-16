@@ -27,5 +27,6 @@ export interface ReviewState {
   loading: boolean;
   error: string | null;
   message: string | null;
+  topReviews: Review[]
   total:number
 }

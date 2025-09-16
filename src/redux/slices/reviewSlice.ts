@@ -9,6 +9,7 @@ const initialState: ReviewState = {
   loading: false,
   error: null,
   message: null,
+  topReviews:[],
   total: 0
 };
 
@@ -92,6 +93,26 @@ export const deleteReview = createAsyncThunk(
   }
 );
 
+//get top review
+// export const getTopReview = createAsyncThunk('review/getTopReview', async() => {
+//   const res = await api.get("/api/review/topReview");
+//   return res.data.reviews;
+// })
+
+export const getTopReview = createAsyncThunk('review/getTopReview', async() => {
+  try {
+    console.log('Making API call to /api/review/topReview');
+    const res = await api.get("/api/review/topReview");
+    console.log('API Response:', res);
+    console.log('Response data:', res.data);
+    return res.data.reviews || res.data; // Handle both response formats
+  } catch (error) {
+    console.error('Error fetching top reviews:', error);
+    throw error;
+  }
+});
+
+
 // -------- Slice --------
 const reviewSlice = createSlice({
   name: "review",
@@ -157,7 +178,32 @@ const reviewSlice = createSlice({
       .addCase(deleteReview.fulfilled, (state, action) => {
         state.message = "Review deleted successfully";
         state.reviews = state.reviews.filter((r) => r._id !== action.payload);
-      });
+      })
+
+      // Get Top Reviews (NEW)
+      .addCase(getTopReview.pending, (state) => {
+        state.loading = true;
+      })
+      // .addCase(getTopReview.fulfilled, (state, action) => {
+      //   state.loading = false;
+      //   state.topReviews = action.payload;
+      // })
+      .addCase(getTopReview.fulfilled, (state, action) => {
+        console.log('getTopReview fulfilled with payload:', action.payload);
+        state.loading = false;
+        state.topReviews = action.payload || [];
+        state.error = null;
+      })
+      // .addCase(getTopReview.rejected, (state, action) => {
+      //   state.loading = false;
+      //   state.error = action.error.message || "Failed to load top reviews";
+      // })
+      .addCase(getTopReview.rejected, (state, action) => {
+        console.log('getTopReview rejected with error:', action.error);
+        state.loading = false;
+        state.error = action.error.message || "Failed to load top reviews";
+        state.topReviews = [];
+      })
   },
 });
 
@@ -165,6 +211,7 @@ export const { clearReviewState } = reviewSlice.actions;
 export default reviewSlice.reducer;
 
 //  Selectors
+
 export const selectReviews = (state: RootState) => state.reviews.reviews;
 export const selectReviewError = (state: RootState) => state.reviews.error;
 export const selectReviewMessage = (state: RootState) => state.reviews.message;
