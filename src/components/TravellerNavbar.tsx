@@ -142,7 +142,53 @@ const pathname = usePathname();
       <NotificationDrawer open={openNotificationDrawer} onClose={() => setOpenNotificationDrawer(false)} />
 
       {/* Logout Dialog */}
-      <Dialog open={logoutDialogOpen} onClose={() => setLogoutDialogOpen(false)}>
+      <Dialog
+        open={logoutDialogOpen}
+        onClose={() => setLogoutDialogOpen(false)}
+        PaperProps={{
+          sx: {
+            backgroundColor: "#111827", // navbar dark gray (bg-gray-900)
+            color: "white",
+            borderRadius: "12px",
+            padding: 2,
+          },
+        }}
+      >
+        <DialogTitle sx={{ fontWeight: "bold", color: "#fbbf24" }}> 
+          {/* amber-400 for highlight */}
+          Confirm Logout
+        </DialogTitle>
+
+        <DialogContent>
+          <Typography sx={{ color: "#e5e7eb" }}>
+            Are you sure you want to logout?
+          </Typography>
+        </DialogContent>
+
+        <DialogActions>
+          <Button
+            onClick={() => setLogoutDialogOpen(false)}
+            sx={{
+              color: "#fbbf24", // amber-400 text
+              "&:hover": { backgroundColor: "rgba(251,191,36,0.1)" },
+            }}
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={handleLogout}
+            variant="contained"
+            sx={{
+              backgroundColor: "#dc2626", // red-600
+              "&:hover": { backgroundColor: "#b91c1c" }, // red-700
+            }}
+          >
+            Logout
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* <Dialog open={logoutDialogOpen} onClose={() => setLogoutDialogOpen(false)}>
         <DialogTitle>Confirm Logout</DialogTitle>
         <DialogContent>
           <Typography>Are you sure you want to logout?</Typography>
@@ -151,7 +197,7 @@ const pathname = usePathname();
           <Button onClick={() => setLogoutDialogOpen(false)} color="secondary">Cancel</Button>
           <Button onClick={handleLogout} variant="contained" color="error">Logout</Button>
         </DialogActions>
-      </Dialog>
+      </Dialog> */}
     </>
   );
 };

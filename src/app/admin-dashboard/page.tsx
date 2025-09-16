@@ -267,11 +267,11 @@ const AdminDashboard = () => {
         </div>
 
         {/* Page Content */}
-        <div className="flex-1 p-6 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto">
           {active === "dashboard" && (
             <div className="space-y-6">
               {/* Header */}
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between p-8">
                 <div>
                   <h2 className="text-2xl font-bold text-slate-900">
                     Dashboard Overview
@@ -280,7 +280,7 @@ const AdminDashboard = () => {
                     Monitor your platform's performance and key metrics
                   </p>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 ">
                   <div className="flex items-center gap-2 px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">
                     <Activity className="w-4 h-4" />
                     <span>Live</span>
@@ -289,7 +289,7 @@ const AdminDashboard = () => {
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 p-6">
                 {statsCards.map((stat, i) => (
                   <div
                     key={i}
@@ -320,7 +320,7 @@ const AdminDashboard = () => {
               </div>
 
               {/* Quick actions */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 p-6">
                 <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
                   <div className="flex items-center gap-3 mb-6">
                     <BarChart3 className="w-5 h-5 text-blue-600" />
