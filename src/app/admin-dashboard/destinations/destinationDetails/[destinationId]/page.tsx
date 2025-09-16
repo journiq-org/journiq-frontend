@@ -323,22 +323,24 @@ import {
   ExternalLink,
   ArrowLeft
 } from "lucide-react";
+import { getDestinationByIdAdmin } from "@/redux/slices/adminSlice";
 
 const SingleDestinationPage = () => {
   const { destinationId } = useParams<{ destinationId: string }>();
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter()    
 
-  const { 
-    selectedDestination, 
+  const {  
     toursByDestination,
     loading, 
     error 
   } = useSelector((state: RootState) => state.destination);
 
+  const { singleDestination} = useSelector((state: any) => state.admin)
+
   useEffect(() => {
     if (destinationId) {
-      dispatch(getSingleDestination(destinationId));
+      dispatch(getDestinationByIdAdmin(destinationId));
       dispatch(getTourByDestination(destinationId));
     }
   }, [dispatch, destinationId]);
@@ -407,7 +409,7 @@ const SingleDestinationPage = () => {
     );
   }
 
-  if (!selectedDestination) {
+  if (!singleDestination) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 p-6">
         <div className="max-w-7xl mx-auto">
@@ -443,24 +445,24 @@ const SingleDestinationPage = () => {
             <div>
               <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
                 <Globe className="h-8 w-8 text-blue-600" />
-                {selectedDestination.name}
+                {singleDestination.name}
               </h1>
               <div className="flex items-center gap-4 mt-2">
                 <div className="flex items-center gap-1 text-sm text-gray-600">
                   <MapPin className="h-4 w-4" />
-                  {selectedDestination.city && selectedDestination.country
-                    ? `${selectedDestination.city}, ${selectedDestination.country}`
-                    : selectedDestination.country || selectedDestination.city || "Location not specified"
+                  {singleDestination.city && singleDestination.country
+                    ? `${singleDestination.city}, ${singleDestination.country}`
+                    : singleDestination.country || singleDestination.city || "Location not specified"
                   }
                 </div>
                 <Badge
-                  variant={selectedDestination.is_active ? "default" : "destructive"}
-                  className={selectedDestination.is_active
+                  variant={singleDestination.is_active ? "default" : "destructive"}
+                  className={singleDestination.is_active
                     ? "bg-green-100 text-green-800 hover:bg-green-200"
                     : "bg-red-100 text-red-800 hover:bg-red-200"
                   }
                 >
-                  {selectedDestination.is_active ? (
+                  {singleDestination.is_active ? (
                     <><CheckCircle className="h-3 w-3 mr-1" /> Active</>
                   ) : (
                     <><XCircle className="h-3 w-3 mr-1" /> Inactive</>
@@ -499,7 +501,7 @@ const SingleDestinationPage = () => {
               {/* Main Info */}
               <div className="lg:col-span-2 space-y-6">
                 {/* Image Gallery */}
-                {selectedDestination.images?.length > 0 && (
+                {singleDestination.images?.length > 0 && (
                   <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
@@ -509,11 +511,11 @@ const SingleDestinationPage = () => {
                     </CardHeader>
                     <CardContent>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {selectedDestination.images.map((img: string, idx: number) => (
+                        {singleDestination.images.map((img: string, idx: number) => (
                           <div key={idx} className="relative group">
                             <Image
                               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${img}`}
-                              alt={`${selectedDestination.name} ${idx + 1}` || 'Destination Image'}
+                              alt={`${singleDestination.name} ${idx + 1}` || 'Destination Image'}
                               width={400}
                               height={250}
                               className="rounded-lg object-cover w-full h-48 transition-transform group-hover:scale-105"
@@ -533,13 +535,13 @@ const SingleDestinationPage = () => {
                   </CardHeader>
                   <CardContent>
                     <p className="text-gray-700 leading-relaxed">
-                      {selectedDestination.description}
+                      {singleDestination.description}
                     </p>
                   </CardContent>
                 </Card>
 
                 {/* Popular Attractions */}
-                {selectedDestination.popularAttractions?.length > 0 && (
+                {singleDestination.popularAttractions?.length > 0 && (
                   <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
@@ -549,7 +551,7 @@ const SingleDestinationPage = () => {
                     </CardHeader>
                     <CardContent>
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                        {selectedDestination.popularAttractions.map((place: string, i: number) => (
+                        {singleDestination.popularAttractions.map((place: string, i: number) => (
                           <div key={i} className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
                             <MapPin className="h-4 w-4 text-blue-600 flex-shrink-0" />
                             <span className="text-sm text-gray-700">{place}</span>
@@ -571,25 +573,25 @@ const SingleDestinationPage = () => {
                   <CardContent className="space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-medium text-gray-600">Country</span>
-                      <span className="text-sm text-gray-900">{selectedDestination.country}</span>
+                      <span className="text-sm text-gray-900">{singleDestination.country}</span>
                     </div>
-                    {selectedDestination.city && (
+                    {singleDestination.city && (
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-gray-600">City</span>
-                        <span className="text-sm text-gray-900">{selectedDestination.city}</span>
+                        <span className="text-sm text-gray-900">{singleDestination.city}</span>
                       </div>
                     )}
-                    {selectedDestination.bestSeason && (
+                    {singleDestination.bestSeason && (
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-gray-600">Best Season</span>
-                        <span className="text-sm text-gray-900">{selectedDestination.bestSeason}</span>
+                        <span className="text-sm text-gray-900">{singleDestination.bestSeason}</span>
                       </div>
                     )}
-                    {selectedDestination.location?.lat && selectedDestination.location?.lng && (
+                    {singleDestination.location?.lat && singleDestination.location?.lng && (
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-medium text-gray-600">Coordinates</span>
                         <span className="text-sm text-gray-900 font-mono">
-                          {selectedDestination.location.lat.toFixed(4)}, {selectedDestination.location.lng.toFixed(4)}
+                          {singleDestination.location.lat.toFixed(4)}, {singleDestination.location.lng.toFixed(4)}
                         </span>
                       </div>
                     )}
@@ -597,7 +599,7 @@ const SingleDestinationPage = () => {
                 </Card>
 
                 {/* Tags */}
-                {selectedDestination.tags?.length > 0 && (
+                {singleDestination.tags?.length > 0 && (
                   <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-lg">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
@@ -607,7 +609,7 @@ const SingleDestinationPage = () => {
                     </CardHeader>
                     <CardContent>
                       <div className="flex flex-wrap gap-2">
-                        {selectedDestination.tags.map((tag: string, i: number) => (
+                        {singleDestination.tags.map((tag: string, i: number) => (
                           <Badge
                             key={i}
                             variant="secondary"
@@ -630,7 +632,7 @@ const SingleDestinationPage = () => {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
                   <Building2 className="h-5 w-5" />
-                  Tours in {selectedDestination.name}
+                  Tours in {singleDestination.name}
                 </CardTitle>
               </CardHeader>
               <CardContent>

@@ -316,6 +316,7 @@ const destinationSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Failed to toggle destination";
       });
+      
 
 
     }

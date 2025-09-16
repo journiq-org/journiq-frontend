@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 const Footer = () => {
   const router = useRouter()
   return (
-    <footer className="w-full bg-slate-900 px-6 py-10 flex flex-col   text-[#0c0c0c] shadow-md mt-10">
+    <footer className="w-full bg-slate-900 px-6 py-10 flex flex-col   text-[#0c0c0c] shadow-md ">
       
       {/* text & button */}
       <div className=" flex flex-row  justify-between items-start px-10 pb-6">

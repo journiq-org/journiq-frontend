@@ -9,26 +9,27 @@ const Header = () => {
   const router = useRouter()
 
   return (
-    <header className="w-full bg-[#E2E0DF]  px-15 py-4 flex justify-between items-center relative">
+ 
 
-      {/* Logo / Brand */}
-      <div className="text-2xl font-bold text-[#0c0c0c] flex justify-center align-center cursor-pointer" 
-      onClick={() => router.push("/")}
-      >
-        <Image src={'/images/logo.png'} alt="journiq-logo" width={35} height={35}/>
-        Journiq
-      </div>
+    <header className="w-full fixed top-0 left-0 z-50 bg-transparent px-15 py-4 flex justify-between items-center">
+  {/* Logo */}
+  <div
+    className="text-2xl font-bold text-white flex items-center cursor-pointer"
+    onClick={() => router.push("/")}
+  >
+    <Image src="/images/logo.png" alt="journiq-logo" width={35} height={35} />
+    Journiq
+  </div>
 
-      {/* login button */}
+  {/* Login Button */}
+  <button
+    onClick={() => router.push("/login")}
+    className="bg-orange-400 text-white px-7 py-3 rounded-full text-sm hover:bg-[#5c4033] transition"
+  >
+    Login
+  </button>
+</header>
 
-      <button
-      onClick={() => router.push('/login')}
-      className="bg-[#0c0c0c] text-white px-7 py-3 rounded-4xl text-sm hover:bg-[#5c4033] transition cursor-pointer"
-      >
-        Login
-      </button>
-
-    </header>
   );
 };
 

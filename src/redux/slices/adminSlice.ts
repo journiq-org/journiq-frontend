@@ -41,6 +41,7 @@ export interface AdminState {
 
   //DESTINATION
   allDestinations: DestinationType[]
+  singleDestination: DestinationType | null
 }
 
 
@@ -77,7 +78,8 @@ export const adminInitialState: AdminState = {
   guideReviewCount:0,  
 
   //DESTINATIONS
-  allDestinations: []
+  allDestinations: [],
+  singleDestination: null
 };
 
 
@@ -280,7 +282,15 @@ export const fetchAllTours = createAsyncThunk<
         destinstion:res.data.data,
         total:res.data.total
     }
-    
+  })
+
+
+  //get single destination - admin
+  export const getDestinationByIdAdmin = createAsyncThunk('admin/getDestinationByidAdmin', async (destinationId: string) => {
+    const res = await api.get(`/api/admin/adminDestinationDetails/${destinationId}`,{
+        withCredentials:true
+    })
+    return res.data.data
   })
 
   //get dashboard statistics
@@ -656,6 +666,19 @@ const adminSlice = createSlice({
             .addCase(getAllDestinationsAdmin.rejected, (state, action) =>{
                 state.loading = false
                 state.error = action.error.message || ' Failed to load destinations'
+            })
+
+            //get single destination admin
+            .addCase(getDestinationByIdAdmin.pending, state => {
+                state.loading = true
+            })
+            .addCase(getDestinationByIdAdmin.fulfilled, (state, action) => {
+                state.loading = false
+                state.singleDestination = action.payload
+            })
+            .addCase(getDestinationByIdAdmin.rejected, (state, action) => {
+                state.loading = false
+                state.error = action.error.message || 'Failed to load destination'
             })
 
 

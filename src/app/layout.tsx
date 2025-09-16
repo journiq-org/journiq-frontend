@@ -32,38 +32,38 @@ export default function RootLayout({
         <Providers>
           {/* <Toaster position="top-center" reverseOrder={false} /> */}
           <Toaster
-  position="top-center"
-  reverseOrder={false}
-  toastOptions={{
-    // Default style for all toasts
-    style: {
-      background: "#111827", // navbar dark gray (bg-gray-900)
-      color: "#f9fafb",      // text-gray-50
-      borderRadius: "8px",
-      padding: "12px 16px",
-    },
-    success: {
-      style: {
-        background: "#065f46", // green-700
-        color: "#ecfdf5",      // green-50
-      },
-      iconTheme: {
-        primary: "#34d399",   // green-400
-        secondary: "#065f46",
-      },
-    },
-    error: {
-      style: {
-        background: "#7f1d1d", // red-900
-        color: "#fee2e2",      // red-100
-      },
-      iconTheme: {
-        primary: "#f87171",   // red-400
-        secondary: "#7f1d1d",
-      },
-    },
-  }}
-/>
+              position="top-center"
+              reverseOrder={false}
+              toastOptions={{
+                // Default style for all toasts
+                style: {
+                  background: "#111827", // navbar dark gray (bg-gray-900)
+                  color: "#f9fafb",      // text-gray-50
+                  borderRadius: "8px",
+                  padding: "12px 16px",
+                },
+                success: {
+                  style: {
+                    background: "#065f46", // green-700
+                    color: "#ecfdf5",      // green-50
+                  },
+                  iconTheme: {
+                    primary: "#34d399",   // green-400
+                    secondary: "#065f46",
+                  },
+                },
+                error: {
+                  style: {
+                    background: "#7f1d1d", // red-900
+                    color: "#fee2e2",      // red-100
+                  },
+                  iconTheme: {
+                    primary: "#f87171",   // red-400
+                    secondary: "#7f1d1d",
+                  },
+                },
+              }}
+            />
 
           {children}
         </Providers>

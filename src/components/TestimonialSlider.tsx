@@ -301,11 +301,7 @@ const TestimonialSlider = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Add this temporary test
-const handleTestAPI = () => {
-  console.log('Testing API call...');
-  dispatch(getTopReview());
-};
+
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => 
@@ -455,13 +451,7 @@ const handleTestAPI = () => {
                     </div>
 
 
-                     {/* Temporary test button */}
-    <button 
-      onClick={handleTestAPI}
-      className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-    >
-      Test API Call
-    </button>
+
                   </div>
                 </div>
               ))}

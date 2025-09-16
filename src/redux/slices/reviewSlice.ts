@@ -212,7 +212,7 @@ export default reviewSlice.reducer;
 
 //  Selectors
 
-export const selectReviews = (state: RootState) => state.reviews.reviews;
+export const selectReviews = (state: RootState) => state.reviews.topReviews;
 export const selectReviewError = (state: RootState) => state.reviews.error;
 export const selectReviewMessage = (state: RootState) => state.reviews.message;
 export const selectReviewLoading = (state: RootState) => state.reviews.loading;

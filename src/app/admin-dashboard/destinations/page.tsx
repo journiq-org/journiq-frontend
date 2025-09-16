@@ -703,7 +703,7 @@ const AdminDestinationsPage = () => {
 
   useEffect(() => {
     dispatch(getAllDestinationsAdmin({page, skip,limit}));
-  }, [dispatch,page,skip]);
+  }, [dispatch,page,skip, toggleDestinationStatus]);
 
   const handleRefresh = () => {
     dispatch(getAllDestinationsAdmin({page, skip ,limit}));
