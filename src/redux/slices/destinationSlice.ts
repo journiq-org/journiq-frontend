@@ -116,11 +116,14 @@ export const listDestinations = createAsyncThunk(
 
 //fetch tour based on destination
 
-export const getTourByDestination = createAsyncThunk('destination/getTourByDestination', async(id: string) => {
+export const getTourByDestination = createAsyncThunk('destination/getTourByDestination', async({destinationId, skip, limit}:{destinationId: string, skip:number, limit:number}) => {
 
-  const res = await api.get(`/api/tour/publicView/${id}`)
+  const res = await api.get(`/api/tour/publicView/${destinationId}?limit=${limit}&skip=${skip}`)
 
-  return res.data.data
+  return {
+    tours:res.data.data,
+    total: res.data.total
+  }
 })
 
 //get single destination
@@ -195,7 +198,8 @@ const destinationSlice = createSlice({
             })
             .addCase(getTourByDestination.fulfilled, ( state, action) => {
               state.loading = false
-              state.toursByDestination = action.payload
+              state.toursByDestination = action.payload.tours
+              state.total = action.payload.total
             })
             .addCase(getTourByDestination.rejected, (state, action) => {
               state.loading = false

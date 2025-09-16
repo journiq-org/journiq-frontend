@@ -584,7 +584,7 @@ const AdminUsersPage = () => {
                     </Button>
 
                     <p className="text-base font-semibold">
-                      Page {page} of {totalPages || 1}
+                      Page {page} of {totalPages }
                     </p>
 
                     <Button

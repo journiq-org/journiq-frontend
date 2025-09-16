@@ -279,7 +279,7 @@ export const fetchAllTours = createAsyncThunk<
         withCredentials: true
     })
     return {
-        destinstion:res.data.data,
+        destination:res.data.data,
         total:res.data.total
     }
   })
@@ -660,7 +660,7 @@ const adminSlice = createSlice({
             })
             .addCase(getAllDestinationsAdmin.fulfilled, (state, action) =>{
                 state.loading = false
-                state.allDestinations = action.payload.destinstion
+                state.allDestinations = action.payload.destination
                 state.total = action.payload.total
             })
             .addCase(getAllDestinationsAdmin.rejected, (state, action) =>{

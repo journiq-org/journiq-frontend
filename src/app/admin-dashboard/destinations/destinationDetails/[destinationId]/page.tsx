@@ -287,7 +287,7 @@
 
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
@@ -326,29 +326,38 @@ import {
 import { getDestinationByIdAdmin } from "@/redux/slices/adminSlice";
 
 const SingleDestinationPage = () => {
-  const { destinationId } = useParams<{ destinationId: string }>();
+
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter()    
+  const { destinationId } = useParams<{ destinationId: string }>();
 
   const {  
     toursByDestination,
     loading, 
-    error 
+    error ,
+    total
   } = useSelector((state: RootState) => state.destination);
 
   const { singleDestination} = useSelector((state: any) => state.admin)
 
+  const [page , setPage] = useState(1)
+  const limit = 10
+  const skip = (page - 1) * limit
+  const totalPages = Math.ceil(total/limit)
+
+  const router = useRouter()    
+
+
   useEffect(() => {
     if (destinationId) {
       dispatch(getDestinationByIdAdmin(destinationId));
-      dispatch(getTourByDestination(destinationId));
+      dispatch(getTourByDestination({destinationId, skip, limit}));
     }
   }, [dispatch, destinationId]);
 
   const handleRefresh = () => {
     if (destinationId) {
       dispatch(getSingleDestination(destinationId));
-      dispatch(getTourByDestination(destinationId));
+      dispatch(getTourByDestination({destinationId, skip, limit}));
     }
   };
 
@@ -705,6 +714,7 @@ const SingleDestinationPage = () => {
                         </CardContent>
                       </Card>
                     ))}
+                    
                   </div>
                 ) : (
                   <div className="text-center py-12">
@@ -715,6 +725,31 @@ const SingleDestinationPage = () => {
                     </p>
                   </div>
                 )}
+
+                  {/* Pagination */}
+                               <div className="flex justify-center items-center gap-2 mt-6">
+                                  <Button
+                                    variant="outline"
+                                    disabled={page === 1}
+                                    onClick={() => setPage((prev) => prev - 1)}
+                                    className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+                                  >
+                                    Previous
+                                  </Button>
+                
+                                  <p className="text-base font-semibold">
+                                    Page {page} of {totalPages}
+                                  </p>
+                
+                                  <Button
+                                    variant="outline"
+                                    disabled={page === totalPages }
+                                    onClick={() => setPage((prev) => prev + 1)}
+                                    className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+                                  >
+                                    Next
+                                  </Button>
+                                </div>
               </CardContent>
             </Card>
           </TabsContent>
