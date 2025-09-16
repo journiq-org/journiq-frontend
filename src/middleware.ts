@@ -25,6 +25,8 @@ export const middleware = (request: NextRequest) => {
   // Traveller routes
   if (
     (pathname.startsWith("/traveller-dashboard") ||
+      // pathname.startsWith("/booking") ||
+      // pathname.startsWith("/my-booking") ||
       pathname.startsWith("/review")) &&
     (!token || role !== "traveller")
   ) {
@@ -44,6 +46,7 @@ export const middleware = (request: NextRequest) => {
   if (
     (pathname.startsWith("/guide-dashboard") ||
       pathname.startsWith("/guide") ||
+      pathname.startsWith("/guide-booking") ||
       pathname.startsWith("/edit-status")) &&
     (!token || role !== "guide")
   ) {

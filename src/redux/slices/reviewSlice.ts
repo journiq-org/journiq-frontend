@@ -9,6 +9,7 @@ const initialState: ReviewState = {
   loading: false,
   error: null,
   message: null,
+  total: 0
 };
 
 // Add Review
@@ -30,7 +31,9 @@ export const addReview = createAsyncThunk(
       { bookingId, rating, comment },
       { withCredentials: true }
     );
-    return res.data.review as Review;
+    return {
+     review: res.data.review
+    }
   }
 );
 
@@ -43,14 +46,17 @@ export const getReviewsForTour = createAsyncThunk(
   }
 );
 
-//  Get Reviews by Role (admin / guide / traveller)
+//  Get Reviews for admin
 export const getReviewsByRole = createAsyncThunk(
   "review/getReviewsByRole",
-  async () => {
-    const res = await api.get("/api/review/get-all-review", {
+  async ({page, limit , skip}: {page: number, limit:number, skip: number}) => {
+    const res = await api.get(`/api/review/get-all-review?limit=${limit}&skip=${skip}`, {
       withCredentials: true,
     });
-    return res.data.reviews as Review[];
+    return {
+      review:res.data.reviews,
+      total: res.data.total 
+    }
   }
 );
 
@@ -104,7 +110,7 @@ const reviewSlice = createSlice({
       })
       .addCase(addReview.fulfilled, (state, action) => {
         state.loading = false;
-        state.reviews.unshift(action.payload);
+        state.reviews.unshift(action.payload.review);
         state.message = "Review added successfully";
       })
       .addCase(addReview.rejected, (state, action) => {
@@ -125,13 +131,14 @@ const reviewSlice = createSlice({
         state.error = action.error.message || "Failed to load reviews";
       })
 
-      // Get Reviews by Role
+      // Get Reviews as admin
       .addCase(getReviewsByRole.pending, (state) => {
         state.loading = true;
       })
       .addCase(getReviewsByRole.fulfilled, (state, action) => {
         state.loading = false;
-        state.reviews = action.payload;
+        state.reviews = action.payload.review
+        state.total = action.payload.total
       })
       .addCase(getReviewsByRole.rejected, (state, action) => {
         state.loading = false;

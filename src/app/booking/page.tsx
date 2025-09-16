@@ -582,8 +582,10 @@ const BookingPage = () => {
                     </>
                   ) : (
                     <>
-                      <Search size={20} style={{ marginRight: 8 }} />
+                      <Search size={20} style={{ marginRight: 8,color: themeColors.white }} />
+                      <div className='text-white'>
                       Check Availability
+                      </div>
                     </>
                   )}
                 </Button>
@@ -672,7 +674,7 @@ const BookingPage = () => {
                     textTransform: 'none',
                     fontWeight: 600,
                     fontSize: '1rem',
-                    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+                    boxShadow: '0 4px 12px rgba(237, 240, 245, 0.3)',
                     transition: 'all 0.2s ease'
                   }}
                 >
@@ -683,8 +685,10 @@ const BookingPage = () => {
                     </>
                   ) : (
                     <>
-                      <CheckCircle size={20} style={{ marginRight: 8 }} />
+                      <CheckCircle size={20} style={{ marginRight: 8 , color:themeColors.white }} />
+                      <div className='text-white'>
                       Confirm Booking
+                      </div>
                     </>
                   )}
                 </Button>

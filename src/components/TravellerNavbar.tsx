@@ -1,6 +1,3 @@
-
-
-
 "use client";
 
 import Image from "next/image";
@@ -12,12 +9,10 @@ import toast from "react-hot-toast";
 import { useAppSelector } from "@/redux/hook";
 import { selectUnreadNotifications } from "@/redux/slices/notificationSlice";
 import NotificationDrawer from "./NotificationDrawer";
-// import MessageNotificationDrawer from "./MessageNotificationDrawer";
 
 const TravellerNavbar = () => {
   const [profileOpen, setProfileOpen] = useState(false);
   const [openNotificationDrawer, setOpenNotificationDrawer] = useState(false);
-  // const [openMessageDrawer, setOpenMessageDrawer] = useState(false);
   const [logoutDialogOpen, setLogoutDialogOpen] = useState(false);
   const profileRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
@@ -61,9 +56,10 @@ const pathname = usePathname();
 
 
         {/* Menu */}
-        <nav className="hidden md:flex gap-8 mx-auto text-white font-medium">
+       <nav className="hidden md:flex gap-8 mx-auto text-white font-medium">
         <a
           href="/traveller-dashboard"
+          title="Home"
           className={`px-2 py-1 rounded transition-all ${
             pathname === "/traveller-dashboard" ? "bg-amber-700 text-white" : "hover:text-amber-700"
           }`}
@@ -72,6 +68,7 @@ const pathname = usePathname();
         </a>
         <a
           href="/booking/my-booking"
+          title="Booking"
           className={`px-2 py-1 rounded transition-all ${
             pathname.startsWith("/booking/my-booking") ? "bg-amber-700 text-white" : "hover:text-amber-700"
           }`}
@@ -80,6 +77,7 @@ const pathname = usePathname();
         </a>
         <a
           href="/tours/viewAllTour"
+          title="Tour"
           className={`px-2 py-1 rounded transition-all ${
             pathname.startsWith("/tours/viewAllTour") ? "bg-amber-700 text-white" : "hover:text-amber-700"
           }`}
@@ -88,6 +86,7 @@ const pathname = usePathname();
         </a>
         <a
           href="/contact"
+          title="Contact"
           className={`px-2 py-1 rounded transition-all ${
             pathname === "/contact" ? "bg-amber-700 text-white" : "hover:text-amber-700"
           }`}
@@ -96,12 +95,10 @@ const pathname = usePathname();
         </a>
       </nav>
 
+
         {/* Icons */}
         <div className="flex items-center gap-4 ml-auto relative">
-          {/* <button onClick={() => router.push("/booking/my-booking")} className="p-2 rounded-full hover:bg-black transition">
-            <BookOpen size={26} className="text-white" />
-          </button> */}
-
+         
           <button onClick={() => router.push("/traveller-dashboard/review/my-reviews")} className="p-2 rounded-full hover:bg-black transition">
             <MessageSquare size={26} className="text-white" />
           </button>
@@ -124,11 +121,15 @@ const pathname = usePathname();
             </button>
 
             {profileOpen && (
-              <div className="absolute right-0 mt-2 bg-white shadow-lg rounded-lg p-4 flex flex-col gap-3 w-44 z-20">
-                <button onClick={() => router.push("/traveller-dashboard/profile/view-profile")} className="text-left hover:text-amber-700">View Profile</button>
-                <button onClick={() => router.push("/traveller-dashboard/profile/edit-profile")} className="text-left hover:text-amber-700">Edit Profile</button>
-                <button onClick={() => router.push("/traveller-dashboard/profile/change-password")} className="text-left hover:text-amber-700">Change Password</button>
-                <button onClick={() => setLogoutDialogOpen(true)} className="text-left text-red-600 hover:text-red-800 flex items-center gap-1">
+              <div className="absolute right-0 mt-4 w-64 bg-[#fdfdfd] rounded-xl shadow-2xl border border-[#e4e2e1] py-3 z-50 flex flex-col">
+                <div className="px-4 py-3 border-b border-[#e4e2e1] bg-gradient-to-r from-[#e4e2e1] to-[#fdfdfd]">
+                  <p className="text-sm font-semibold text-[#22252c]">traveller Profile</p>
+                  <p className="text-xs text-[#333333]">Manage your account</p>
+                </div>
+
+                <button onClick={() => router.push("/traveller-dashboard/profile/view-profile")} className="px-4 text-left hover:text-amber-700">View Profile</button>
+                <button onClick={() => router.push("/traveller-dashboard/profile/change-password")} className="px-4 py-1 text-left hover:text-amber-700">Change Password</button>
+                <button onClick={() => setLogoutDialogOpen(true)} className="px-4 py-1 text-left text-red-600 hover:text-red-800 flex items-center gap-1">
                   <LogOut size={16} /> Logout
                 </button>
               </div>
@@ -139,8 +140,6 @@ const pathname = usePathname();
 
       {/* Notification Drawer */}
       <NotificationDrawer open={openNotificationDrawer} onClose={() => setOpenNotificationDrawer(false)} />
-
-     
 
       {/* Logout Dialog */}
       <Dialog open={logoutDialogOpen} onClose={() => setLogoutDialogOpen(false)}>

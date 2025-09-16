@@ -652,7 +652,7 @@ const PublicViewToursByDestination = () => {
                 {/* Navigation Arrows */}
                 {selectedDestination.images.length > 1 && (
                   <>
-                    <button
+                    {/* <button
                       onClick={prevImage}
                       className="absolute left-6 top-1/2 -translate-y-1/2 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
                     >
@@ -667,7 +667,7 @@ const PublicViewToursByDestination = () => {
                       <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
-                    </button>
+                    </button> */}
                   </>
                 )}
 

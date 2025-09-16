@@ -115,12 +115,18 @@ import {
 
 const MyBookingPage = () => {
   const dispatch = useAppDispatch();
-  const { allBookings, loading, error } = useAppSelector((state) => state.admin);
+  const { allBookings, loading, error,total } = useAppSelector((state) => state.admin);
   const [searchTerm, setSearchTerm] = useState("");
+     //pagination
+      const [page , setPage] = useState(1)
+      const limit = 10
+      const skip = (page - 1) * limit
+      const totalPages = Math.ceil(total/limit)
+
 
   useEffect(() => {
-    dispatch(fetchAllBookings());
-  }, [dispatch]);
+    dispatch(fetchAllBookings({page,skip,limit}));
+  }, [dispatch,page,skip]);
 
   const getInitials = (name: string) => {
     return name?.split(" ").map(n => n[0]).join("").toUpperCase() || "U";
@@ -219,7 +225,7 @@ const MyBookingPage = () => {
             </p>
           </div>
           <Button
-            onClick={() => dispatch(fetchAllBookings())}
+            onClick={() => dispatch(fetchAllBookings({page,skip,limit}))}
             variant="outline"
             className="flex items-center gap-2"
             disabled={loading}
@@ -339,7 +345,7 @@ const MyBookingPage = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    onClick={() => dispatch(fetchAllBookings())}
+                    onClick={() => dispatch(fetchAllBookings({page,skip,limit}))}
                     className="ml-4"
                   >
                     Retry
@@ -445,6 +451,30 @@ const MyBookingPage = () => {
               </div>
             )}
           </CardContent>
+           {/* Pagination */}
+                                <div className="flex justify-center items-center gap-2 mt-6">
+                                  <Button
+                                    variant="outline"
+                                    disabled={page === 1}
+                                    onClick={() => setPage((prev) => prev - 1)}
+                                    className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+                                  >
+                                    Previous
+                                  </Button>
+                      
+                                  <p className="text-base font-semibold">
+                                    Page {page} of {totalPages || 1}
+                                  </p>
+                      
+                                  <Button
+                                    variant="outline"
+                                    disabled={page === totalPages || totalPages === 0}
+                                    onClick={() => setPage((prev) => prev + 1)}
+                                    className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+                                  >
+                                    Next
+                                  </Button>
+                                </div>
         </Card>
       </div>
     </div>

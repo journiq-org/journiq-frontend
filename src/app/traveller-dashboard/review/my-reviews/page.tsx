@@ -257,16 +257,21 @@ function MyReviewsPage() {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
 
-  const { reviews, loading, error, message } = useSelector(
+  const { reviews, loading, error, message,total } = useSelector(
     (state: RootState) => state.reviews
   );
 
   const [localReviews, setLocalReviews] = useState(reviews);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedReviewId, setSelectedReviewId] = useState<string | null>(null);
+   //pagination
+        const [page , setPage] = useState(1)
+        const limit = 10
+        const skip = (page - 1) * limit
+        const totalPages = Math.ceil(total/limit)
 
   useEffect(() => {
-    dispatch(getReviewsByRole());
+    dispatch(getReviewsByRole({page,limit,skip}));
     return () => {
       dispatch(clearReviewState());
     };
@@ -590,6 +595,28 @@ function MyReviewsPage() {
           </Box>
         )}
 
+                            {/* Pagination */}
+                                   <div className="flex justify-center items-center gap-2 mt-6">
+                                     <Button
+                                       disabled={page === 1}
+                                       onClick={() => setPage((prev) => prev - 1)}
+                                       className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+                                     >
+                                       Previous
+                                     </Button>
+                         
+                                     <p className="text-base font-semibold">
+                                       Page {page} of {totalPages || 1}
+                                     </p>
+                         
+                                     <Button
+                                       disabled={page === totalPages || totalPages === 0}
+                                       onClick={() => setPage((prev) => prev + 1)}
+                                       className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+                                     >
+                                       Next
+                                     </Button>
+                                   </div>
         {/* Delete Confirmation Dialog */}
         <Dialog 
           open={openDialog} 

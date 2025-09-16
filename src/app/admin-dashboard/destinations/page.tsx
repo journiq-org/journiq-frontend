@@ -641,7 +641,7 @@
 
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import { getAllDestinationsAdmin } from "@/redux/slices/adminSlice";
@@ -692,16 +692,21 @@ interface Destination {
 const AdminDestinationsPage = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const { allDestinations, loading, error } = useSelector(
+  const { allDestinations, loading, error , total } = useSelector(
     (state: RootState) => state.admin
   );
+   //pagination
+    const [page , setPage] = useState(1)
+    const limit = 10
+    const skip = (page - 1) * limit
+    const totalPages = Math.ceil(total/limit)
 
   useEffect(() => {
-    dispatch(getAllDestinationsAdmin());
-  }, [dispatch]);
+    dispatch(getAllDestinationsAdmin({page, skip,limit}));
+  }, [dispatch,page,skip]);
 
   const handleRefresh = () => {
-    dispatch(getAllDestinationsAdmin());
+    dispatch(getAllDestinationsAdmin({page, skip ,limit}));
   };
 
   const handleRowClick = (destinationId: string) => {
@@ -1001,9 +1006,35 @@ const AdminDestinationsPage = () => {
                 </div>
               )}
             </CardContent>
+             {/* Pagination */}
+                      <div className="flex justify-center items-center gap-2 mt-6">
+                        <Button
+                          variant="outline"
+                          disabled={page === 1}
+                          onClick={() => setPage((prev) => prev - 1)}
+                          className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+                        >
+                          Previous
+                        </Button>
+            
+                        <p className="text-base font-semibold">
+                          Page {page} of {totalPages || 1}
+                        </p>
+            
+                        <Button
+                          variant="outline"
+                          disabled={page === totalPages || totalPages === 0}
+                          onClick={() => setPage((prev) => prev + 1)}
+                          className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+                        >
+                          Next
+                        </Button>
+                      </div>
           </Card>
         </div>
       </div>
+
+      
       
       {/* React Hot Toast Container */}
       <Toaster position="top-right" />

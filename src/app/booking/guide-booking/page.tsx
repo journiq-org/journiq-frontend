@@ -185,7 +185,7 @@ const GuideBookingsPage = () => {
           </div>
         )}
         {/* Stats Summary */}
-        <div className="p-2">
+        <div className="p-2 mb-15">
         {!loading && bookings.length > 0 && (
           <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="bg-[#fdfdfd] rounded-xl p-5 border border-[#e2e0df] shadow-lg hover:shadow-xl transition-all duration-300">
@@ -320,7 +320,7 @@ const GuideBookingsPage = () => {
                       {booking.totalPrice && (
                         <div className="flex items-center gap-2">
                           <IndianRupee className="w-4 h-4 text-green-600" />
-                          <span className="text-slate-600 font-medium">₹{booking.totalPrice}</span>
+                          <span className="text-slate-600 font-medium">{booking.totalPrice}</span>
                         </div>
                       )}
                     </div>

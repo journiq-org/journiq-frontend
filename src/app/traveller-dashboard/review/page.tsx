@@ -383,7 +383,9 @@ const AddReviewPage = () => {
   const bookingId = searchParams.get("bookingId") || "";
   const tourId = searchParams.get("tourId") || "";
 
-  const [rating, setRating] = useState<number>(5);
+  // const [rating, setRating] = useState<number | null>(null);
+const [rating, setRating] = useState<number | null>(null);
+  // const [rating, setRating] = useState<number>(5);
   const [comment, setComment] = useState("");
 
   // Fetch booking + tour details
@@ -398,31 +400,54 @@ const AddReviewPage = () => {
 
   const bookingDetail = bookings.find((b) => b._id === bookingId);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      if (!tourId || !bookingId) {
-        toast.error("Missing booking or tour ID");
-        return;
-      }
-
-      await dispatch(addReview({ tourId, bookingId, rating, comment })).unwrap();
-
-      toast.success("Review added successfully!");
-      dispatch(clearReviewState());
-      router.push("/traveller-dashboard/my-bookings");
-    } catch (err: any) {
-      if (err?.message?.includes("already reviewed")) {
-        toast.error("⚠️ You already submitted a review for this booking!");
-      } else {
-        toast.error(err?.message || "Failed to add review");
-      }
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  try {
+    if (!tourId || !bookingId) {
+      toast.error("Missing booking or tour ID");
+      return;
     }
-  };
 
-  const handleRatingChange = (event: React.SyntheticEvent, newValue: number | null) => {
-    setRating(newValue || 5);
-  };
+    if (rating === null) {
+      toast.error("Please select a rating before submitting");
+      return;
+    }
+
+    await dispatch(
+      addReview({ 
+        tourId, 
+        bookingId, 
+        comment, 
+        rating: Number(rating) // force number
+      })
+    ).unwrap();
+
+    toast.success("✅ Review added successfully!");
+    dispatch(clearReviewState());
+    router.push("/booking/my-booking");
+
+  } catch (err: any) {
+    const errorMessage = err?.message || err;
+    if (
+      typeof errorMessage === "string" &&
+      errorMessage.toLowerCase().includes("already")
+    ) {
+      toast.error("⚠️ Review already exists for this booking!");
+    } else {
+      toast.error(errorMessage || "Failed to add review");
+    }
+  }
+};
+
+
+const handleRatingChange = (event: React.SyntheticEvent, newValue: number | null) => {
+  setRating(newValue); // no fallback to 5
+};
+
+//  const handleRatingChange = (event: React.SyntheticEvent, newValue: number | null) => {
+//   setRating(newValue || 5);
+// };
+
 
   useEffect(() => {
     if (error) toast.error(error);
@@ -721,7 +746,7 @@ const AddReviewPage = () => {
                       variant="body2" 
                       sx={{ color: themeColors.textSecondary, fontWeight: 500 }}
                     >
-                      {rating} out of 5 stars
+                      {rating ?? 0} out of 5 stars
                     </Typography>
                   </Paper>
                 </Box>
@@ -829,7 +854,7 @@ const AddReviewPage = () => {
                       py: 1.5,
                       textTransform: 'none',
                       fontWeight: 600,
-                      boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+                      boxShadow: '0 4px 12px rgba(241, 242, 245, 0.87)',
                       transition: 'all 0.2s ease'
                     }}
                   >

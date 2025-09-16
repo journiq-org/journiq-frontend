@@ -87,11 +87,9 @@ export const adminInitialState: AdminState = {
 //Users
 
 //fetch all users
-export const fetchAllUsers = createAsyncThunk("adminUsers/fetchAllUsers", async ({page, limit , skip}: {page: number, limit:number, skip: number}) => {
-    // const cookieRes = await fetch("/api/auth/get-cookie");
-    // const { token } = await cookieRes.json();
-    // if (!token) throw new Error("No token found");
-
+export const fetchAllUsers = createAsyncThunk("adminUsers/fetchAllUsers", 
+    async ({page, limit , skip}: {page: number, limit:number, skip: number}) => {
+   
     const res = await api.get(`/api/admin/users?limit=${limit}&skip=${skip}`, {
       withCredentials: true,
     });
@@ -158,11 +156,15 @@ export const getSingleBooking = createAsyncThunk('admin/viewSingleBooking', asyn
 // fetch all bookings   
 export const fetchAllBookings = createAsyncThunk(
   "admin/fetchAllBookings",
-  async () => {
-    const res = await api.get("/api/booking/admin/all", {
+  async ({page, skip, limit}:{page:number,skip:number, limit:number}) => {
+    const res = await api.get(`/api/booking/admin/all?limit=${limit}&skip=${skip}`, {
       withCredentials: true,
     });
-    return res.data.bookings; // ✅ matches controller response
+    return {
+        booking: res.data.bookings,
+        total: res.data.total
+    }
+        
   }
 );
 
@@ -270,11 +272,15 @@ export const fetchAllTours = createAsyncThunk<
   //destination
 
   //get all destination
-  export const getAllDestinationsAdmin =createAsyncThunk('admin/getAllDestinations', async () => {
-    const res = await api.get(`/api/admin/allDestinations`, {
+  export const getAllDestinationsAdmin =createAsyncThunk('admin/getAllDestinations', async ({page, skip, limit}:{page:number,limit:number,skip:number}) => {
+    const res = await api.get(`/api/admin/allDestinations?limit=${limit}&skip=${skip}`, {
         withCredentials: true
     })
-    return res.data.data
+    return {
+        destinstion:res.data.data,
+        total:res.data.total
+    }
+    
   })
 
   //get dashboard statistics
@@ -445,8 +451,8 @@ const adminSlice = createSlice({
             })
             .addCase(fetchAllBookings.fulfilled, (state, action) => {
                 state.loading = false;
-                state.allBookings = action.payload;
-                state.totalBookings = action.payload.length; // keep total count updated
+                state.allBookings = action.payload.booking;
+                state.total = action.payload.total; 
             })
             .addCase(fetchAllBookings.rejected, (state, action) => {
                 state.loading = false;
@@ -644,7 +650,8 @@ const adminSlice = createSlice({
             })
             .addCase(getAllDestinationsAdmin.fulfilled, (state, action) =>{
                 state.loading = false
-                state.allDestinations = action.payload
+                state.allDestinations = action.payload.destinstion
+                state.total = action.payload.total
             })
             .addCase(getAllDestinationsAdmin.rejected, (state, action) =>{
                 state.loading = false
