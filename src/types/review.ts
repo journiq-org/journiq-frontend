@@ -1,5 +1,3 @@
-// types/review.ts
-
 export interface User {
   _id: string;
   name: string;
@@ -13,8 +11,8 @@ export interface Tour {
 
 export interface Review {
   _id: string;
-  tour: string | Tour; // sometimes populated
-  user: string | User; // sometimes populated
+  tour: string | Tour; 
+  user: string | User; 
   rating: number;
   comment: string;
   isDeleted: boolean;

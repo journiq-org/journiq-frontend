@@ -37,5 +37,5 @@ export interface Booking {
   date?: string;
   numOfPeople?: number;
   totalPrice?: number;
-  review?: Review | null; // ✅ Add this
+  review?: Review | null; 
 }

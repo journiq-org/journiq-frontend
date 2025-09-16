@@ -7,8 +7,8 @@ interface Message {
   traveller: { _id: string; name: string; email: string };
   subject: string;
   message: string;
-  adminReply?: string; // admin reply optional
-  repliedAt?: string;  // timestamp of reply
+  adminReply?: string; 
+  repliedAt?: string;  
   status: "read" | "unread";
   createdAt: string;
 }
@@ -38,11 +38,11 @@ export const sendMessage = createAsyncThunk(
   "messages/sendMessage",
   async (payload: { subject: string; message: string }, { rejectWithValue }) => {
     try {
-      const token = await getToken();
+      // const token = await getToken();
       const res = await api.post<Message>(
         "/api/messages/send",
         payload,
-        { headers: { Authorization: `Bearer ${token}` } }
+        {withCredentials: true, }
       );
       return res.data;
     } catch (err: any) {

@@ -1,5 +1,5 @@
-// components/GuideLayout.tsx
 "use client";
+
 import { useEffect } from "react";
 import { useAppDispatch } from "@/redux/hook";
 import { fetchNotifications } from "@/redux/slices/notificationSlice";

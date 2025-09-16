@@ -416,7 +416,7 @@ const MyBookingPage = () => {
                                 src={booking.user?.profilePic} 
                                 alt={booking.user?.name} 
                               />
-                              <AvatarFallback className="bg-blue-100 text-blue-700">
+                              <AvatarFallback className="bg-green-100 text-green-700">
                                 {getInitials(booking.user?.name)}
                               </AvatarFallback>
                             </Avatar>
@@ -452,29 +452,29 @@ const MyBookingPage = () => {
             )}
           </CardContent>
            {/* Pagination */}
-                                <div className="flex justify-center items-center gap-2 mt-6">
-                                  <Button
-                                    variant="outline"
-                                    disabled={page === 1}
-                                    onClick={() => setPage((prev) => prev - 1)}
-                                    className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
-                                  >
-                                    Previous
-                                  </Button>
-                      
-                                  <p className="text-base font-semibold">
-                                    Page {page} of {totalPages || 1}
-                                  </p>
-                      
-                                  <Button
-                                    variant="outline"
-                                    disabled={page === totalPages || totalPages === 0}
-                                    onClick={() => setPage((prev) => prev + 1)}
-                                    className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
-                                  >
-                                    Next
-                                  </Button>
-                                </div>
+            <div className="flex justify-center items-center gap-2 mt-6">
+              <Button
+                variant="outline"
+                disabled={page === 1}
+                onClick={() => setPage((prev) => prev - 1)}
+                className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+              >
+                Previous
+              </Button>
+  
+              <p className="text-base font-semibold">
+                Page {page} of {totalPages || 1}
+              </p>
+  
+              <Button
+                variant="outline"
+                disabled={page === totalPages || totalPages === 0}
+                onClick={() => setPage((prev) => prev + 1)}
+                className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+              >
+                Next
+              </Button>
+            </div>
         </Card>
       </div>
     </div>

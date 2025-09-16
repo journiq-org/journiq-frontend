@@ -21,20 +21,14 @@ const initialState: GuideBookingState = {
   error: null,
 };
 
-// 🔹 Fetch Bookings for Guide
+// Fetch Bookings for Guide
 export const fetchGuideBookings = createAsyncThunk<
   Booking[],
   void,
   { rejectValue: string }
 >("guideBookings/fetchGuideBookings", async (_, { rejectWithValue }) => {
   try {
-    // const cookieRes = await fetch("/api/auth/get-cookie");
-    // const { token } = await cookieRes.json();
-
-    // if (!token) throw new Error("No token found");
-
     const res = await api.get("/api/booking/for-guide", {
-      // headers: { Authorization: `Bearer ${token}` },
       withCredentials: true,
     });
 
@@ -46,7 +40,7 @@ export const fetchGuideBookings = createAsyncThunk<
   }
 });
 
-// 🔹 Guide Responds to Booking (accept/reject)
+// Guide Responds to Booking (accept/reject)
 export const respondToBooking = createAsyncThunk<
   Booking,
   { bookingId: string; status: string },
@@ -72,7 +66,7 @@ export const respondToBooking = createAsyncThunk<
   }
 );
 
-// 🔹 Guide/Admin updates booking status later (confirmed, completed, cancelled, etc.)
+// Guide/Admin updates booking status later (confirmed, completed, cancelled, etc.)
 export const updateBookingStatus = createAsyncThunk<
   Booking,
   { bookingId: string; status: string },
@@ -81,16 +75,10 @@ export const updateBookingStatus = createAsyncThunk<
   "guideBookings/updateBookingStatus",
   async ({ bookingId, status }, { rejectWithValue }) => {
     try {
-      // const cookieRes = await fetch("/api/auth/get-cookie");
-      // const { token } = await cookieRes.json();
-
-      // if (!token) throw new Error("No token found");
-
       const res = await api.patch(
         `/api/booking/update-status/${bookingId}`,
         { status },
         {
-          // headers: { Authorization: `Bearer ${token}` },
           withCredentials: true,
         }
       );

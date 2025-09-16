@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { getReviewsByRole } from "@/redux/slices/reviewSlice";
@@ -16,7 +17,6 @@ import {
   Users,
   Star,
   MessageSquare,
-  TrendingUp,
   Search,
   X,
   ThumbsUp,
@@ -321,7 +321,7 @@ const AdminReviewsPage = () => {
                                 src={typeof review.user === "string" ? undefined : review.user?.profilePic} 
                                 alt={typeof review.user === "string" ? review.user : review.user?.name} 
                               />
-                              <AvatarFallback className="bg-blue-100 text-blue-700">
+                              <AvatarFallback className="bg-green-100 text-green-700">
                                 {getInitials(typeof review.user === "string" ? review.user : review.user?.name || "Unknown")}
                               </AvatarFallback>
                             </Avatar>

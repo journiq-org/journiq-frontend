@@ -16,7 +16,6 @@ export default function TravellerDashboard() {
 
   // Redux
   const dispatch = useDispatch<AppDispatch>();
-  // const { loading, error, destinations } = useSelector((state: any) => state.destination);
     const [page, setPage] = useState(1);
     const limit = 6;
     const skip = (page - 1) * limit;
@@ -63,7 +62,7 @@ export default function TravellerDashboard() {
           </div>
           <div className="hidden md:block">
             <div className="text-right">
-              <div className="text-2xl font-bold text-gray-900">{destinations?.length || 0}</div>
+              <div className="text-2xl font-bold text-gray-900 px-8">{destinations?.length || 0}</div>
               <div className="text-sm text-gray-600">Destinations</div>
             </div>
           </div>

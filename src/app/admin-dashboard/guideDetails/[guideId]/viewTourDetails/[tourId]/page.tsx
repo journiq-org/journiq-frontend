@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -34,7 +33,13 @@ import {
   Mail,
   MessageSquare
 } from "lucide-react";
-import { getSingleTourByGuide, toggleBlockTour, fetchBookingsByTourId, getSingleBooking, getReviewByTour } from "@/redux/slices/adminSlice";
+import { 
+  getSingleTourByGuide, 
+  toggleBlockTour, 
+  fetchBookingsByTourId, 
+  getSingleBooking, 
+  getReviewByTour 
+} from "@/redux/slices/adminSlice";
 import { Tour } from "@/types/tour";
 
 // Enhanced Star Rating Component

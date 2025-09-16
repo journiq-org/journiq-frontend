@@ -289,7 +289,6 @@
 
 'use client'
 
-import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import TestimonialSlider from "@/components/TestimonialSlider";
 import { listDestinations } from "@/redux/slices/destinationSlice";
@@ -611,233 +610,75 @@ export default function Home() {
 
   <div className="min-h-screen bg-white">
       <Header/>
-  {/* Full-Screen Hero Carousel */}
-      <section className="relative h-screen w-full overflow-hidden">
-        {/* Carousel Images */}
-        {heroImages.map((image, index) => (
-          <div
-            key={index}
-            className={`absolute inset-0 transition-opacity duration-1000 ${
-              index === currentSlide ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <img
-              src={image}
-              alt={`Hero ${index + 1}`}
-              className="w-full h-full object-cover"
-            />
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent"></div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
-          </div>
-        ))}
+    <div>
+  <div className="relative max-w-7xl mx-auto px-4 pt-20 flex flex-col items-center text-center">
+    <h6 className="text-xl md:text-2xl text-[#0c0c0c]">Don't just see the world.</h6>
+    <h1 className="text-5xl md:text-7xl lg:text-9xl font-bold mt-4 text-[#0c0c0c] leading-tight">
+      Live it with Journiq.
+    </h1>
+  </div>
 
-        {/* Navigation Arrows */}
-        <button
-          onClick={prevSlide}
-          className="absolute left-6 top-1/2 -translate-y-1/2 z-20 bg-white/10 backdrop-blur-sm border border-white/30 text-white p-3 rounded-full hover:bg-white/20 transition-all duration-300"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-        
-        <button
-          onClick={nextSlide}
-          className="absolute right-6 top-1/2 -translate-y-1/2 z-20 bg-white/10 backdrop-blur-sm border border-white/30 text-white p-3 rounded-full hover:bg-white/20 transition-all duration-300"
-        >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
+  {/* Image with gradient overlay */}
+  <div className="relative mt-12 w-full max-w-6xl rounded-2xl shadow-lg overflow-hidden mx-auto">
+    <Image
+      src={`/images/destination3.jpg`}
+      alt="destination"
+      width={1600}
+      height={800}
+      className="w-full h-[400px] md:h-[500px] object-cover"
+    />
 
-        {/* Carousel Indicators */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex space-x-3">
-          {heroImages.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentSlide ? 'bg-white' : 'bg-white/50'
-              }`}
-            />
-          ))}
-        </div>
+    {/* Gradient overlay at the top */}
+    <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-transparent"></div>
+    </div>
+  </div>
+      <div className="p-6">
+      <h2 className="text-2xl font-bold mb-4">Popular Destinations</h2>
 
-        {/* Hero Content - Left Aligned */}
-        <div className="relative z-10 h-full flex items-center">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full">
-            <div className="max-w-2xl">
-              {/* Status Badge */}
-              {/* <div className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 text-white text-sm font-medium mb-6">
-                <span className="w-2 h-2 bg-green-400 rounded-full mr-2 animate-pulse"></span>
-                Your Journey Starts Here
-              </div> */}
+      {/* Loading State */}
+      {loading && <p>Loading destinations...</p>}
 
-              {/* Main Heading */}
-              <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
-                {heroSlides[currentSlide].title}
-                <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
-                  {heroSlides[currentSlide].subtitle}
-                </span>
-              </h1>
+      {/* Error State */}
+      {error && <p className="text-red-500">{error}</p>}
 
-              {/* Description */}
-              <p className="text-xl md:text-2xl text-gray-200 mb-8 leading-relaxed">
-                {heroSlides[currentSlide].description}
-              </p>
+      {/* Destinations Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {destinations?.length > 0 ? (
+          destinations.map((dest: any) => (
+            <div 
+              key={dest._id} 
+              onClick={() => router.push(`/tours/${dest._id}`) }
+              className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition cursor-pointer"
+            >
+              {/* Image */}
+              {dest.images?.length > 0 && (
+                <img
+                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${dest.images[0]}`}
+                  alt={dest.name}
+                  className="w-full h-48 object-cover"
+                />
+                
+              )}
 
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-4">
-                <button 
-                  onClick={() => router.push('/login')}
-                  className="px-8 py-4 bg-gradient-to-r from-gray-900 to-cyan-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
-                >
-                  Start Your Journey
-                </button>
-                <button 
-                  onClick={() => router.push('#destination')}
-                  className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/30 text-white font-semibold rounded-xl hover:bg-white/20 transition-all duration-300"
-                >
-                  Explore Destinations
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Navigation Links Section */}
-      <section className="bg-white border-b border-gray-200 sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex justify-center py-4">
-            <div className="flex space-x-12">
-              {[
-                { href: '#why-choose-us', label: 'Why Choose Us' },
-                { href: '#destination', label: 'Destinations' },
-                { href: '#about', label: 'About Us' },
-                { href: '#review', label: 'Reviews' }
-              ].map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-300 relative group"
-                >
-                  {link.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
-                </a>
-              ))}
-            </div>
-          </nav>
-        </div>
-      </section>
-
-      {/* Why Choose Us Section */}
-      <section id="why-choose-us" className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Why Choose <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Journiq</span>?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover why thousands of travelers trust us for their journey
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: '🗺️',
-                title: 'Curated Destinations',
-                description: 'Handpicked locations for authentic travel experiences'
-              },
-              {
-                icon: '👥',
-                title: 'Expert Local Guides',
-                description: 'Professional guides with deep knowledge of their regions'
-              },
-              {
-                icon: '⭐',
-                title: 'Verified Reviews',
-                description: 'Real traveler feedback to help you choose wisely'
-              },
-              {
-                icon: '🛡️',
-                title: 'Secure Booking',
-                description: 'Safe and secure payment processing with instant confirmation'
-              }
-            ].map((feature, index) => (
-              <div 
-                key={index} 
-                className="bg-white rounded-2xl p-8 shadow-sm hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100"
-              >
-                <div className="text-4xl mb-6">
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed">
-                  {feature.description}
+              {/* Info */}
+              <div className="p-4">
+                <h3 className="text-lg font-semibold text-black">{dest.name}</h3>
+                <p className="text-sm text-gray-500">
+                  {dest.city ? `${dest.city}, ` : ''}{dest.country}
                 </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+                <p className="mt-2 text-gray-600 line-clamp-2">{dest.description}</p>
 
-{/* gradient between sections */}
-      <div className="h-16 bg-gradient-to-b from-gray-50 to-[#e2e0df]"></div>
-
-
-      {/* Destinations Section */}
-      <section id="destination" className="py-20 bg-[#E2E0DF]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Popular Destinations
-            </h2>
-            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Discover handpicked destinations that offer unique experiences and unforgettable memories
-            </p>
-          </div>
-          
-          {loading ? (
-            <div className="flex justify-center items-center py-16">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-            </div>
-          ) : (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-                {destinations.map((dest: any) => (
-                  <div
-                    key={dest._id}
-                    onClick={() => router.push(`/tours/${dest._id}`)}
-                    className="group relative rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500 cursor-pointer transform hover:-translate-y-3 border border-white/50"
-                  >
-                    {/* Destination Image */}
-                    {dest.images?.length > 0 && (
-                      <img
-                        src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${dest.images[0]}`}
-                        alt={dest.name}
-                        className="w-full h-64 object-cover transition-all duration-700 ease-out group-hover:scale-110 group-hover:brightness-110"
-                      />
-                    )}
-
-                    {/* Multi-layer Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent transition-opacity duration-300"></div>
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-transparent to-purple-600/20"></div>
-
-                    {/* Destination Text */}
-                    <div className="absolute bottom-6 left-6 text-white transform transition-all duration-300 group-hover:translate-y-[-8px]">
-                      <h3 className="text-2xl font-bold transition-all duration-300 group-hover:text-3xl mb-2">{dest.name}</h3>
-                      <p className="text-lg flex items-center gap-2 opacity-90 transition-opacity duration-300 group-hover:opacity-100">
-                        <span>📍</span> {dest.country}
-                      </p>
-                    </div>
-
-                    {/* Hover Shine Effect */}
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out"></div>
+                {/* Tags */}
+                {dest.tags?.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {dest.tags.slice(0, 3).map((tag: string, i: number) => (
+                      <span 
+                        key={i} 
+                        className="text-xs text-black bg-gray-200 px-2 py-1 rounded-full"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </div>
                 ))}
               </div>

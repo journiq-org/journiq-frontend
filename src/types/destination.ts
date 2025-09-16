@@ -1,4 +1,3 @@
-// src/types/destination.ts
 export interface DestinationType {
   _id: string;
   name: string;

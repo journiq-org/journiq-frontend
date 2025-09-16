@@ -12,18 +12,6 @@ interface Filters {
   sort: "latest" | "oldest" | "name" | "name-desc";
 }
 
-// interface DestinationState {
-//   destinations: DestinationType[];
-//   popular: DestinationType[];
-//   total: number;
-//   selectedDestination: DestinationType | null;
-//   toursByDestination: any[]; // refine later with TourType
-//   filters: Filters;
-//   loading: boolean;
-//   error: string | null;
-//   successMessage: string | null;
-// }
-
 interface DestinationState {
   destinations: DestinationType[];
   popular: DestinationType[];
@@ -39,11 +27,11 @@ interface DestinationState {
 
 
 const initialState: DestinationState = {
-  destinations: [],      // list of all destinations
+  destinations: [],      
   total: 0,
-  popular: [],           // popular destinations
-  selectedDestination: null, // details of a single destination
-  toursByDestination: [], // tours for a specific destination
+  popular: [],         
+  selectedDestination: null,
+  toursByDestination: [], 
   filters: {
     search: "",
     country: "",
@@ -61,17 +49,6 @@ const initialState: DestinationState = {
 //thunk
 
 //list destination
-
-// export const listDestinations = createAsyncThunk('/destinations', async() => {
-
-//     const res = await api.get('/api/destination/viewAllDestination')
-//     console.log('Destination list', res.data.data)
-
-//     return res.data.data
-// })
-
-
-// destinationSlice.ts
 export const listDestinations = createAsyncThunk(
   "/destinations",
   async ({
@@ -96,44 +73,23 @@ export const listDestinations = createAsyncThunk(
   }
 );
 
-// export const listDestinations = createAsyncThunk(
-//   "/destinations",
-//   async ({ skip, limit }: { skip: number; limit: number }) => {
-//     const res = await api.get(
-//       `/api/destination/viewAllDestination?skip=${skip}&limit=${limit}`
-//     );
-
-//     console.log("Destination list", res.data);
-
-//     // Your backend already sends { total, count, data }
-//     return {
-//     destinations: res.data.data,
-//     total: res.data.total,
-//     };
-//   }
-// );
-
-
 //fetch tour based on destination
-
-export const getTourByDestination = createAsyncThunk('destination/getTourByDestination', async({destinationId, skip, limit}:{destinationId: string, skip:number, limit:number}) => {
-
-  const res = await api.get(`/api/tour/publicView/${destinationId}?limit=${limit}&skip=${skip}`)
-
-  return {
-    tours:res.data.data,
-    total: res.data.total
-  }
+export const getTourByDestination = createAsyncThunk('destination/getTourByDestination', 
+  async(id: string) => {
+  const res = await api.get(`/api/tour/publicView/${id}`)
+  return res.data.data
 })
 
 //get single destination
-export const getSingleDestination = createAsyncThunk('destination/getSingleDestination', async (destinationId: string) => {
+export const getSingleDestination = createAsyncThunk('destination/getSingleDestination', 
+  async (destinationId: string) => {
   const res = await api.get(`/api/destination/viewDestination/${destinationId}`)
   return res.data.data
 })
 
 //create destination
-export const createDestination = createAsyncThunk('destination/createDestination', async (formData: FormData) => {
+export const createDestination = createAsyncThunk('destination/createDestination', 
+  async (formData: FormData) => {
   const res = await api.post('/api/destination/createDestination',formData,  {
     withCredentials: true
   })
@@ -142,7 +98,8 @@ export const createDestination = createAsyncThunk('destination/createDestination
 
 
 //update destination
-export const updateDestination = createAsyncThunk('destination/updateDestination', async({id,formData}: {id:string, formData: FormData}) => {
+export const updateDestination = createAsyncThunk('destination/updateDestination', 
+  async({id,formData}: {id:string, formData: FormData}) => {
   const res = await api.patch(`/api/destination/updateDestination/${id}`, formData,{
       withCredentials: true
   })
@@ -151,7 +108,8 @@ export const updateDestination = createAsyncThunk('destination/updateDestination
 
 
 //delete destination
-export const deleteDestination = createAsyncThunk('destination/deleteDestination', async (id: string) => {
+export const deleteDestination = createAsyncThunk('destination/deleteDestination', 
+  async (id: string) => {
   const res = await api.patch(`/api/destination/deleteDestination/${id}`,{},{
     withCredentials: true
   })
@@ -160,7 +118,8 @@ export const deleteDestination = createAsyncThunk('destination/deleteDestination
 
 
 //toggle destination status
-export const toggleDestinationStatus = createAsyncThunk('destination/toggle', async(id:string) => {
+export const toggleDestinationStatus = createAsyncThunk('destination/toggle', 
+  async(id:string) => {
   const res = await api.patch(`/api/destination/${id}/toggle-status`, {},{
     withCredentials: true
   })
@@ -235,7 +194,6 @@ const destinationSlice = createSlice({
               state.error = action.error.message || 'Failed to create destination'
             })
             
-
             //update destination
             .addCase(updateDestination.pending, state => {
               state.loading = true
@@ -285,8 +243,6 @@ const destinationSlice = createSlice({
           state.loading = false
           state.error = action.error.message || "Failed to delete destination"
         })
-
-        
 
         //toggle destination status
         .addCase(toggleDestinationStatus.pending , state => {

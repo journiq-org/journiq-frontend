@@ -51,7 +51,7 @@ export const editUserProfile = createAsyncThunk<User, FormData>(
   }
 );
 
-// ✅ Delete user
+// Delete user
 export const deleteUser = createAsyncThunk<
   { message: string; id: string },
   void

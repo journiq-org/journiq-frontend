@@ -107,7 +107,7 @@ const pathname = usePathname();
             className="relative p-2.5 text-[#e2e0df] hover:text-[#fdfdfd] hover:bg-[#93c5fd]/10 transition-all duration-300 rounded-full"
             onClick={() => setOpenNotificationDrawer(true)}
           >
-            <Bell className="w-5 h-5" />
+            <Bell className="w-6 h-6" />
             {unreadNotifications.length > 0 && (
               <span className="absolute -top-1 -right-1 bg-[#ff9100] text-[#fdfdfd] text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-lg animate-pulse">
                 {unreadNotifications.length}

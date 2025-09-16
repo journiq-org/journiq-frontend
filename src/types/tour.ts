@@ -1,5 +1,5 @@
 export interface Availability {
-  date: string;   // you’ll usually serialize Date as string (ISO) in API
+  date: string;  
   slots: number;
 }
 
@@ -46,8 +46,6 @@ export interface Tour {
   createdAt: string;
   updatedAt: string;
 }
-
-
 
 // define a type for the filters
 export interface TourFilters {

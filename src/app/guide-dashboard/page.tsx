@@ -24,19 +24,8 @@ export default function GuideDashboard() {
   const [page, setPage] = useState(1);
   const limit = 3;
   const skip = (page - 1) * limit;
-
-  // useEffect(() => {
-  //   dispatch(listDestinations({ skip, limit }));
-  // }, [dispatch, page]);
-
-//   useEffect(() => {
-//   dispatch(listDestinations({ skip, limit }));
-//   dispatch(guideViewTours({ page: 1, limit: 100 })); // fetch all or first page of tours
-//    dispatch(fetchGuideBookings());
-// }, [dispatch, page]);
-
-const [search, setSearch] = useState("");
-const [category, setCategory] = useState(""); // example filter
+  const [search, setSearch] = useState("");
+  const [category, setCategory] = useState(""); 
 
 useEffect(() => {
   dispatch(
@@ -129,17 +118,6 @@ const bookingStats = {
               </div>
             </div>
             
-            {/* <div className="bg-[#fdfdfd] rounded-xl shadow-sm border border-[#e2e0df] p-6 hover:shadow-lg transition-shadow duration-300">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-[#333333] text-sm font-medium mb-1">Active Tours</p>
-                  <p className="text-2xl font-bold text-[#22252c]">--</p>
-                </div>
-                <div className="bg-[#ff9100] p-3 rounded-lg">
-                  <TrendingUp className="text-[#fdfdfd]" size={24} />
-                </div>
-              </div>
-            </div> */}
             <div className="bg-[#fdfdfd] rounded-xl shadow-sm border border-[#e2e0df] p-6 hover:shadow-lg transition-shadow duration-300">
             <div className="flex items-center justify-between">
               <div>
@@ -154,31 +132,19 @@ const bookingStats = {
             </div>
           </div>
 
-            
-            {/* <div className="bg-[#fdfdfd] rounded-xl shadow-sm border border-[#e2e0df] p-6 hover:shadow-lg transition-shadow duration-300">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-[#333333] text-sm font-medium mb-1">Total Bookings</p>
-                  <p className="text-2xl font-bold text-[#22252c]">--</p>
-                </div>
-                <div className="bg-[#1e3a8a] p-3 rounded-lg">
-                  <Users className="text-[#93c5fd]" size={24} />
-                </div>
+        <div className="bg-[#fdfdfd] rounded-xl shadow-sm border border-[#e2e0df] p-6 hover:shadow-lg transition-shadow duration-300">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-[#333333] text-sm font-medium mb-1">Total Bookings</p>
+              <p className="text-2xl font-bold text-[#22252c]">
+                {bookingsLoading ? "Loading..." : bookingStats.total}
+              </p>
+            </div>
+            <div className="bg-[#1e3a8a] p-3 rounded-lg">
+              <Calendar className="text-[#fdfdfd]" size={24} />
               </div>
-            </div> */}
-            <div className="bg-[#fdfdfd] rounded-xl shadow-sm border border-[#e2e0df] p-6 hover:shadow-lg transition-shadow duration-300">
-  <div className="flex items-center justify-between">
-    <div>
-      <p className="text-[#333333] text-sm font-medium mb-1">Total Bookings</p>
-      <p className="text-2xl font-bold text-[#22252c]">
-        {bookingsLoading ? "Loading..." : bookingStats.total}
-      </p>
-    </div>
-    <div className="bg-[#1e3a8a] p-3 rounded-lg">
-      <Calendar className="text-[#fdfdfd]" size={24} />
-    </div>
-  </div>
-</div>
+              </div>
+            </div>
 
           </div>
 
@@ -187,11 +153,7 @@ const bookingStats = {
             <div className="flex flex-col sm:flex-row gap-4">
               <div className="flex-1 relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#333333]" size={18} />
-                {/* <input
-                  type="text"
-                  placeholder="Search destinations..."
-                  className="w-full pl-10 pr-4 py-2 border border-[#e2e0df] rounded-lg focus:ring-2 focus:ring-[#3b82f6] focus:border-transparent outline-none bg-[#fdfdfd] text-[#363636]"
-                /> */}
+               
                 <input
                   type="text"
                   placeholder="Search destinations..."
@@ -206,12 +168,7 @@ const bookingStats = {
                   <Filter size={18} />
                   Filter
                 </button>
-                {/* <select className="px-4 py-2 border border-[#e2e0df] rounded-lg bg-[#fdfdfd] hover:bg-[#e4e2e1] transition-colors duration-200 text-[#363636]">
-                  <option value="">All Categories</option>
-                  <option value="beach">Beach</option>
-                  <option value="mountain">Mountain</option>
-                  <option value="city">City</option>
-                </select> */}
+               
                 <select
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
@@ -332,13 +289,10 @@ const bookingStats = {
                       </div>
 
                     </div>
-                    
-                    {/* <button className="text-[#3b82f6] hover:text-[#1e3a8a] text-sm font-medium transition-colors duration-200">
-                      View Details →
-                    </button> */}
+                   
                     <button
                     onClick={(e) => {
-                      e.stopPropagation(); // prevent triggering parent card click
+                      e.stopPropagation(); 
                       router.push(`/guide/destination/${dest._id}`);
                     }}
                     className="text-[#3b82f6] hover:text-[#1e3a8a] text-sm font-medium transition-colors duration-200 cursor-pointer"

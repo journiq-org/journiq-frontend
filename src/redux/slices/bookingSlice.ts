@@ -33,10 +33,7 @@ export const checkAvailability = createAsyncThunk<
   "booking/checkAvailability",
   async ({ tourId, date, numOfPeople }, { rejectWithValue }) => {
     try {
-      const cookieRes = await fetch("/api/auth/get-cookie");
-      const { token } = await cookieRes.json();
       const res = await api.get(`/api/booking/checkAvailability`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
         withCredentials: true,
         params: { tourId, date, numOfPeople },
       });
@@ -52,10 +49,7 @@ export const fetchBookings = createAsyncThunk<Booking[]>(
   "booking/fetchBookings",
   async (_, { rejectWithValue }) => {
     try {
-      const cookieRes = await fetch("/api/auth/get-cookie");
-      const { token } = await cookieRes.json();
       const res = await api.get("/api/booking/my-booking", {
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
         withCredentials: true,
       });
       return res.data.bookings as Booking[];
@@ -73,10 +67,7 @@ export const createBooking = createAsyncThunk<
   "booking/createBooking",
   async (bookingData, { rejectWithValue }) => {
     try {
-      const cookieRes = await fetch("/api/auth/get-cookie");
-      const { token } = await cookieRes.json();
       const res = await api.post("/api/booking/create-booking", bookingData, {
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
         withCredentials: true,
       });
       return res.data.booking as Booking;
@@ -91,10 +82,7 @@ export const cancelBooking = createAsyncThunk<Booking, string>(
   "booking/cancelBooking",
   async (bookingId, { rejectWithValue }) => {
     try {
-      const cookieRes = await fetch("/api/auth/get-cookie");
-      const { token } = await cookieRes.json();
       const res = await api.patch(`/api/booking/cancel/${bookingId}`, {
-        headers: token ? { Authorization: `Bearer ${token}` } : undefined,
         withCredentials: true,
       });
       return res.data.booking as Booking;

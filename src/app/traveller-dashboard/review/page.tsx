@@ -383,9 +383,7 @@ const AddReviewPage = () => {
   const bookingId = searchParams.get("bookingId") || "";
   const tourId = searchParams.get("tourId") || "";
 
-  // const [rating, setRating] = useState<number | null>(null);
 const [rating, setRating] = useState<number | null>(null);
-  // const [rating, setRating] = useState<number>(5);
   const [comment, setComment] = useState("");
 
   // Fetch booking + tour details
@@ -418,7 +416,7 @@ const handleSubmit = async (e: React.FormEvent) => {
         tourId, 
         bookingId, 
         comment, 
-        rating: Number(rating) // force number
+        rating: Number(rating) 
       })
     ).unwrap();
 
@@ -441,13 +439,8 @@ const handleSubmit = async (e: React.FormEvent) => {
 
 
 const handleRatingChange = (event: React.SyntheticEvent, newValue: number | null) => {
-  setRating(newValue); // no fallback to 5
+  setRating(newValue); 
 };
-
-//  const handleRatingChange = (event: React.SyntheticEvent, newValue: number | null) => {
-//   setRating(newValue || 5);
-// };
-
 
   useEffect(() => {
     if (error) toast.error(error);

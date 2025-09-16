@@ -1,222 +1,5 @@
-// "use client";
-// import React, { useEffect } from "react";
-// import { useAppDispatch, useAppSelector } from "@/redux/hook";
-// import { fetchAllUsers } from "@/redux/slices/adminSlice";
-
-// const AdminUsersPage = () => {
-//   const dispatch = useAppDispatch();
-//   const { allUsers, loading, error } = useAppSelector((state) => state.admin);
-
-//   useEffect(() => {
-//     dispatch(fetchAllUsers());
-//   }, [dispatch]);
-
-//   return (
-//     <div className="p-6">
-//       <h1 className="text-2xl font-bold mb-6">All Users</h1>
-
-//       {loading && <p>Loading users...</p>}
-//       {error && <p className="text-red-600">{error}</p>}
-
-//       {allUsers.length > 0 && (
-//         <div className="overflow-x-auto border rounded-lg">
-//           <table className="w-full text-sm border-collapse">
-//             <thead className="bg-gray-100 border-b">
-//               <tr>
-//                 <th className="p-2 border">User ID</th>
-//                 <th className="p-2 border">Name</th>
-//                 <th className="p-2 border">Email</th>
-//                 <th className="p-2 border">Phone</th>
-//                 <th className="p-2 border">Joined At</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {allUsers.map((u) => (
-//                 <tr key={u._id} className="hover:bg-gray-50 border-b">
-//                   <td className="p-2 border">{u._id}</td>
-//                   <td className="p-2 border">{u.name}</td>
-//                   <td className="p-2 border">{u.email}</td>
-//                   <td className="p-2 border">{u.phone || "-"}</td>
-//                   <td className="p-2 border">{new Date(u.createdAt).toLocaleDateString()}</td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-//         </div>
-//       )}
-
-//       {allUsers.length === 0 && !loading && <p>No users found.</p>}
-//     </div>
-//   );
-// };
-
-// export default AdminUsersPage;
-
-
-// "use client";
-// import React, { useEffect, useState } from "react";
-// import { useAppDispatch, useAppSelector } from "@/redux/hook";
-// import { fetchAllUsers, toggleBlockUser, adminDeleteUser } from "@/redux/slices/adminSlice";
-// import { Button } from "@/components/ui/button";
-// import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-// import toast from "react-hot-toast";
-
-// const AdminUsersPage = () => {
-//   const dispatch = useAppDispatch();
-//   const { allUsers, loading, error } = useAppSelector((state) => state.admin);
-  
-
-//   const [selectedUser, setSelectedUser] = useState<any | null>(null);
-//   const [showModal, setShowModal] = useState(false);
-
-//   useEffect(() => {
-//     dispatch(fetchAllUsers());
-//   }, [dispatch]);
-
-//   const handleBlockToggle = (id: string) => {
-//     dispatch(toggleBlockUser(id))
-//     .then((res) => {
-//       toast.success('User Blocked Successfully')
-//     })
-
-    
-//   };
-
-//   const handleDelete = (id: string) => {
-//     if (confirm("Are you sure you want to delete this user?")) {
-//       dispatch(adminDeleteUser(id));
-//     }
-//   };
-
-//   const openUserDetails = (user: any) => {
-//     setSelectedUser(user);
-//     setShowModal(true);
-//   };
-
-//   return (
-//     <div className="p-6">
-//       <h1 className="text-2xl font-bold mb-6">All Users</h1>
-
-//       {loading && <p>Loading users...</p>}
-//       {error && <p className="text-red-600">{error}</p>}
-
-//       {allUsers.length > 0 && (
-//         <div className="overflow-x-auto border rounded-lg">
-//           <table className="w-full text-sm border-collapse">
-//             <thead className="bg-gray-100 border-b text-left">
-//               <tr>
-//                 <th className="p-2 border">User ID</th>
-//                 <th className="p-2 border">Name</th>
-//                 <th className="p-2 border">Email</th>
-//                 <th className="p-2 border">Phone</th>
-//                 <th className="p-2 border">Joined At</th>
-//                 <th className="p-2 border">Status</th>
-//                 <th className="p-2 border">Actions</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               {allUsers.map((u) => (
-//                 <tr key={u._id} className="hover:bg-gray-50 border-b">
-//                   <td className="p-2 border">{u._id}</td>
-//                   <td
-//                     className="p-2 border cursor-pointer text-blue-600 underline"
-//                     onClick={() => openUserDetails(u)}
-//                   >
-//                     {u.name}
-//                   </td>
-//                   <td className="p-2 border">{u.email}</td>
-//                   <td className="p-2 border">{u.phone || "-"}</td>
-//                   <td className="p-2 border">
-//                     {new Date(u.createdAt).toLocaleDateString()}
-//                   </td>
-//                   <td className="p-2 border">
-//                     {u.isBlocked ? (
-//                       <span className="text-red-600 font-semibold">Blocked</span>
-//                     ) : (
-//                       <span className="text-green-600 font-semibold">Active</span>
-//                     )}
-//                   </td>
-//                   <td className="p-2 border space-x-2">
-//                     <Button
-//                       size="sm"
-//                       variant={u.isBlocked ? "default" : "destructive"}
-//                       onClick={() => handleBlockToggle(u._id)}
-//                     >
-//                       {u.isBlocked ? "Unblock" : "Block"}
-//                     </Button>
-//                     <Button
-//                       size="sm"
-//                       variant="outline"
-//                       onClick={() => handleDelete(u._id)}
-//                     >
-//                       Delete
-//                     </Button>
-//                   </td>
-//                 </tr>
-//               ))}
-//             </tbody>
-//           </table>
-//         </div>
-//       )}
-
-//       {allUsers.length === 0 && !loading && <p>No users found.</p>}
-
-//       {/* User Detail Modal */}
-//       <Dialog open={showModal} onOpenChange={setShowModal}>
-//         <DialogContent>
-//           <DialogHeader>
-//             <DialogTitle>User Details</DialogTitle>
-//           </DialogHeader>
-
-//           {selectedUser && (
-//             <div className="space-y-2">
-//               {selectedUser.profilePic && (
-//                 <img
-//                   src={selectedUser.profilePic}
-//                   alt={selectedUser.name}
-//                   className="w-24 h-24 rounded-full object-cover mx-auto"
-//                 />
-//               )}
-//               <p><strong>Name:</strong> {selectedUser.name}</p>
-//               <p><strong>Email:</strong> {selectedUser.email}</p>
-//               <p><strong>Phone:</strong> {selectedUser.phone || "-"}</p>
-//               <p><strong>Role:</strong> {selectedUser.role}</p>
-//               <p><strong>Location:</strong> {selectedUser.location || "-"}</p>
-//               <p><strong>Bio:</strong> {selectedUser.bio || "-"}</p>
-//               <p>
-//                 <strong>Status:</strong>{" "}
-//                 {selectedUser.isBlocked ? (
-//                   <span className="text-red-600">Blocked</span>
-//                 ) : (
-//                   <span className="text-green-600">Active</span>
-//                 )}
-//               </p>
-//               <p>
-//                 <strong>Joined:</strong>{" "}
-//                 {new Date(selectedUser.createdAt).toLocaleString()}
-//               </p>
-//             </div>
-//           )}
-
-//           <DialogFooter>
-//             <Button variant="secondary" onClick={() => setShowModal(false)}>
-//               Close
-//             </Button>
-//           </DialogFooter>
-//         </DialogContent>
-//       </Dialog>
-//     </div>
-//   );
-// };
-
-// export default AdminUsersPage;
-
-
-
-
-
-
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import { 
@@ -251,7 +34,6 @@ import {
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import toast from "react-hot-toast";
 import { User as UserType } from "@/types/user";
-import { Box, Typography } from "@mui/material";
 
 const AdminUsersPage = () => {
   const dispatch = useAppDispatch();
@@ -392,9 +174,9 @@ const AdminUsersPage = () => {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={handleTabChange} className="w-full">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="all" className="flex items-center space-x-2">
-            <Users className="h-4 w-4" />
+        <TabsList className="grid w-full grid-cols-2 ">
+          <TabsTrigger value="all" className="flex items-center space-x-2 ">
+            <Users className="h-4 w-4 p-2" />
             <span>All Users ({allUsers.length})</span>
           </TabsTrigger>
           <TabsTrigger value="blocked" className="flex items-center space-x-2">
@@ -473,7 +255,7 @@ const AdminUsersPage = () => {
                             <div className="flex items-center space-x-3">
                               <Avatar className="h-10 w-10">
                                 <AvatarImage src={user.profilePic} alt={user.name} />
-                                <AvatarFallback className="bg-blue-100 text-blue-600">
+                                <AvatarFallback className="bg-green-100 text-green-600">
                                   {getInitials(user.name)}
                                 </AvatarFallback>
                               </Avatar>

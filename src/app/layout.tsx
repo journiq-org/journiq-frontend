@@ -30,7 +30,6 @@ export default function RootLayout({
       >
         
         <Providers>
-          {/* <Toaster position="top-center" reverseOrder={false} /> */}
           <Toaster
               position="top-center"
               reverseOrder={false}

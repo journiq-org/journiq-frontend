@@ -50,8 +50,9 @@ export default function MessageNotificationDrawer({ open, onClose }: Props) {
   if (!open) return null;
 
   return (
-    <div className="fixed top-16 right-0 z-50 w-96 h-[calc(100%-4rem)] bg-gray-900 shadow-xl border-l border-gray-800 rounded-l-lg flex flex-col overflow-hidden">
-      
+   
+      <div className="fixed top-0 right-0 z-50 w-100 h-screen bg-gray-900 shadow-xl border-l border-gray-800 flex flex-col overflow-hidden">
+
       {/* Header */}
       <div className="flex items-center justify-between px-4 py-3 bg-gray-800 text-white border-b border-gray-700">
         <h3 className="font-semibold text-lg flex items-center gap-2">

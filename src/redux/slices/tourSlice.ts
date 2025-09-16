@@ -25,24 +25,24 @@ interface TourState {
   error: string | null;
   filters: FiltersState;
   successMessage: string | null;
-  guideToursTotal: number;   // total tours for guide
+  guideToursTotal: number; 
   guideCurrentPage: number;
   guideLimit: number;
 }
 
 const initialState: TourState= {
-  tours: [],              // list of tours (for admin/guide/traveller)
-  publicTours: [],        // tours visible to public without login
-  guideTours: [],         // tours belonging to a guide (for profile page)
-  selectedTour: null,     // single tour details (from viewTour)
+  tours: [],             
+  publicTours: [],       
+  guideTours: [],       
+  selectedTour: null,    
   guideToursTotal: 0,
   guideCurrentPage: 1,
   guideLimit: 6,
   isLoading:false,
   error:null,
 
-  
-  filters: {              // support search + filters
+// support search + filters
+  filters: {           
     destination: null,
     title: "",
     category: "",
@@ -53,32 +53,21 @@ const initialState: TourState= {
     date: null,
     ratingMin: null,
     popular: false,
-  },
-  
-           // to capture errors
-  successMessage: null,   // for showing toast/alerts after create/update/delete
+  },   
+  successMessage: null,  
 };
 
 
 //thunk
 
 //public view tour details
-export const publicViewTourDetails = createAsyncThunk('tour/details', async(id :string) => {
+export const publicViewTourDetails = createAsyncThunk('tour/details', 
+  async(id :string) => {
     const res = await api.get(`/api/tour/publicViewTourDetails/${id}`)
     console.log("public view tour details", res.data.data)
 
     return res.data.data
 })
-
-// //view tours of a guide
-// export const guideViewTours = createAsyncThunk('/tours', async() => {
-//   const res = await api.get('api/tour/viewAll', {
-//     withCredentials: true,
-//   })
-
-//   console.log(res.data.data, "view all tour of guide")
-//   return res.data.data
-// })
 
 // view tours of a guide with pagination
 export const guideViewTours = createAsyncThunk(
@@ -95,7 +84,7 @@ export const guideViewTours = createAsyncThunk(
     const params: Record<string, any> = { skip, limit };
 
     if (destination) {
-      params.destination = destination; // ✅ only add if exists
+      params.destination = destination; 
     }
 
     const res = await api.get("api/tour/viewAll", {
@@ -112,33 +101,9 @@ export const guideViewTours = createAsyncThunk(
   }
 );
 
-// export const guideViewTours = createAsyncThunk(
-//   '/tours',
-//   async (
-//     { page = 1, limit = 6 }: { page?: number; limit?: number ; destination?:string} = {}
-//   ) => {
-//     const skip = (page - 1) * limit;
-
-//     const res = await api.get('api/tour/viewAll', {
-//       params: { skip, limit, destination },
-//       withCredentials: true,
-//     });
-
-//     console.log(res.data, "view all tours of guide");
-
-//     return {
-//       tours: res.data.data,
-//       total: res.data.total, // total tours count
-//       page,
-//       limit,
-//     };
-//   }
-// );
-
-
 //guide view single tour
-
-export const guideViewSingleTour = createAsyncThunk('guide/viewSingleTour', async(id:string) => {
+export const guideViewSingleTour = createAsyncThunk('guide/viewSingleTour', 
+  async(id:string) => {
   const res = await api.get(`/api/tour/viewTour/${id}`,{
     withCredentials: true,
   })
@@ -148,7 +113,8 @@ export const guideViewSingleTour = createAsyncThunk('guide/viewSingleTour', asyn
 })
 
 //update booking
-export const guideUpdateTour = createAsyncThunk('guide/updatetour', async({id, formData}: {id:string, formData: FormData}) => {
+export const guideUpdateTour = createAsyncThunk('guide/updatetour', 
+  async({id, formData}: {id:string, formData: FormData}) => {
   const res = await api.patch(`/api/tour/update/${id}`, formData,{
     withCredentials:true
   })
@@ -159,7 +125,8 @@ export const guideUpdateTour = createAsyncThunk('guide/updatetour', async({id, f
 
 
 //create tour
-export const createTour = createAsyncThunk('guide/addTour', async(formData:FormData) =>{
+export const createTour = createAsyncThunk('guide/addTour', 
+  async(formData:FormData) =>{
   const res = await api.post('/api/tour/createtour',formData,{
     withCredentials: true,
     headers:{

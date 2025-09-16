@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useAppDispatch } from "@/redux/hook";
@@ -16,7 +17,7 @@ import {
 import GuideNavbar from "@/components/GuideNavbar";
 
 const EditStatusPage = () => {
-  const { id } = useParams(); // bookingId from URL
+  const { id } = useParams();
   const router = useRouter();
   const dispatch = useAppDispatch();
   const [status, setStatus] = useState("confirmed");
@@ -28,7 +29,7 @@ const EditStatusPage = () => {
     setIsUpdating(true);
     try {
       await dispatch(updateBookingStatus({ bookingId: id as string, status })).unwrap();
-      router.push("/booking/guide-booking"); // navigate back after update
+      router.push("/booking/guide-booking"); 
     } catch (error) {
       console.error("Failed to update booking status:", error);
       setIsUpdating(false);
