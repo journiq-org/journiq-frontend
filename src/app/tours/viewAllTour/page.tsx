@@ -4,16 +4,10 @@ import { useEffect, useState, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import TravellerNavbar from '@/components/TravellerNavbar';
 import { Search, MapPin, Clock, SlidersHorizontal, X, Loader2, ChevronDown, Check } from 'lucide-react';
-import { Label } from '@/components/ui/label';
-// import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-// import { listDestinations } from '@/redux/slices/destinationSlice';
-// import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 import * as SelectPrimitive from '@radix-ui/react-select';
-// import { useAppDispatch } from '@/redux/hook';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useAppSelector, useAppDispatch } from '@/redux/hook';
 import { listDestinations } from '@/redux/slices/destinationSlice';
-// import { Controller } from 'react-hook-form';
 
 
 
@@ -45,12 +39,11 @@ const ToursPage = () => {
   
   const [tours, setTours] = useState<Tour[]>([]);
   const dispatch = useAppDispatch();
-  const { destinations: destinationList, total, loading: DestinationsLoading } = useAppSelector(
+  const { destinations: destinationList, loading: destinationsLoading } = useAppSelector(
     (state) => state.destination
   );
-  const [destinations, setDestinations] = useState<Destination[]>([]);
+  
   const [loading, setLoading] = useState(false);
-  const [destinationsLoading, setDestinationsLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [showFilters, setShowFilters] = useState(false);
   const [filters, setFilters] = useState({
@@ -65,7 +58,7 @@ const ToursPage = () => {
     popular: false,
   });
 
-  const { control, handleSubmit, setValue, watch } = useForm({
+  const { watch } = useForm({
   defaultValues: {
     destination: '',
     category: '',
@@ -210,90 +203,44 @@ useEffect(() => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
 
               {/* Destination Filter */}
-              {/* <Controller
-                name="destination"
-                control={control}
-                render={({ field }) => (
-                  <Select {...field} value={field.value || ""} onValueChange={field.onChange}>
-                    <SelectTrigger className="focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-                      <SelectValue placeholder="Select destination" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {destinationsLoading ? (
-                        <SelectItem value="">Loading...</SelectItem>
-                      ) : (
-                        destinationList.map((d) => (
-                          <SelectItem key={d._id} value={d._id}>
-                            {d.name}
-                          </SelectItem>
-                        ))
-                      )}
-                    </SelectContent>
-                  </Select>
-                )}
-              /> */}
+             
               <div>
-  <label className="block text-sm font-medium text-gray-700 mb-2">Destination</label>
-  <SelectPrimitive.Root
-    value={filters.destination}
-    onValueChange={(val) => handleFilterChange('destination', val)}
-  >
-    <SelectPrimitive.Trigger className="w-full px-3 py-2 border border-gray-300 rounded-lg flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-blue-500">
-      <SelectPrimitive.Value placeholder="Select a destination..." />
-      <SelectPrimitive.Icon>
-        <ChevronDown className="w-4 h-4" />
-      </SelectPrimitive.Icon>
-    </SelectPrimitive.Trigger>
-
-    <SelectPrimitive.Content className="bg-white rounded-lg shadow-lg mt-1 z-50">
-      <SelectPrimitive.Viewport>
-        {destinationsLoading ? (
-          <div className="px-4 py-2 text-gray-500 flex items-center gap-2">
-            <Loader2 className="w-4 h-4 animate-spin" /> Loading...
-          </div>
-        ) : (
-          destinationList.map((dest) => (
-            <SelectPrimitive.Item
-              key={dest._id}
-              value={dest._id}
-              className="px-4 py-2 cursor-pointer hover:bg-gray-100 flex justify-between items-center"
-            >
-              <SelectPrimitive.ItemText>{dest.name}</SelectPrimitive.ItemText>
-              <SelectPrimitive.ItemIndicator>
-                <Check className="w-4 h-4" />
-              </SelectPrimitive.ItemIndicator>
-            </SelectPrimitive.Item>
-          ))
-        )}
-      </SelectPrimitive.Viewport>
-    </SelectPrimitive.Content>
-  </SelectPrimitive.Root>
-</div>
-
-              {/* <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Destination</label>
-                <SelectPrimitive.Root value={filters.destination} onValueChange={(val) => handleFilterChange('destination', val)}>
+                <SelectPrimitive.Root
+                  value={filters.destination}
+                  onValueChange={(val) => handleFilterChange('destination', val)}
+                >
                   <SelectPrimitive.Trigger className="w-full px-3 py-2 border border-gray-300 rounded-lg flex justify-between items-center focus:outline-none focus:ring-2 focus:ring-blue-500">
                     <SelectPrimitive.Value placeholder="Select a destination..." />
-                    <SelectPrimitive.Icon><ChevronDown className="w-4 h-4" /></SelectPrimitive.Icon>
+                    <SelectPrimitive.Icon>
+                      <ChevronDown className="w-4 h-4" />
+                    </SelectPrimitive.Icon>
                   </SelectPrimitive.Trigger>
+
                   <SelectPrimitive.Content className="bg-white rounded-lg shadow-lg mt-1 z-50">
                     <SelectPrimitive.Viewport>
                       {destinationsLoading ? (
-                        <div className="px-4 py-2 text-gray-500 flex items-center gap-2"><Loader2 className="w-4 h-4 animate-spin" />Loading...</div>
+                        <div className="px-4 py-2 text-gray-500 flex items-center gap-2">
+                          <Loader2 className="w-4 h-4 animate-spin" /> Loading...
+                        </div>
                       ) : (
-                        destinations.map(dest => (
-                          <SelectPrimitive.Item key={dest._id} value={dest._id} className="px-4 py-2 cursor-pointer hover:bg-gray-100 flex justify-between items-center">
+                        destinationList.map((dest) => (
+                          <SelectPrimitive.Item
+                            key={dest._id}
+                            value={dest._id}
+                            className="px-4 py-2 cursor-pointer hover:bg-gray-100 flex justify-between items-center"
+                          >
                             <SelectPrimitive.ItemText>{dest.name}</SelectPrimitive.ItemText>
-                            <SelectPrimitive.ItemIndicator><Check className="w-4 h-4" /></SelectPrimitive.ItemIndicator>
+                            <SelectPrimitive.ItemIndicator>
+                              <Check className="w-4 h-4" />
+                            </SelectPrimitive.ItemIndicator>
                           </SelectPrimitive.Item>
                         ))
                       )}
                     </SelectPrimitive.Viewport>
                   </SelectPrimitive.Content>
                 </SelectPrimitive.Root>
-              </div> */}
-
+              </div>
 
               {/* Category Filter */}
               <div>
