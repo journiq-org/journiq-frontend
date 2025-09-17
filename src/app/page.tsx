@@ -677,7 +677,7 @@ export default function Home() {
               {/* Main Heading */}
               <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 leading-tight">
                 {heroSlides[currentSlide].title}
-                <span className="block bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent">
+                <span className="block bg-gradient-to-r from-orange-500 via-amber-700 to-orange-700 bg-clip-text text-transparent">
                   {heroSlides[currentSlide].subtitle}
                 </span>
               </h1>
@@ -691,7 +691,7 @@ export default function Home() {
               <div className="flex flex-col sm:flex-row gap-4">
                 <button 
                   onClick={() => router.push('/login')}
-                  className="px-8 py-4 bg-gradient-to-r from-gray-900 to-cyan-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
+                  className="px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
                 >
                   Start Your Journey
                 </button>
@@ -737,7 +737,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              Why Choose <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Journiq</span>?
+              Why Choose <span className="bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">Journiq</span>?
             </h2>
             <p className="text-xl text-gray-600 max-w-3xl mx-auto">
               Discover why thousands of travelers trust us for their journey
@@ -883,7 +883,7 @@ export default function Home() {
             {/* Left: Text Content */}
             <div className="space-y-6">
               <h2 className="text-4xl md:text-5xl font-bold text-slate-800">
-                About <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Journiq</span>
+                About <span className="bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent">Journiq</span>
               </h2>
               <p className="text-lg text-slate-600 leading-relaxed">
                 Journiq isn't just a travel platform – it's your companion in discovering 
@@ -897,7 +897,7 @@ export default function Home() {
               </p>
               <button 
                 onClick={() => router.push('/login')}
-                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
+                className="inline-flex items-center px-8 py-4 bg-gradient-to-r from-orange-600 to-amber-600 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105"
               >
                 Explore Journeys
                 <span className="ml-2">→</span>
