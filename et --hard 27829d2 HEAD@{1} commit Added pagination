@@ -1,0 +1,76 @@
+[33mddbda35[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{0}: pull origin main: Fast-forward
+[33m27829d2[m HEAD@{1}: commit: Added pagination
+[33m7e4bd0d[m HEAD@{2}: commit: Redesigned home page and added function to view inactive destination for admin
+[33m8e5904e[m HEAD@{3}: commit: redesigned home page
+[33m586113f[m HEAD@{4}: pull origin main: Fast-forward
+[33mc72cec4[m HEAD@{5}: reset: moving to HEAD
+[33mc72cec4[m HEAD@{6}: commit: Added pagination in Admin module (user, guide list)
+[33m46ecb06[m HEAD@{7}: pull origin main: Fast-forward
+[33ma627474[m HEAD@{8}: reset: moving to HEAD
+[33ma627474[m HEAD@{9}: pull origin main: Fast-forward
+[33mfc1efde[m HEAD@{10}: commit: resolved middleware issue
+[33mcc0f569[m HEAD@{11}: pull origin main: Fast-forward
+[33mcb4ae71[m HEAD@{12}: pull origin main: Merge made by the 'ort' strategy.
+[33m6e43aea[m HEAD@{13}: commit: Added view all tour function and resolved some issues
+[33mef100d2[m HEAD@{14}: commit: Resolved stash merge conflicts
+[33md97d72f[m HEAD@{15}: reset: moving to HEAD
+[33md97d72f[m HEAD@{16}: reset: moving to HEAD
+[33md97d72f[m HEAD@{17}: pull origin main: Fast-forward
+[33m2338c43[m HEAD@{18}: reset: moving to HEAD
+[33m2338c43[m HEAD@{19}: pull origin main: Fast-forward
+[33m467b33c[m HEAD@{20}: reset: moving to HEAD
+[33m467b33c[m HEAD@{21}: pull origin main: Fast-forward
+[33m54a8940[m HEAD@{22}: reset: moving to HEAD
+[33m54a8940[m HEAD@{23}: commit: redesigned traveller module
+[33mbe5b2e5[m HEAD@{24}: pull origin main: Fast-forward
+[33m0cbebf0[m HEAD@{25}: commit: redesigned guide module
+[33m68ddbf9[m HEAD@{26}: commit: admin module completed
+[33m1f86d1d[m HEAD@{27}: pull origin main: Fast-forward
+[33m3a414d9[m HEAD@{28}: reset: moving to HEAD
+[33m3a414d9[m HEAD@{29}: reset: moving to HEAD
+[33m3a414d9[m HEAD@{30}: commit: admin-dashboard issue resolved
+[33me757cb4[m HEAD@{31}: commit: added additional features
+[33mb9e7b75[m HEAD@{32}: commit: feat: add tour details page with guide and destination info
+[33mf5e96b7[m HEAD@{33}: reset: moving to HEAD
+[33mf5e96b7[m HEAD@{34}: commit: feat(admin): add guide and tour management actions
+[33mb317ff0[m HEAD@{35}: reset: moving to HEAD
+[33mb317ff0[m HEAD@{36}: commit (merge): guide module completed
+[33m39a932c[m HEAD@{37}: reset: moving to HEAD
+[33m39a932c[m HEAD@{38}: commit: guide module completed
+[33ma9378a0[m HEAD@{39}: reset: moving to HEAD
+[33ma9378a0[m HEAD@{40}: commit: Completed guide module
+[33m4e27f2d[m HEAD@{41}: reset: moving to HEAD
+[33m4e27f2d[m HEAD@{42}: pull origin main: Fast-forward
+[33m8aca278[m HEAD@{43}: reset: moving to HEAD
+[33m8aca278[m HEAD@{44}: pull origin main: Fast-forward
+[33m40ce2be[m HEAD@{45}: reset: moving to HEAD
+[33m40ce2be[m HEAD@{46}: pull origin main: Fast-forward
+[33m66fec68[m HEAD@{47}: reset: moving to HEAD
+[33m66fec68[m HEAD@{48}: commit: feat: added more functions in guide dashboard
+[33meb11c40[m HEAD@{49}: reset: moving to HEAD
+[33meb11c40[m HEAD@{50}: pull origin main: Fast-forward
+[33m0093002[m HEAD@{51}: commit: Added update function for guide tour
+[33mf2a5263[m HEAD@{52}: pull origin main: Fast-forward
+[33me064001[m HEAD@{53}: reset: moving to HEAD
+[33me064001[m HEAD@{54}: commit: set clear cookie
+[33m50ab8cd[m HEAD@{55}: commit: feat: added more function in guide dashboard
+[33meb313f5[m HEAD@{56}: pull origin main: Fast-forward
+[33me6544fb[m HEAD@{57}: reset: moving to HEAD
+[33me6544fb[m HEAD@{58}: commit: resolved cookie issue
+[33m0c8c5c6[m HEAD@{59}: pull origin main: Merge made by the 'ort' strategy.
+[33m6ce878a[m HEAD@{60}: commit: resolved cookie issue
+[33m0095be3[m HEAD@{61}: commit: admin dashboard
+[33m45fc031[m HEAD@{62}: pull origin main: Fast-forward
+[33m95b5882[m HEAD@{63}: reset: moving to HEAD
+[33m95b5882[m HEAD@{64}: pull origin main: Fast-forward
+[33m36eea0c[m HEAD@{65}: reset: moving to HEAD
+[33m36eea0c[m HEAD@{66}: commit: implemented features
+[33m0f5c9e3[m HEAD@{67}: reset: moving to HEAD
+[33m0f5c9e3[m HEAD@{68}: commit: ui
+[33m76390bd[m HEAD@{69}: pull origin main: Fast-forward
+[33m20cfafe[m HEAD@{70}: reset: moving to HEAD
+[33m20cfafe[m HEAD@{71}: commit: feat: add tours by destination page with redux dispatch
+[33mbb1006b[m HEAD@{72}: commit: checking
+[33m6266c34[m HEAD@{73}: pull origin main --allow-unrelated-histories: Merge made by the 'ort' strategy.
+[33mfb97e4e[m HEAD@{74}: Branch: renamed refs/heads/master to refs/heads/main
+[33mfb97e4e[m HEAD@{76}: commit (initial): Initial commit from Create Next App
