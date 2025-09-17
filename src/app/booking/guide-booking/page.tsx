@@ -382,6 +382,23 @@ const GuideBookingsPage = () => {
         )}
 
       </div>
+       {/* Footer */}
+      <footer className="bg-[#22252c] text-[#e2e0df] py-6 mt-12">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="text-center md:text-left">
+              <p className="text-sm">
+                © 2025 Journiq Guide Dashboard. All rights reserved.
+              </p>
+            </div>
+            <div className="flex items-center gap-6 text-sm">
+              <a href="#" className="hover:text-[#fdfdfd] transition-colors duration-200">Help</a>
+              <a href="#" className="hover:text-[#fdfdfd] transition-colors duration-200">Support</a>
+              <a href="#" className="hover:text-[#fdfdfd] transition-colors duration-200">Privacy</a>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 };

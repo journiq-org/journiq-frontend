@@ -289,6 +289,7 @@
 
 'use client'
 
+import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import TestimonialSlider from "@/components/TestimonialSlider";
 import { listDestinations } from "@/redux/slices/destinationSlice";
@@ -643,74 +644,76 @@ export default function Home() {
 
       {/* Destinations Grid */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {destinations?.length > 0 ? (
-          destinations.map((dest: any) => (
-            <div 
-              key={dest._id} 
-              onClick={() => router.push(`/tours/${dest._id}`) }
-              className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition cursor-pointer"
-            >
-              {/* Image */}
-              {dest.images?.length > 0 && (
-                <img
-                  src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${dest.images[0]}`}
-                  alt={dest.name}
-                  className="w-full h-48 object-cover"
-                />
-                
-              )}
+  {destinations?.length > 0 ? (
+    destinations.map((dest: any) => (
+      <div 
+        key={dest._id} 
+        onClick={() => router.push(`/tours/${dest._id}`)}
+        className="bg-white shadow-md rounded-xl overflow-hidden hover:shadow-lg transition cursor-pointer"
+      >
+        {/* Image */}
+        {dest.images?.length > 0 && (
+          <img
+            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/${dest.images[0]}`}
+            alt={dest.name}
+            className="w-full h-48 object-cover"
+          />
+        )}
 
-              {/* Info */}
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-black">{dest.name}</h3>
-                <p className="text-sm text-gray-500">
-                  {dest.city ? `${dest.city}, ` : ''}{dest.country}
-                </p>
-                <p className="mt-2 text-gray-600 line-clamp-2">{dest.description}</p>
+        {/* Info */}
+        <div className="p-4">
+          <h3 className="text-lg font-semibold text-black">{dest.name}</h3>
+          <p className="text-sm text-gray-500">
+            {dest.city ? `${dest.city}, ` : ''}{dest.country}
+          </p>
+          <p className="mt-2 text-gray-600 line-clamp-2">{dest.description}</p>
 
-                {/* Tags */}
-                {dest.tags?.length > 0 && (
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {dest.tags.slice(0, 3).map((tag: string, i: number) => (
-                      <span 
-                        key={i} 
-                        className="text-xs text-black bg-gray-200 px-2 py-1 rounded-full"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                ))}
-              </div>
-
-              {/* Pagination Controls */}
-              {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-4 mt-12">
-                  <button
-                    disabled={page === 1}
-                    onClick={() => setPage((p) => p - 1)}
-                    className="px-6 py-3 bg-white/90 backdrop-blur-sm border border-slate-200 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white hover:shadow-lg transition-all duration-300 font-medium"
-                  >
-                    ← Previous
-                  </button>
-                  <div className="flex items-center gap-2">
-                    <span className="text-slate-600 font-medium">
-                      Page {page} of {totalPages}
-                    </span>
-                  </div>
-                  <button
-                    disabled={page === totalPages}
-                    onClick={() => setPage((p) => p + 1)}
-                    className="px-6 py-3 bg-white/90 backdrop-blur-sm border border-slate-200 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white hover:shadow-lg transition-all duration-300 font-medium"
-                  >
-                    Next →
-                  </button>
-                </div>
-              )}
-            </>
+          {/* Tags */}
+          {dest.tags?.length > 0 && (
+            <div className="mt-3 flex flex-wrap gap-2">
+              {dest.tags.slice(0, 3).map((tag: string, i: number) => (
+                <span 
+                  key={i} 
+                  className="text-xs text-black bg-gray-200 px-2 py-1 rounded-full"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
           )}
         </div>
-      </section>
+      </div>
+    ))
+  ) : (
+    <p className="col-span-3 text-center text-gray-500">No destinations found.</p>
+  )}
+</div>
+
+{/* Pagination Controls */}
+{totalPages > 1 && (
+  <div className="flex justify-center items-center gap-4 mt-12">
+    <button
+      disabled={page === 1}
+      onClick={() => setPage((p) => p - 1)}
+      className="px-6 py-3 bg-white/90 backdrop-blur-sm border border-slate-200 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white hover:shadow-lg transition-all duration-300 font-medium"
+    >
+      ← Previous
+    </button>
+    <div className="flex items-center gap-2">
+      <span className="text-slate-600 font-medium">
+        Page {page} of {totalPages}
+      </span>
+    </div>
+    <button
+      disabled={page === totalPages}
+      onClick={() => setPage((p) => p + 1)}
+      className="px-6 py-3 bg-white/90 backdrop-blur-sm border border-slate-200 rounded-xl disabled:opacity-50 disabled:cursor-not-allowed hover:bg-white hover:shadow-lg transition-all duration-300 font-medium"
+    >
+      Next →
+    </button>
+  </div>
+)}
+
 
 {/* gradient between sections */}
       <div className="h-16 bg-gradient-to-b from-[#e2e0df] to-white"></div>
@@ -784,6 +787,7 @@ export default function Home() {
 
 
       <Footer/>
+    </div>
     </div>
   )
 
