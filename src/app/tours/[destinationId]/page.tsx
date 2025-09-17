@@ -16,9 +16,10 @@ const PublicViewToursByDestination = () => {
   const id = Array.isArray(rawId) ? rawId[0] : rawId ?? '';
 
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, error, toursByDestination, selectedDestination } = useSelector(
+  const { loading, error, toursByDestination=[], selectedDestination } = useSelector(
     (state: RootState) => state.destination
   );
+  // console.log(toursByDestination,'toursByDestination')
   const { reviews } = useSelector((state: RootState) => state.reviews);
 
   const [reviewMap, setReviewMap] = useState<Record<string, number>>({});
@@ -74,7 +75,7 @@ const PublicViewToursByDestination = () => {
   useEffect(() => {
     const newMap: Record<string, number> = {};
 
-    toursByDestination.forEach((tour: any) => {
+    toursByDestination?.forEach((tour: any) => {
       const tourReviews = reviews.filter((r) =>
         typeof r.tour === 'string' ? r.tour === tour._id : r.tour._id === tour._id
       );

@@ -77,6 +77,7 @@ export const listDestinations = createAsyncThunk(
 export const getTourByDestination = createAsyncThunk('destination/getTourByDestination', 
   async(id: string) => {
   const res = await api.get(`/api/tour/publicView/${id}`)
+  console.log(res.data.data,'res.data.data')
   return res.data.data
 })
 
@@ -157,7 +158,7 @@ const destinationSlice = createSlice({
             })
             .addCase(getTourByDestination.fulfilled, ( state, action) => {
               state.loading = false
-              state.toursByDestination = action.payload.tours
+              state.toursByDestination = action.payload
               state.total = action.payload.total
             })
             .addCase(getTourByDestination.rejected, (state, action) => {
