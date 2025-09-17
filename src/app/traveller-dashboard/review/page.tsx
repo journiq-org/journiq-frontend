@@ -869,6 +869,7 @@ const handleRatingChange = (event: React.SyntheticEvent, newValue: number | null
           </Card>
         </Box>
       </Box>
+      
     </>
   );
 };

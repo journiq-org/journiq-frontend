@@ -10,6 +10,8 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button } from '@mui/material';
 import { Bold } from 'lucide-react';
+import Footer from '@/components/Footer';
+import Footerr from '@/components/Footerr';
 
 export default function TravellerDashboard() {
   const router = useRouter();
@@ -250,37 +252,7 @@ export default function TravellerDashboard() {
         )}
       </div>
 
-      {/* Call to Action Section */}
-      <div className="bg-gray-900 text-white py-16">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h3 className="text-3xl lg:text-4xl font-bold mb-4">
-            Ready for Your Next Adventure?
-          </h3>
-          <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-            Browse through our amazing destinations and find your perfect getaway
-          </p>
-          
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            {/* <button
-              onClick={() => router.push('/traveller-dashboard')}
-              className="bg-white text-gray-900 font-bold py-4 px-8 rounded-xl shadow-lg hover:bg-gray-100 transition-all duration-300 transform hover:scale-105"
-            >
-              View All Destination
-            </button> */}
-            
-            <button
-               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="bg-transparent border-2 border-white text-white font-bold py-4 px-8 rounded-xl hover:bg-white hover:text-gray-900 transition-all duration-300 cursor-pointer"
-            >
-              View All Destination
-            </button>
-          </div>
-          
-          <div className="mt-8 text-gray-400">
-            <p className="text-sm">✈️ Plan • 🗺️ Explore • 📸 Experience • 🏠 Return Home</p>
-          </div>
-        </div>
-      </div>
+    < Footerr />
     </div>
   );
 }

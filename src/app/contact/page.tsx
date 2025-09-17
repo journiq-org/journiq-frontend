@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { MapPin, MessageSquare, Clock } from "lucide-react";
 import TravellerNavbar from "@/components/TravellerNavbar";
 import MessageNotificationDrawer from "@/components/MessageNotificationDrawer";
+import Footerr from "@/components/Footerr";
 
 const ContactPage = () => {
   const [openMessageDrawer, setOpenMessageDrawer] = useState(false);
@@ -122,6 +123,7 @@ const ContactPage = () => {
         open={openMessageDrawer}
         onClose={() => setOpenMessageDrawer(false)}
       />
+      <Footerr/>
     </>
   );
 };

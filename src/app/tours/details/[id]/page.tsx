@@ -9,6 +9,7 @@ import { AppDispatch, RootState } from '@/redux/store'
 import { useParams, useRouter } from 'next/navigation'
 import { useDispatch, useSelector } from 'react-redux'
 import Footer from '@/components/Footer'
+import Footerr from '@/components/Footerr'
 
 const TourDetails = () => {
   const router = useRouter()
@@ -501,7 +502,8 @@ const TourDetails = () => {
           )}
         </div>
       </div>
-      <Footer/>
+      
+      {token && role === 'traveller' ? <Footerr /> : <Footer />}
 
     </div>
   )

@@ -22,6 +22,7 @@ import {
 import TravellerNavbar from "@/components/TravellerNavbar";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import Footerr from "@/components/Footerr";
 
 const MyBookingPage = () => {
   const dispatch = useAppDispatch();
@@ -383,6 +384,7 @@ const MyBookingPage = () => {
           </div>
         </div>
       )}
+      <Footerr/>
     </div>
   );
 };

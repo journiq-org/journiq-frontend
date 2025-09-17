@@ -8,6 +8,7 @@ import * as SelectPrimitive from '@radix-ui/react-select';
 import { useForm } from 'react-hook-form';
 import { useAppSelector, useAppDispatch } from '@/redux/hook';
 import { listDestinations } from '@/redux/slices/destinationSlice';
+import Footerr from '@/components/Footerr';
 
 
 
@@ -344,6 +345,7 @@ useEffect(() => {
           </div>
         )}
       </div>
+      <Footerr/>
     </div>
   );
 };

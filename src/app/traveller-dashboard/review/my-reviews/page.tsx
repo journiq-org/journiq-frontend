@@ -239,6 +239,7 @@ import {
 import { Edit, Trash2, Star, Calendar, MessageCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import TravellerNavbar from "@/components/TravellerNavbar";
+import Footerr from "@/components/Footerr";
 
 const themeColors = {
   background: '#e2e0df',
@@ -677,6 +678,7 @@ function MyReviewsPage() {
           </DialogActions>
         </Dialog>
       </Box>
+      <Footerr/>
     </>
   );
 }
