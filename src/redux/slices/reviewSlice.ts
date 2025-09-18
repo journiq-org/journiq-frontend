@@ -101,10 +101,8 @@ export const deleteReview = createAsyncThunk(
 
 export const getTopReview = createAsyncThunk('review/getTopReview', async() => {
   try {
-    console.log('Making API call to /api/review/topReview');
     const res = await api.get("/api/review/topReview");
-    console.log('API Response:', res);
-    console.log('Response data:', res.data);
+   
     return res.data.reviews || res.data; // Handle both response formats
   } catch (error) {
     console.error('Error fetching top reviews:', error);

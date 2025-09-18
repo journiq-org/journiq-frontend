@@ -199,7 +199,7 @@ export default function TravellerDashboard() {
         )}
 
             {/* Pagination Controls */}
-           {totalPages > 1 && (
+           {totalPages > 0 && (
             <div className="flex justify-center items-center gap-3 mt-8">
               <button
                 disabled={page === 1}

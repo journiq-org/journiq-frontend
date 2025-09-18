@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/hook";
 import {
@@ -25,6 +25,7 @@ import {
   IndianRupee
 } from "lucide-react";
 import GuideNavbar from "@/components/GuideNavbar";
+import { Button } from "@mui/material";
 
 // More flexible TypeScript interfaces that match actual API response
 interface Destination {
@@ -69,13 +70,18 @@ interface Booking {
 const GuideBookingsPage = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const { bookings, loading, error } = useAppSelector(
+  const { bookings, loading, error ,total } = useAppSelector(
     (state) => state.guideBookings
   );
 
+   const [page,setPage] =useState(1)
+    const limit = 6
+    const skip = (page - 1)* limit
+    const totalPages = Math.ceil(total/limit)
+    
   useEffect(() => {
-    dispatch(fetchGuideBookings());
-  }, [dispatch]);
+    dispatch(fetchGuideBookings({skip,limit}));
+  }, [dispatch,page,skip]);
 
   const handleRespond = (bookingId: string, status: string) => {
     dispatch(respondToBooking({ bookingId, status }));
@@ -195,7 +201,7 @@ const GuideBookingsPage = () => {
                 <span className="text-sm font-semibold text-[#333333]">Pending</span>
               </div>
               <p className="text-2xl font-bold text-[#22252c]">
-                {bookings.filter((b: any) => b.status === 'pending').length}
+                {bookings.filter((b: any) => b.total === 'pending').length}
               </p>
             </div>
             <div className="bg-[#fdfdfd] rounded-xl p-5 border border-[#e2e0df] shadow-lg hover:shadow-xl transition-all duration-300">
@@ -372,6 +378,7 @@ const GuideBookingsPage = () => {
                       </button>
                     )}
                   </div>
+
                 </div>
 
                 {/* Hover Effect Overlay */}
@@ -380,6 +387,30 @@ const GuideBookingsPage = () => {
             ))}
           </div>
         )}
+                    {/* Pagination */}
+                  <div className="flex justify-center items-center gap-2 mt-6">
+                    <Button
+                      variant="outlined"
+                      disabled={page === 0}
+                      onClick={() => setPage((prev) => prev - 1)}
+                      className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+                    >
+                      Previous
+                    </Button>
+
+                    <p className="text-base font-semibold">
+                      Page {page} of {totalPages }
+                    </p>
+
+                    <Button
+                      variant="outlined"
+                      disabled={page === totalPages || totalPages === 0}
+                      onClick={() => setPage((prev) => prev + 1)}
+                      className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+                    >
+                      Next
+                    </Button>
+                  </div>
 
       </div>
        {/* Footer */}

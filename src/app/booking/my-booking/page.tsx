@@ -23,19 +23,24 @@ import TravellerNavbar from "@/components/TravellerNavbar";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import Footerr from "@/components/Footerr";
+import { Button } from "@mui/material";
 
 const MyBookingPage = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
 
-  const { bookings, loading } = useAppSelector((state) => state.booking);
+  const { bookings, loading,total } = useAppSelector((state) => state.booking);
   const [openDialogId, setOpenDialogId] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<string>("all");
 
+  const [page,setPage] =useState(1)
+  const limit = 6
+  const skip = (page - 1)* limit
+  const totalPages = Math.ceil(total/limit)
   // Fetch bookings on mount
   useEffect(() => {
-    dispatch(fetchBookings());
-  }, [dispatch]);
+    dispatch(fetchBookings({skip,limit}));
+  }, [dispatch ,page ,limit,skip]);
 
   // Cancel booking
   const handleCancel = async (bookingId: string) => {
@@ -43,7 +48,7 @@ const MyBookingPage = () => {
       await dispatch(cancelBooking(bookingId)).unwrap();
       toast.success("Booking cancelled successfully");
       setOpenDialogId(null);
-      dispatch(fetchBookings());
+      dispatch(fetchBookings({skip,limit}));
     } catch (err: any) {
       toast.error(err || "Failed to cancel booking");
     }
@@ -55,7 +60,7 @@ const MyBookingPage = () => {
       await dispatch(deleteReview(reviewId)).unwrap();
       toast.success("Review deleted successfully");
       // Refetch bookings to update UI
-      dispatch(fetchBookings());
+      dispatch(fetchBookings({skip,limit}));
     } catch (err: any) {
       toast.error(typeof err === "string" ? err : "Failed to delete review");
     }
@@ -135,7 +140,7 @@ const MyBookingPage = () => {
           {/* Stats Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
-              <div className="text-2xl font-bold mb-1" style={{ color: "#fdfdfd" }}>{stats.total}</div>
+              <div className="text-2xl font-bold mb-1" style={{ color: "#fdfdfd" }}>{total}</div>
               <div className="text-sm" style={{ color: "#93c5fd" }}>Total Bookings</div>
             </div>
             <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 text-center border border-white/20">
@@ -159,7 +164,7 @@ const MyBookingPage = () => {
         {/* Filter Tabs */}
         <div className="flex flex-wrap gap-2 mb-8 justify-center">
           {[
-            { key: "all", label: "All Bookings", count: stats.total },
+            { key: "all", label: "All Bookings", count: total },
             { key: "pending", label: "Pending", count: stats.pending },
             { key: "completed", label: "Completed", count: stats.completed },
             { key: "cancelled", label: "Cancelled", count: stats.cancelled },
@@ -342,6 +347,31 @@ const MyBookingPage = () => {
             })}
           </div>
         )}
+
+           {/* Pagination */}
+                  <div className="flex justify-center items-center gap-2 mt-6">
+                    <Button
+                      variant="outlined"
+                      disabled={page === 1}
+                      onClick={() => setPage((prev) => prev - 1)}
+                      className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+                    >
+                      Previous
+                    </Button>
+
+                    <p className="text-base font-semibold">
+                      Page {page} of {totalPages }
+                    </p>
+
+                    <Button
+                      variant="outlined"
+                      disabled={page === totalPages || totalPages === 0}
+                      onClick={() => setPage((prev) => prev + 1)}
+                      className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+                    >
+                      Next
+                    </Button>
+                  </div>
       </div>
 
       {/* Cancel Confirmation Dialog */}

@@ -36,8 +36,8 @@ const getToken = async (): Promise<string> => {
 // Traveller sends message
 export const sendMessage = createAsyncThunk(
   "messages/sendMessage",
-  async (payload: { subject: string; message: string }, { rejectWithValue }) => {
-    try {
+  async (payload: { subject: string; message: string }) => {
+ 
       // const token = await getToken();
       const res = await api.post<Message>(
         "/api/messages/send",
@@ -45,33 +45,29 @@ export const sendMessage = createAsyncThunk(
         {withCredentials: true, }
       );
       return res.data;
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || err.message);
-    }
+   
   }
 );
 
 // Admin fetch all messages
 export const fetchMessages = createAsyncThunk(
   "messages/fetchMessages",
-  async (_, { rejectWithValue }) => {
-    try {
+  async () => {
+    
       const token = await getToken();
       const res = await api.get("/api/messages/all", {
         headers: { Authorization: `Bearer ${token}` },
       });
       return res.data.data as Message[];
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || err.message);
-    }
+    
   }
 );
 
 // Admin / Traveller mark message as read
 export const markAsRead = createAsyncThunk(
   "messages/markAsRead",
-  async (id: string, { rejectWithValue }) => {
-    try {
+  async (id: string,) => {
+   
       const token = await getToken();
       const res = await api.patch<Message>(
         `/api/messages/markAsRead/${id}`,
@@ -79,33 +75,29 @@ export const markAsRead = createAsyncThunk(
         { headers: { Authorization: `Bearer ${token}` } }
       );
       return res.data;
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || err.message);
-    }
+   
   }
 );
 
 // Traveller fetch their own messages
 export const getTravellerMessages = createAsyncThunk(
   "messages/getTravellerMessages",
-  async (_, { rejectWithValue }) => {
-    try {
+  async () => {
+    
       const token = await getToken();
       const res = await api.get("/api/messages/myMessages", {
         headers: { Authorization: `Bearer ${token}` },
       });
       return Array.isArray(res.data.data) ? res.data.data : [];
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || err.message);
-    }
+   
   }
 );
 
 // Admin replies to a message
 export const replyToMessage = createAsyncThunk(
   "messages/replyToMessage",
-  async ({ id, reply }: { id: string; reply: string }, { rejectWithValue }) => {
-    try {
+  async ({ id, reply }: { id: string; reply: string }) => {
+  
       const token = await getToken();
       const res = await api.patch<Message>(
         `/api/messages/reply/${id}`,
@@ -113,9 +105,7 @@ export const replyToMessage = createAsyncThunk(
         { headers: { Authorization: `Bearer ${token}` } }
       );
       return res.data;
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || err.message);
-    }
+   
   }
 );
 

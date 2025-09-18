@@ -13,32 +13,32 @@ interface GuideBookingState {
   bookings: Booking[];
   loading: boolean;
   error: string | null;
+  total:number
 }
 
 const initialState: GuideBookingState = {
   bookings: [],
   loading: false,
   error: null,
+  total:0
 };
 
 // Fetch Bookings for Guide
-export const fetchGuideBookings = createAsyncThunk<
-  Booking[],
-  void,
-  { rejectValue: string }
->("guideBookings/fetchGuideBookings", async (_, { rejectWithValue }) => {
-  try {
-    const res = await api.get("/api/booking/for-guide", {
+export const fetchGuideBookings = createAsyncThunk
+("guideBookings/fetchGuideBookings", async ({skip,limit}:{skip:number,limit:number}) => {
+  {
+    const res = await api.get(`/api/booking/for-guide?limit=${limit}&skip=${skip}`, {
       withCredentials: true,
-    });
+    })
 
-    return res.data.bookings as Booking[];
-  } catch (err: any) {
-    return rejectWithValue(
-      err.response?.data?.message || err.message || "Failed to fetch bookings"
-    );
-  }
-});
+    
+
+    return {
+          bookings: res.data.bookings ,
+          total : res.data.total
+        };
+  }}
+);
 
 // Guide Responds to Booking (accept/reject)
 export const respondToBooking = createAsyncThunk<
@@ -47,8 +47,8 @@ export const respondToBooking = createAsyncThunk<
   { rejectValue: string }
 >(
   "guideBookings/respondToBooking",
-  async ({ bookingId, status }, { rejectWithValue }) => {
-    try {
+  async ({ bookingId, status }) => {
+   
       const res = await api.patch(
         `/api/booking/guide/update-status/${bookingId}`,
         { status },
@@ -58,11 +58,7 @@ export const respondToBooking = createAsyncThunk<
       );
 
       return res.data.booking as Booking;
-    } catch (err: any) {
-      return rejectWithValue(
-        err.response?.data?.message || err.message || "Failed to update booking"
-      );
-    }
+   
   }
 );
 
@@ -73,8 +69,8 @@ export const updateBookingStatus = createAsyncThunk<
   { rejectValue: string }
 >(
   "guideBookings/updateBookingStatus",
-  async ({ bookingId, status }, { rejectWithValue }) => {
-    try {
+  async ({ bookingId, status }) => {
+   
       const res = await api.patch(
         `/api/booking/update-status/${bookingId}`,
         { status },
@@ -84,14 +80,9 @@ export const updateBookingStatus = createAsyncThunk<
       );
 
       return res.data.booking as Booking;
-    } catch (err: any) {
-      return rejectWithValue(
-        err.response?.data?.message ||
-          err.message ||
-          "Failed to update booking status"
-      );
+   
     }
-  }
+ 
 );
 
 const guideBookingSlice = createSlice({
@@ -107,9 +98,10 @@ const guideBookingSlice = createSlice({
       })
       .addCase(
         fetchGuideBookings.fulfilled,
-        (state, action: PayloadAction<Booking[]>) => {
+        (state, action) => {
           state.loading = false;
-          state.bookings = action.payload;
+          state.bookings = action.payload.bookings
+          state.total = action.payload.total
         }
       )
       .addCase(fetchGuideBookings.rejected, (state, action) => {

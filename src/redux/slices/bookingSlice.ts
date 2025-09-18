@@ -12,6 +12,7 @@ interface BookingState {
   loading: boolean;
   error: string | null;
   successMessage: string | null;
+  total:number
 }
 
 //  Initial state
@@ -22,6 +23,7 @@ const initialState: BookingState = {
   loading: false,
   error: null,
   successMessage: null,
+  total: 0
 };
 
 //  Check Availability
@@ -31,31 +33,28 @@ export const checkAvailability = createAsyncThunk<
   { rejectValue: string }
 >(
   "booking/checkAvailability",
-  async ({ tourId, date, numOfPeople }, { rejectWithValue }) => {
-    try {
+  async ({ tourId, date, numOfPeople }) => {
+  
       const res = await api.get(`/api/booking/checkAvailability`, {
         withCredentials: true,
         params: { tourId, date, numOfPeople },
       });
       return res.data;
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || "Failed to check availability");
-    }
+    
   }
 );
 
 //  Fetch Bookings
-export const fetchBookings = createAsyncThunk<Booking[]>(
-  "booking/fetchBookings",
-  async (_, { rejectWithValue }) => {
-    try {
-      const res = await api.get("/api/booking/my-booking", {
-        withCredentials: true,
-      });
-      return res.data.bookings as Booking[];
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || "Failed to fetch bookings");
-    }
+export const fetchBookings = createAsyncThunk("booking/fetchBookings", async ({skip, limit }:{limit:number,skip:number}) => {
+
+    const res = await api.get(`/api/booking/my-booking?limit=${limit}&skip=${skip}`, {
+      withCredentials: true,
+    });
+
+    return {
+      bookings: res.data.bookings as Booking[],
+      total: res.data.total as number,
+    };
   }
 );
 
@@ -65,43 +64,37 @@ export const createBooking = createAsyncThunk<
   { tourId: string; date: string; numOfPeople: number }
 >(
   "booking/createBooking",
-  async (bookingData, { rejectWithValue }) => {
-    try {
+  async (bookingData) => {
+    
       const res = await api.post("/api/booking/create-booking", bookingData, {
         withCredentials: true,
       });
       return res.data.booking as Booking;
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || "Failed to create booking");
-    }
+    
   }
 );
 
 //  Cancel Booking
 export const cancelBooking = createAsyncThunk<Booking, string>(
   "booking/cancelBooking",
-  async (bookingId, { rejectWithValue }) => {
-    try {
+  async (bookingId) => {
+    
       const res = await api.patch(`/api/booking/cancel/${bookingId}`, {
         withCredentials: true,
       });
       return res.data.booking as Booking;
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || "Failed to cancel booking");
-    }
+   
   }
 );
 
 //  Fetch Public Tours
 export const fetchPublicTours = createAsyncThunk<Tour[]>(
   "booking/fetchPublicTours",
-  async (_, { rejectWithValue }) => {
-    try {
+  async () => {
+   
       const res = await api.get("/api/tours/public");
       return res.data.data as Tour[];
-    } catch (err: any) {
-      return rejectWithValue(err.response?.data?.message || "Failed to fetch public tours");
-    }
+    
   }
 );
 
@@ -122,9 +115,10 @@ const bookingSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
-      .addCase(fetchBookings.fulfilled, (state, action: PayloadAction<Booking[]>) => {
+      .addCase(fetchBookings.fulfilled, (state, action) => {
         state.loading = false;
-        state.bookings = action.payload;
+        state.bookings = action.payload.bookings
+        state.total = action.payload.total
       })
       .addCase(fetchBookings.rejected, (state, action) => {
         state.loading = false;
