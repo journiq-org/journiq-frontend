@@ -110,7 +110,7 @@ const bookingStats = {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-[#333333] text-sm font-medium mb-1">Total Destinations</p>
-                  <p className="text-2xl font-bold text-[#22252c]">{destinations?.length || 0}</p>
+                  <p className="text-2xl font-bold text-[#22252c]">{total|| 0}</p>
                 </div>
                 <div className="bg-[#93c5fd] p-3 rounded-lg">
                   <MapPin className="text-[#1e3a8a]" size={24} />
@@ -190,7 +190,7 @@ const bookingStats = {
               Explore Destinations
             </h2>
             <p className="text-[#333333]">
-              Choose from {destinations?.length || 0} amazing destinations to create your tours
+              Choose from { total || 0} amazing destinations to create your tours
             </p>
           </div>
 

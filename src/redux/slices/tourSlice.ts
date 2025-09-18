@@ -70,33 +70,15 @@ export const publicViewTourDetails = createAsyncThunk('tour/details',
 })
 
 // view tours of a guide with pagination
-export const guideViewTours = createAsyncThunk(
-  "/tours",
-  async (
-    {
-      page = 1,
-      limit = 6,
-      destination,
-    }: { page?: number; limit?: number; destination?: string } = {}
-  ) => {
-    const skip = (page - 1) * limit;
+export const guideViewTours = createAsyncThunk( "/tours",async ({limit,skip}:{limit:number,skip:number}) => {
 
-    const params: Record<string, any> = { skip, limit };
-
-    if (destination) {
-      params.destination = destination; 
-    }
-
-    const res = await api.get("api/tour/viewAll", {
-      params,
+    const res = await api.get(`api/tour/viewAll?skip=${skip}&limit=${limit}`, {  
       withCredentials: true,
     });
 
     return {
       tours: res.data.data,
       total: res.data.total,
-      page,
-      limit,
     };
   }
 );
@@ -146,6 +128,8 @@ export const getAllTour = createAsyncThunk('traveller/getAllTour', async() =>{
   })  
   return res.data.data
 })
+
+
 //slice
 const tourSlice = createSlice({
     name: 'tour',
@@ -176,8 +160,6 @@ const tourSlice = createSlice({
                 state.isLoading = false;
                 state.guideTours = action.payload.tours;
                 state.guideToursTotal = action.payload.total;
-                state.guideCurrentPage = action.payload.page;
-                state.guideLimit = action.payload.limit;
                 })
                 .addCase(guideViewTours.rejected, (state, action) => {
                 state.isLoading = false;

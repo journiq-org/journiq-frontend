@@ -9,11 +9,12 @@ import { AppDispatch } from "@/redux/store";
 import { Tour } from "@/types/tour";
 import GuideNavbar from "@/components/GuideNavbar";
 import { fetchGuideBookings } from "@/redux/slices/guideBookingSlice";
+import { Button } from "@/components/ui/button";
 
 const GuideToursPage = () => {
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const { guideTours, isLoading, error, guideCurrentPage, guideLimit, guideToursTotal } = useSelector((state: any) => state.tour);
+  const { guideTours, isLoading, error, guideCurrentPage, guideLimit, guideToursTotal  } = useSelector((state: any) => state.tour);
 
 
   // State for search and filters
@@ -21,18 +22,22 @@ const GuideToursPage = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [categoryFilter, setCategoryFilter] = useState("all");
 
-  const [currentPage, setCurrentPage] = useState(1);
-const limit = 6; // tours per page
+  // const [currentPage, setCurrentPage] = useState(1);
 
 const { bookings, loading: bookingsLoading } = useSelector(
   (state: any) => state.guideBookings
 );  
 
+//pagination
+const [page, setPage] = useState(1)
+const limit = 6
+const skip = (page - 1 ) * limit
+const totalPages = Math.ceil(guideToursTotal/limit)
 
 useEffect(() => {
-  dispatch(guideViewTours({ page: currentPage, limit }));
+  dispatch(guideViewTours({limit,skip}));
   dispatch(fetchGuideBookings());
-}, [dispatch, currentPage]);
+}, [dispatch, page, skip]);
 
   // Filter tours based on search and filters
   const filteredTours = guideTours?.filter((tour: Tour) => {
@@ -128,7 +133,7 @@ useEffect(() => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-[#333333] text-sm font-semibold mb-1">Total Tours</p>
-                <p className="text-2xl font-bold text-[#22252c]">{stats.total}</p>
+                <p className="text-2xl font-bold text-[#22252c]">{guideToursTotal}</p>
               </div>
               <div className="bg-[#93c5fd]/20 p-3 rounded-xl border border-[#93c5fd]/30">
                 <Users className="text-[#1e3a8a]" size={24} />
@@ -383,29 +388,29 @@ useEffect(() => {
         </div>
 
         {/* Pagination */}
-        {guideToursTotal > limit && (
-          <div className="flex justify-center items-center gap-3 mt-8">
-            <button
-              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-              disabled={currentPage === 1}
-              className="px-4 py-2 bg-[#fdfdfd] border border-[#e2e0df] rounded-xl hover:bg-[#e2e0df] disabled:opacity-50"
-            >
-              Previous
-            </button>
+            <div className="flex justify-center items-center gap-2 mt-6">
+              <Button
+                variant="outline"
+                disabled={page === 1}
+                onClick={() => setPage((prev) => prev - 1)}
+                className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+              >
+                Previous
+              </Button>
 
-            <span className="px-4 py-2 text-[#333333]">
-              Page {currentPage} of {Math.ceil(guideToursTotal / limit)}
-            </span>
+              <p className="text-base font-semibold">
+                Page {page} of {totalPages }
+              </p>
 
-            <button
-              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, Math.ceil(guideToursTotal / limit)))}
-              disabled={currentPage === Math.ceil(guideToursTotal / limit)}
-              className="px-4 py-2 bg-[#fdfdfd] border border-[#e2e0df] rounded-xl hover:bg-[#e2e0df] disabled:opacity-50"
-            >
-              Next
-            </button>
-          </div>
-        )}
+              <Button
+                variant="outline"
+                disabled={page === totalPages || totalPages === 0}
+                onClick={() => setPage((prev) => prev + 1)}
+                className="normal-case font-semibold px-6 text-[#4b2e2e] border-[#4b2e2e] hover:bg-[#f1e5d1] hover:border-[#4b2e2e]"
+              >
+                Next
+              </Button>
+            </div>
 
       </div>
        {/* Footer */}
