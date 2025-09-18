@@ -13,10 +13,10 @@ const PublicViewToursByDestination = () => {
   const router = useRouter();
   const params = useParams();
   const rawId = params?.destinationId;
-  const id = Array.isArray(rawId) ? rawId[0] : rawId ?? '';
+  const destinationId = Array.isArray(rawId) ? rawId[0] : rawId ?? '';
 
   const dispatch = useDispatch<AppDispatch>();
-  const { loading, error, toursByDestination=[], selectedDestination } = useSelector(
+  const { loading, error, toursByDestination, selectedDestination , total} = useSelector(
     (state: RootState) => state.destination
   );
   // console.log(toursByDestination,'toursByDestination')
@@ -26,6 +26,13 @@ const PublicViewToursByDestination = () => {
   const [role, setRole] = useState<string | null>(null);
   const [destinationError, setDestinationError] = useState<string | null>(null);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
+  //pagination
+  const [ page ,setPage] = useState(1)
+  const limit = 2
+  const skip = (page - 1 ) * limit
+  const totalPages = Math.ceil(total / limit)
+
 
   // Check cookies for auth role
   useEffect(() => {
@@ -50,17 +57,17 @@ const PublicViewToursByDestination = () => {
 
   // Fetch destination details and tours
   useEffect(() => {
-    if (id) {
+    if (destinationId) {
       // Fetch destination with error handling
-      dispatch(getSingleDestination(id)).catch((error) => {
+      dispatch(getSingleDestination(destinationId)).catch((error) => {
         console.error('Failed to fetch destination:', error);
         setDestinationError('Failed to load destination details');
       });
       
       // Always fetch tours (this should work)
-      dispatch(getTourByDestination(id));
+      dispatch(getTourByDestination({destinationId, skip, limit}));
     }
-  }, [dispatch, id]);
+  }, [dispatch, destinationId]);
 
   // Fetch reviews for each tour
   useEffect(() => {

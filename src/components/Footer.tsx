@@ -29,7 +29,7 @@ const Footer = () => {
       <h6 className=" text-gray-300 font-semibold text-xl px-10 pt-5">Explore</h6>
       <div className="px-10 text-gray-500  pt-6 flex gap-10 ">
         <a href="#why-choose-us" className="px-4 py-2 rounded-full hover:bg-white hover:text-gray-900 transition"> Why Choose Us</a>
-        <a href="#popular-destination" className="px-4 py-2 rounded-full hover:bg-white hover:text-gray-900 transition">Destination</a>
+        <a href="#destination" className="px-4 py-2 rounded-full hover:bg-white hover:text-gray-900 transition">Destination</a>
         <a href="#about" className="px-4 py-2 rounded-full hover:bg-white hover:text-gray-900 transition">About Us</a>
         <a href="#review" className="px-4 py-2 rounded-full hover:bg-white hover:text-gray-900 transition"> Testimonials</a>
       </div>

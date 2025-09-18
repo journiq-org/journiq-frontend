@@ -195,7 +195,7 @@ export default function GuideTourDetailsPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <button
-                onClick={() => router.back()}
+                onClick={() => router.push('/guide/tours')}
                 className="p-2 hover:bg-slate-100 rounded-lg transition-colors duration-200 group"
               >
                 <ArrowLeft size={20} className="text-slate-600 group-hover:text-slate-900" />

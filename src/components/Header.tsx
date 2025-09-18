@@ -14,7 +14,7 @@ const Header = () => {
     <header className="w-full fixed top-0 left-0 z-50 bg-transparent px-15 py-4 flex justify-between items-center">
   {/* Logo */}
   <div
-    className="text-2xl font-bold text-black flex items-center cursor-pointer"
+    className="text-2xl font-bold text-white flex items-center cursor-pointer"
     onClick={() => router.push("/")}
   >
     <Image src="/images/logo.png" alt="journiq-logo" width={35} height={35}  />
