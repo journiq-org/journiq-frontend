@@ -143,8 +143,16 @@ const Login = () => {
       const res = await api.post("/api/users/login", data, { withCredentials: true });
       toast.success("Login successful");
 
-      const role = res.data.data.role?.toLowerCase();
+       const { role, isVerified } = res.data.data;
       const token = res.data.access_token;
+
+
+        //  Guide not verified → don't store cookie, just redirect
+      if (role === "guide" && !isVerified) {
+        toast.error("Your account is pending admin verification.");
+        router.push("/pending-verification");
+        return;
+      }
 
       await fetch("/api/auth/set-cookie", {
         method: "POST",
@@ -153,7 +161,7 @@ const Login = () => {
       });
 
       if (role === "admin") window.location.href = "/admin-dashboard";
-      else if (role === "guide") window.location.href = "/guide-dashboard";
+      else if (role === "guide")window.location.href = "/guide-dashboard";
       else if (role === "traveller") router.push("/traveller-dashboard");
       else window.location.href = "/register";
     } catch (err) {

@@ -1,5 +1,3 @@
-
-
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
@@ -353,3 +351,5 @@ useEffect(() => {
 };
 
 export default ToursPage;
+
+
