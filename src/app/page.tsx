@@ -707,30 +707,31 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Navigation Links Section */}
-      <section className="bg-white border-b border-gray-200 sticky top-0 z-30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex justify-center py-4">
-            <div className="flex space-x-12">
-              {[
-                { href: '#why-choose-us', label: 'Why Choose Us' },
-                { href: '#destination', label: 'Destinations' },
-                { href: '#about', label: 'About Us' },
-                { href: '#review', label: 'Reviews' }
-              ].map((link) => (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-gray-700 hover:text-blue-600 font-medium transition-colors duration-300 relative group"
-                >
-                  {link.label}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-blue-600 transition-all duration-300 group-hover:w-full"></span>
-                </a>
-              ))}
-            </div>
-          </nav>
-        </div>
-      </section>
+   
+      {/* Navigation Links Section - Fixed */}
+    <section className="bg-white/45 backdrop-blur-md border border-white/20 sticky top-0 z-50 shadow-sm">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <nav className="flex justify-center py-4">
+          <div className="flex space-x-12">
+            {[
+              { href: '#why-choose-us', label: 'Why Choose Us' },
+              { href: '#destination', label: 'Destinations' },
+              { href: '#about', label: 'About Us' },
+              { href: '#review', label: 'Reviews' }
+            ].map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-gray-700 px-4 py-3 hover:text-orange-600 font-medium transition-colors duration-300 relative group "
+              >
+                {link.label}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-600 transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            ))}
+          </div>
+        </nav>
+      </div>
+    </section>
 
       {/* Why Choose Us Section */}
       <section id="why-choose-us" className="py-20 bg-gray-50">
@@ -875,7 +876,7 @@ export default function Home() {
       <div className="h-16 bg-gradient-to-b from-[#e2e0df] to-white"></div>
 
       {/* About Section */}
-      <section id='about' className="py-20 relative">
+      <section id='about' className="py-20 relative scroll-mt-24">
         <div className="absolute inset-0 bg-gradient-to-br from-white via-blue-50/50 to-indigo-50/30"></div>
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">

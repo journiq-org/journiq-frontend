@@ -60,7 +60,7 @@ const pathname = usePathname();
         <a
           href="/traveller-dashboard"
           title="Home"
-          className={`px-2 py-1 rounded transition-all ${
+          className={` rounded-full transition-all px-5 py-2 ${
             pathname === "/traveller-dashboard" ? "bg-amber-700 text-white" : "hover:text-amber-700"
           }`}
         >
@@ -69,7 +69,7 @@ const pathname = usePathname();
         <a
           href="/booking/my-booking"
           title="Booking"
-          className={`px-2 py-1 rounded transition-all ${
+          className={`rounded-full transition-all px-5 py-2 ${
             pathname.startsWith("/booking/my-booking") ? "bg-amber-700 text-white" : "hover:text-amber-700"
           }`}
         >
@@ -78,7 +78,7 @@ const pathname = usePathname();
         <a
           href="/tours/viewAllTour"
           title="Tour"
-          className={`px-2 py-1 rounded transition-all ${
+          className={`rounded-full transition-all px-5 py-2 ${
             pathname.startsWith("/tours/viewAllTour") ? "bg-amber-700 text-white" : "hover:text-amber-700"
           }`}
         >
@@ -87,7 +87,7 @@ const pathname = usePathname();
         <a
           href="/contact"
           title="Contact"
-          className={`px-2 py-1 rounded transition-all ${
+          className={`rounded-full transition-all px-5 py-2 ${
             pathname === "/contact" ? "bg-amber-700 text-white" : "hover:text-amber-700"
           }`}
         >
@@ -97,28 +97,57 @@ const pathname = usePathname();
 
 
         {/* Icons */}
+        {/* Action Buttons */}
         <div className="flex items-center gap-4 ml-auto relative">
-         
-          <button onClick={() => router.push("/traveller-dashboard/review/my-reviews")} className="p-2 rounded-full hover:bg-black transition">
-            <MessageSquare size={26} className="text-white" />
-          </button>
+          {/* Reviews Button */}
+          <div className="relative group">
+            <button 
+              onClick={() => router.push("/traveller-dashboard/review/my-reviews")}
+              className="p-2 rounded-full hover:bg-black transition-all duration-200 hover:scale-105"
+            >
+              <MessageSquare size={26} className="text-white" />
+            </button>
+            {/* Tooltip */}
+            <span className="absolute top-full left-1/2 -translate-x-1/2 mt-2 text-xs px-3 py-2 rounded-lg bg-black/80 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap shadow-lg z-50">
+              My Reviews
+              <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-black/80 rotate-45"></div>
+            </span>
+          </div>
 
-          <button
-            className="relative p-2.5 text-[#e2e0df] hover:text-[#fdfdfd] hover:bg-[#93c5fd]/10 transition-all duration-300 rounded-full"
-            onClick={() => setOpenNotificationDrawer(true)}
-          >
-            <Bell className="w-5 h-5" />
-            {unreadNotifications.length > 0 && (
-              <span className="absolute -top-1 -right-1 bg-[#ff9100] text-[#fdfdfd] text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-lg animate-pulse">
-                {unreadNotifications.length}
-              </span>
-            )}
-          </button>
+          {/* Notifications Button */}
+          <div className="relative group">
+            <button
+              className="relative p-2.5 text-[#e2e0df] hover:text-[#fdfdfd] hover:bg-[#93c5fd]/10 transition-all duration-300 rounded-full hover:scale-105"
+              onClick={() => setOpenNotificationDrawer(true)}
+            >
+              <Bell size={26} />
+              {unreadNotifications.length > 0 && (
+                <span className="absolute -top-1 -right-1 bg-[#ff9100] text-[#fdfdfd] text-xs w-5 h-5 flex items-center justify-center rounded-full font-bold shadow-lg animate-pulse border-2 border-gray-900">
+                  {unreadNotifications.length}
+                </span>
+              )}
+            </button>
+            {/* Tooltip */}
+            <span className="absolute top-full left-1/2 -translate-x-1/2 mt-2 text-xs px-3 py-2 rounded-lg bg-black/80 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap shadow-lg z-50">
+              Notifications
+              <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-black/80 rotate-45"></div>
+            </span>
+          </div>
 
-          <div ref={profileRef} className="relative">
-            <button onClick={() => setProfileOpen(!profileOpen)} className="p-2 rounded-full hover:bg-black transition">
+          {/* Profile Dropdown */}
+          <div ref={profileRef} className="relative group">
+            <button 
+              onClick={() => setProfileOpen(!profileOpen)}
+              className="p-2 rounded-full hover:bg-black transition-all duration-200 hover:scale-105"
+            >
               <User size={28} className="text-white" />
             </button>
+
+            {/* Tooltip */}
+            <span className="absolute top-full left-1/2 -translate-x-1/2 mt-2 text-xs px-3 py-2 rounded-lg bg-black/80 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap shadow-lg z-50">
+              Profile Menu
+              <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-2 h-2 bg-black/80 rotate-45"></div>
+            </span>
 
             {profileOpen && (
               <div className="absolute right-0 mt-4 w-64 bg-[#fdfdfd] rounded-xl shadow-2xl border border-[#e4e2e1] py-3 z-50 flex flex-col">
@@ -127,15 +156,16 @@ const pathname = usePathname();
                   <p className="text-xs text-[#333333]">Manage your account</p>
                 </div>
 
-                <button onClick={() => router.push("/traveller-dashboard/profile/view-profile")} className="px-4 text-left hover:text-amber-700">View Profile</button>
-                <button onClick={() => router.push("/traveller-dashboard/profile/change-password")} className="px-4 py-1 text-left hover:text-amber-700">Change Password</button>
-                <button onClick={() => setLogoutDialogOpen(true)} className="px-4 py-1 text-left text-red-600 hover:text-red-800 flex items-center gap-1">
+                <button onClick={() => router.push("/traveller-dashboard/profile/view-profile")} className="px-4 py-4 text-left hover:text-amber-700">View Profile</button>
+                <button onClick={() => router.push("/traveller-dashboard/profile/change-password")} className="px-4  text-left hover:text-amber-700">Change Password</button>
+                <button onClick={() => setLogoutDialogOpen(true)} className="px-4 py-4 text-left text-red-600 hover:text-red-800 flex items-center gap-1">
                   <LogOut size={16} /> Logout
                 </button>
               </div>
             )}
           </div>
         </div>
+        
       </header>
 
       {/* Notification Drawer */}
@@ -203,3 +233,6 @@ const pathname = usePathname();
 };
 
 export default TravellerNavbar;
+
+
+
