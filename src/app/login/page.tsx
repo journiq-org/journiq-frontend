@@ -149,7 +149,7 @@ const Login = () => {
 
         //  Guide not verified → don't store cookie, just redirect
       if (role === "guide" && !isVerified) {
-        toast.error("Your account is pending admin verification.");
+        // toast.error("Your account is pending admin verification.");
         router.push("/pending-verification");
         return;
       }

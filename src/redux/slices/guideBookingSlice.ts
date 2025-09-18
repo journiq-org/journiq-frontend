@@ -24,18 +24,14 @@ const initialState: GuideBookingState = {
 };
 
 // Fetch Bookings for Guide
-export const fetchGuideBookings = createAsyncThunk
-("guideBookings/fetchGuideBookings", async ({skip,limit}:{skip:number,limit:number}) => {
+export const fetchGuideBookings = createAsyncThunk("guideBookings/fetchGuideBookings", async () => {
   {
-    const res = await api.get(`/api/booking/for-guide?limit=${limit}&skip=${skip}`, {
+    const res = await api.get(`/api/booking/for-guide`, {
       withCredentials: true,
     })
-
-    
-
     return {
           bookings: res.data.bookings ,
-          total : res.data.total
+          // total : res.data.total
         };
   }}
 );
@@ -91,23 +87,21 @@ const guideBookingSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+
       // fetch
       .addCase(fetchGuideBookings.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(
-        fetchGuideBookings.fulfilled,
-        (state, action) => {
+        fetchGuideBookings.fulfilled, (state, action) => {
           state.loading = false;
           state.bookings = action.payload.bookings
-          state.total = action.payload.total
-        }
-      )
+          // state.total = action.payload.total
+        })
       .addCase(fetchGuideBookings.rejected, (state, action) => {
         state.loading = false;
-        state.error =
-          (action.payload as string) || "Failed to fetch bookings";
+        state.error =action.error.message || "Failed to fetch bookings";
       })
 
       // respond

@@ -605,6 +605,7 @@ import toast from "react-hot-toast";
 import Navbar from "@/components/Navbar";
 import Link from "next/link";
 import { Eye, EyeOff, Mail, Lock, User, Phone, MapPin, FileText, Compass, Camera } from 'lucide-react';
+import { useRouter } from "next/navigation";
 
 const schema = yup.object().shape({
   name: yup.string().required("Name is required"),
@@ -623,12 +624,14 @@ const RegisterPage = () => {
   const [preview, setPreview] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
+  const router = useRouter()
   const {
     handleSubmit,
     control,
     watch,
     setValue,
     reset,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormData>({
     resolver: yupResolver(schema),
@@ -671,10 +674,26 @@ const RegisterPage = () => {
       });
 
       toast.success("Registration successful!");
+      router.push('/login')
       reset();
       removeImage();
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Something went wrong");
+      // toast.error(err.response?.data?.message || "Something went wrong");
+       // Handle backend field errors
+    if (err.response?.data?.errors) {
+      const fieldErrors = err.response.data.errors;
+      Object.keys(fieldErrors).forEach((field) => {
+        setError(field as keyof RegisterFormData, {
+          type: "manual",
+          message: fieldErrors[field],
+        });
+      });
+      return; // stop further processing
+    }
+
+    // Fallback toast
+    let errorMessage = err.response?.data?.message || err.message || "Something went wrong";
+    toast.error(errorMessage);
     }
   };
 

@@ -339,7 +339,7 @@ export default function Home() {
     const dispatch = useDispatch<AppDispatch>()
     const [role, setRole] = useState<string | null>(null);
     const [page, setPage] = useState(1);
-    const limit = 9;
+    const limit = 4;
     const skip = (page - 1) * limit;
  
     useEffect(() => {

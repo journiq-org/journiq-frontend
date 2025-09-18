@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import GuideNavbar from "@/components/GuideNavbar";
 import { Button } from "@mui/material";
+import { renderToStaticMarkup } from "react-dom/server";
 
 // More flexible TypeScript interfaces that match actual API response
 interface Destination {
@@ -74,14 +75,15 @@ const GuideBookingsPage = () => {
     (state) => state.guideBookings
   );
 
-   const [page,setPage] =useState(1)
-    const limit = 6
-    const skip = (page - 1)* limit
-    const totalPages = Math.ceil(total/limit)
+  // const [page , setPage] = useState(1)
+  // const limit = 6
+  // const skip = (page - 1) * limit
+  // const totalPages = Math.ceil(total / limit)
+
     
   useEffect(() => {
-    dispatch(fetchGuideBookings({skip,limit}));
-  }, [dispatch,page,skip]);
+    dispatch(fetchGuideBookings());
+  }, [dispatch]);
 
   const handleRespond = (bookingId: string, status: string) => {
     dispatch(respondToBooking({ bookingId, status }));
@@ -388,7 +390,7 @@ const GuideBookingsPage = () => {
           </div>
         )}
                     {/* Pagination */}
-                  <div className="flex justify-center items-center gap-2 mt-6">
+                  {/* <div className="flex justify-center items-center gap-2 mt-6">
                     <Button
                       variant="outlined"
                       disabled={page === 0}
@@ -410,7 +412,7 @@ const GuideBookingsPage = () => {
                     >
                       Next
                     </Button>
-                  </div>
+                  </div> */}
 
       </div>
        {/* Footer */}
