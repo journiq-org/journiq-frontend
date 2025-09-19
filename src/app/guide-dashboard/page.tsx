@@ -36,7 +36,7 @@ useEffect(() => {
       tags: category || undefined, 
     })  
   );  
-  dispatch(guideViewTours({ page: 1, limit: 100 }));
+  dispatch(guideViewTours({ skip: 0, limit: 100 }));
   dispatch(fetchGuideBookings());
 }, [dispatch, page, search, category]);  
 

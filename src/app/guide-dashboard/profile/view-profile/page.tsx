@@ -43,7 +43,7 @@ useEffect(() => {
       }
       dispatch(fetchUserProfile());
       dispatch(fetchGuideBookings()); // fetch all bookings for stats
-      dispatch(guideViewTours({ page: 1, limit: 100 })); 
+      dispatch(guideViewTours({ skip:0, limit: 100 })); 
     };
 
     checkToken();
