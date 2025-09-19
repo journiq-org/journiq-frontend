@@ -75,7 +75,7 @@ export const listDestinations = createAsyncThunk(
 
 //fetch tour based on destination
 
-export const getTourByDestination = createAsyncThunk('destination/getTourByDestination', async({ destinationId, skip, limit}:{ destinationId: string, skip:number, limit:number}) => {
+export const getTourByDestination = createAsyncThunk('destination/getTourByDestination', async({ destinationId, skip, limit}:{ destinationId: string , skip:number, limit:number}) => {
 
   const res = await api.get(`/api/tour/publicView/${destinationId}?limit=${limit}&skip=${skip}`)
 
